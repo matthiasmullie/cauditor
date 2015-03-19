@@ -1,4 +1,5 @@
 from controllers import fallback
+import models
 
 
 class Controller(fallback.Controller):
@@ -11,6 +12,7 @@ class Controller(fallback.Controller):
 
         self.template = "project.html"
         self.project = self.load_project(match.group(1))
+        self.commit = self.load_commit(match.group(1))
 
     def match(self):
         """ matches /vendor/repo """
@@ -21,15 +23,22 @@ class Controller(fallback.Controller):
         args = super(Controller, self).args()
         args.update({
             'project': self.project,
+            'commit': self.commit,
         })
         return args
 
     def load_project(self, project):
-        # @todo raise exception if not found?
+        projects = models.project.Projects()
+        data = projects.select(name=project)
+        if len(data) == 0:
+            raise Exception("Invalid project")
 
-        return {
-            # @todo; get data from DB or wherever!
-            'name': project,
-            'git': '',  # @todo: commit path
-            'commit': "006f698169fffbac775de747661e18caa56dee83" if project == "wikimedia/mediawiki-extensions-Flow" else "temp",  # @todo: change to vendor/project/commit.json
-        }
+        return data[0]
+
+    def load_commit(self, project):
+        commit = models.commit.Commits()
+        data = commit.select(project=project, options=['ORDER BY date DESC', "LIMIT 1"])
+        if len(data) == 0:
+            raise Exception("No commit found")
+
+        return data[0]

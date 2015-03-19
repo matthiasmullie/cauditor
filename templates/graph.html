@@ -20,7 +20,7 @@
     <div class="graph"></div>
 
     <script>
-        var graph = new Codegraphs('/data/{{ project.name }}/{{ project.commit }}.json');
+        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.commit }}.json');
         graph.draw('.graph', new {{ graph.class }}());
     </script>
 </body>
