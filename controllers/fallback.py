@@ -1,4 +1,4 @@
-class Route(object):
+class Controller(object):
     def __init__(self, uri):
         self.uri = uri
         self.template = "404.html"

@@ -1,10 +1,9 @@
 from controllers import fallback
-from models import project
 
 
-class Route(fallback.Route):
+class Controller(fallback.Controller):
     def __init__(self, uri):
-        super(Route, self).__init__(uri)
+        super(Controller, self).__init__(uri)
 
         match = self.match()
         if match is None:
@@ -19,7 +18,7 @@ class Route(fallback.Route):
         return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)$", self.uri, flags=re.IGNORECASE)
 
     def args(self):
-        args = super(Route, self).args()
+        args = super(Controller, self).args()
         args.update({
             'project': self.project,
         })

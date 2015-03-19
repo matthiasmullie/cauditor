@@ -1,9 +1,9 @@
 from controllers import project
 
 
-class Route(project.Route):
+class Controller(project.Controller):
     def __init__(self, uri):
-        super(Route, self).__init__(uri)
+        super(Controller, self).__init__(uri)
 
         match = self.match()
         if match is None:
@@ -19,14 +19,14 @@ class Route(project.Route):
         return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)/([a-z]+)$", self.uri, flags=re.IGNORECASE)
 
     def args(self):
-        args = super(Route, self).args()
+        args = super(Controller, self).args()
         args.update({
             'graph': self.graph,
         })
         return args
 
     def load_graph(self, graph):
-        args = super(Route, self).args()
+        args = super(Controller, self).args()
 
         # @todo raise exception if not found?
 
