@@ -62,7 +62,7 @@ already be in (Method|Class).js, which they extend from, or Abstract.js, or that
 
 JSON files holding the metrics.
 
-Files will be stored in data/<vendor>/<project>/<commit-sha>.json
+Files will be stored in data/[vendor]/[project]/[commit-sha].json
 
 ## scripts/*
 
