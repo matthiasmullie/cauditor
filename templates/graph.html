@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title>Codegraphs: {{ graph.name }} for {{ project.name }}</title>
+
+    <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
+    <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
+    <script src="/assets/js/Codegraphs.js"></script>
+    <script src="/assets/js/visualizations/Abstract.js"></script>
+    <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
+    <script src="/assets/js/visualizations/treemap/Class.js"></script>
+    <script src="/assets/js/visualizations/treemap/Method.js"></script>
+    <script src="{{ graph.file }}"></script>
+
+    <link href="/assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="graph"></div>
+
+    <script>
+        var graph = new Codegraphs('/data/{{ project.name }}/{{ project.commit }}.json');
+        graph.draw('.graph', new {{ graph.class }}());
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.column.small {
+    display: inline-block;
+    width: calc(33% - 3px);
+    height: 300px;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-family: "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", "sans-serif";
+    font-size: 20px;
+    margin: 10px 0 5px;
+    padding: 0;
+}
+
+.graph {
+    display: block;
+}
+
+/*
+ * Add an invisible overlay to the small graphs; they're merely meant as a link
+ * to the full version; I don't want them to display the informational tooltips.
+ */
+a span.graph:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
