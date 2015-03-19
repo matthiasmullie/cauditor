@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 while getopts r: opts; do
    case ${opts} in
       r) REPO=${OPTARG} ;;
