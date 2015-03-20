@@ -15,7 +15,7 @@ class Controller(fallback.Controller):
         self.commit = self.load_commit(match.group(1), match.group(3))
 
     def match(self):
-        """ matches /vendor/repo and /vendor/repo/commit"""
+        """ matches /vendor/repo and /vendor/repo/commit """
         import re
         return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)(/([a-f0-9]{40}))?$", self.uri, flags=re.IGNORECASE)
 
