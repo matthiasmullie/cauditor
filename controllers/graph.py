@@ -11,8 +11,7 @@ class Controller(project.Controller):
 
         self.template = "graph.html"
         self.graph = self.load_graph(match.group(match.lastindex))
-        self.project = self.load_project(match.group(1))
-        self.commit = self.load_commit(match.group(1), match.group(3))
+        # project & commit will be loaded in parent constructor already
 
     def match(self):
         """ matches /vendor/repo/graph and /vendor/repo/commit/graph """
@@ -30,7 +29,7 @@ class Controller(project.Controller):
         args = super(Controller, self).args()
 
         # find this specific graph's data
-        data = [g for g in args['graphs'] if g['code'] == graph][0]
+        data = [g for g in args['graphs'] if g['code'] == graph]
 
         if len(data) == 0:
             raise Exception("Invalid graph")
