@@ -19,21 +19,25 @@
     <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    {% for graph in graphs %}
-    <section id="{{ graph.code }}" class="column small">
-        <h1>{{ graph.name }}</h1>
-        <a href="/{{ project.name }}/{{ graph.code }}">
-            <span class="graph"></span>
-        </a>
-    </section>
-    {% endfor %}
-
-    <script>
-        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
-
+    {% if commit %}
         {% for graph in graphs %}
-        graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
+        <section id="{{ graph.code }}" class="column small">
+            <h1>{{ graph.name }}</h1>
+            <a href="/{{ project.name }}/{{ graph.code }}">
+                <span class="graph"></span>
+            </a>
+        </section>
         {% endfor %}
-    </script>
+
+        <script>
+            var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
+
+            {% for graph in graphs %}
+            graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
+            {% endfor %}
+        </script>
+    {% else %}
+        <p>Couldn't find any commit for {{ project.name }}. If it was recently added, it may be importing.</p>
+    {% endif %}
 </body>
 </html>

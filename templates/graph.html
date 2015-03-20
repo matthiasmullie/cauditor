@@ -17,11 +17,15 @@
     <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <div class="graph"></div>
+    {% if commit %}
+        <div class="graph"></div>
 
-    <script>
-        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json');
-        graph.draw('.graph', new {{ graph.class }}());
-    </script>
+        <script>
+            var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json');
+            graph.draw('.graph', new {{ graph.class }}());
+        </script>
+    {% else %}
+        <p>Couldn't find any commit for {{ project.name }}. If it was recently added, it may be importing.</p>
+    {% endif %}
 </body>
 </html>

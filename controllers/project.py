@@ -43,8 +43,4 @@ class Controller(fallback.Controller):
         else:
             data = model.select(project=project, hash=hash)
 
-        if len(data) == 0:
-            # @todo don't fail
-            raise Exception("No commit found")
-
-        return data[0]
+        return data[0] if len(data) > 0 else None
