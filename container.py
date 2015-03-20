@@ -1,3 +1,13 @@
+def load_config():
+    import io
+    import yaml
+
+    stream = io.open('config.yaml', 'r')
+    return yaml.load(stream)
+
+
 def mysql():
     import pymysql
-    return pymysql.connect(host='127.0.0.1', user='root', passwd='6QPmxtB2', db='codegraphs', charset='utf8')
+
+    config = load_config()['mysql']
+    return pymysql.connect(host=config['host'], user=config['user'], passwd=config['pass'], db=config['db'], charset='utf8')
