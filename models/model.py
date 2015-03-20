@@ -51,7 +51,8 @@ class DbManager(object):
             options,  # additional options (e.g. ORDER BY, LIMIT)
             params  # params for WHERE-clause
         )
-        return cursor.fetchall()
+        result = cursor.fetchall()
+        return [self.bytes_to_string(row) for row in result]
 
     def store(self, data=None, **kwargs):
         """ Performs an INSERT ... ON DUPLICATE KEY UPDATE ... query
@@ -113,3 +114,14 @@ class DbManager(object):
             where,  # string of `WHERE key = %s AND key2 = %s`
             params  # params for WHERE-clause
         )
+
+    def bytes_to_string(self, result):
+        """Convert bytes-values to plain strings
+
+        DB has some BLOB & binary fields that contain UTF-8 data.
+
+        :param result: list[dict]
+        :return: list[dict]
+        """
+        return {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in result.items()}
+
