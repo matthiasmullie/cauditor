@@ -26,6 +26,12 @@ do any DB-lookup) because we'll instantiate every controller. `__init__` should 
 
 There will always be at least 1 matching controller object: fallback.py matches everything and will render a 404.
 
+## models/*
+
+Extremely simple database-interaction handlers.
+
+Allows for simple select, upsert & delete.
+
 ## templates/*
 
 jinja2 templates
