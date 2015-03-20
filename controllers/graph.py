@@ -29,7 +29,10 @@ class Controller(project.Controller):
     def load_graph(self, graph):
         args = super(Controller, self).args()
 
-        # @todo raise exception if not found?
-
         # find this specific graph's data
-        return [g for g in args['graphs'] if g['code'] == graph][0]
+        data = [g for g in args['graphs'] if g['code'] == graph][0]
+
+        if len(data) == 0:
+            raise Exception("Invalid graph")
+
+        return data[0]
