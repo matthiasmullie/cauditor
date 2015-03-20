@@ -4,6 +4,13 @@ mysql:
     db:
     host:
 
+github:
+    # https://github.com/settings/applications/181928
+    id:
+    secret:
+    # https://developer.github.com/v3/oauth/#scopes
+    scopes: user:email,repo,write:repo_hook
+
 graphs:
     -
         code: "ccn"

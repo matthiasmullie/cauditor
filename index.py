@@ -23,7 +23,8 @@ for name in controllers.__all__:
 controller = sorted(matched_controllers, key=matched_controllers.get, reverse=True)[0]
 
 # headers
-print("Content-Type: text/html")
-print()
+for header in controller.headers():
+    print(header)
 
+print()
 print(controller.render())

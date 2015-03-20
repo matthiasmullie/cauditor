@@ -12,6 +12,9 @@ class Controller(object):
         import container
         return container.load_config()
 
+    def headers(self):
+        return ["Content-Type: text/html"]
+
     def render(self):
         from jinja2 import Environment, FileSystemLoader
         env = Environment(loader=FileSystemLoader("templates"))

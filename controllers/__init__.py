@@ -1,3 +1,3 @@
-from controllers import fallback, project, graph
+from controllers import fallback, index, project, graph, login, user
 
-__all__ = ['fallback', 'project', 'graph']
+__all__ = ['fallback', 'index', 'project', 'graph', 'login', 'user']
