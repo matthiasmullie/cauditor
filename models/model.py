@@ -124,4 +124,3 @@ class DbManager(object):
         :return: list[dict]
         """
         return {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in result.items()}
-

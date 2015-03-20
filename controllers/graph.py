@@ -10,13 +10,14 @@ class Controller(project.Controller):
             raise Exception("Invalid route")
 
         self.template = "graph.html"
+        self.graph = self.load_graph(match.group(match.lastindex))
         self.project = self.load_project(match.group(1))
-        self.graph = self.load_graph(match.group(2))
+        self.commit = self.load_commit(match.group(1), match.group(3))
 
     def match(self):
-        """ matches /vendor/repo """
+        """ matches /vendor/repo/graph and /vendor/repo/commit/graph """
         import re
-        return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)/([a-z]+)$", self.uri, flags=re.IGNORECASE)
+        return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)(/([a-f0-9]{40}))?/([a-z]+)$", self.uri, flags=re.IGNORECASE)
 
     def args(self):
         args = super(Controller, self).args()

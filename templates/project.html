@@ -29,7 +29,7 @@
     {% endfor %}
 
     <script>
-        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.commit }}.json' );
+        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
 
         {% for graph in graphs %}
         graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
