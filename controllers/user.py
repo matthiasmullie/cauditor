@@ -1,5 +1,4 @@
 from controllers import fallback
-from github import Github
 
 
 class Controller(fallback.Controller):
@@ -11,7 +10,6 @@ class Controller(fallback.Controller):
             raise Exception("Invalid route")
 
         self.template = "user.html"
-        self.user = {}
 
     def match(self):
         """ matches /user """
@@ -19,19 +17,32 @@ class Controller(fallback.Controller):
         return re.match("^/user$", self.uri, flags=re.IGNORECASE)
 
     def args(self):
+        token = self.get_auth_token()
+        github = self.github(token)
+        user = self.load_user(github)
+        repos = self.load_repos(user)
+
         args = super(Controller, self).args()
         args.update({
-            'user': self.user,
+            'user': {
+                'id': user.id,
+                'login': user.login,
+                'name': user.name,
+                'email': user.email,
+                'avatar_url': user.avatar_url,
+                'blog': user.blog,
+                'url': user.url,
+            },
+            'repos': [{
+                'id': repo.id,
+                'name': repo.name,
+                'clone_url': repo.clone_url,
+                'private': repo.private,
+                'url': repo.url,
+            } for repo in repos],
         })
+
         return args
-
-    def render(self):
-        # only requesting user data here because I don't want to fall
-        # to 404 if it fails; we should stay here and show login-link!
-        token = self.get_auth_token()
-        self.user = self.load_user(token)
-
-        return super(Controller, self).render()
 
     def get_auth_token(self):
         import os
@@ -45,16 +56,13 @@ class Controller(fallback.Controller):
 
         raise Exception("No token found in cookie")
 
-    def load_user(self, token):
-        data = self.args()
-        gh = Github(login_or_token=token, client_id=data["github"]["id"], client_secret=data["github"]["secret"], timeout=1, user_agent="codegraphs")
-        user = gh.get_user()
-        return {
-            'id': user.id,
-            'login': user.login,
-            'name': user.name,
-            'email': user.email,
-            'avatar_url': user.avatar_url,
-            'blog': user.blog,
-            'url': user.url,
-        }
+    def github(self, token):
+        import container
+        return container.github(token)
+
+    def load_user(self, github):
+        return github.get_user()
+
+    def load_repos(self, user):
+        # per_page limit is high enough - I'll only request 1 page & ignore other repos, if any
+        return user.get_repos().get_page(0)

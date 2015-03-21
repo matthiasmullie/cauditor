@@ -10,6 +10,14 @@
 <body>
     {% if user %}
         Hi there, {{ user.name }}!
+
+        Repos:
+        <ul>
+            {% for repo in repos %}
+                {# no private repos (yet?) #}
+                {% if not repo.private %}<li>{{ repo.name }}</li>{% endif %}
+            {% endfor %}
+        </ul>
     {% else %}
         <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Take me to GitHub</a>
     {% endif %}

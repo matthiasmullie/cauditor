@@ -8,9 +8,12 @@ class Controller(object):
         import re
         return re.match("", self.uri)
 
-    def args(self):
+    def config(self):
         import container
         return container.load_config()
+
+    def args(self):
+        return self.config()
 
     def headers(self):
         return ["Content-Type: text/html"]

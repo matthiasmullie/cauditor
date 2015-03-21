@@ -39,12 +39,12 @@ class Controller(fallback.Controller):
         import urllib
         import json
 
-        args = self.args()
+        config = self.config()
 
         url = 'https://github.com/login/oauth/access_token'
         values = {
-            'client_id': args['github']['id'],
-            'client_secret': args['github']['secret'],
+            'client_id': config['github']['id'],
+            'client_secret': config['github']['secret'],
             'code': code
         }
         headers = {
@@ -61,7 +61,7 @@ class Controller(fallback.Controller):
         scopes = result['scope'].split(",")
 
         # doublecheck that we have access to the scopes we need
-        missing = [scope for scope in args['github']['scopes'].split(",") if scope not in scopes]
+        missing = [scope for scope in config['github']['scopes'].split(",") if scope not in scopes]
         if len(missing) > 0:
             raise Exception("Missing scopes: %s" % scopes.glue(","))
 
