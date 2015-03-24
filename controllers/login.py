@@ -23,6 +23,11 @@ class Controller(fallback.Controller):
         import http.cookies
         import os
 
+        token = self.get_auth_token(self.code)
+        user_id = self.import_from_github(token)
+
+        # @todo: create session
+
         cookie = http.cookies.SimpleCookie()
         cookie['github_token'] = self.get_auth_token(self.code)
 
@@ -33,10 +38,47 @@ class Controller(fallback.Controller):
         if self.fail:
             return super(Controller, self).render()
         else:
+            # don't render anything; we'll only be sending redirect headers
             return ""
 
+    def import_from_github(self, token):
+        import container
+        import models
+
+        github = container.github(token)
+        users = models.users.Users()
+        users_repos = models.users_repos.UsersRepos()
+
+        # store user (will be updated if user with that id already exists)
+        user = github.get_user()
+        users.store(self.get_user(user))
+
+        # delete existing repos & re-save all of them
+        repos = [self.get_repo(repo, user) for repo in user.get_repos()]
+        for org in user.get_orgs():
+            repos.extend([self.get_repo(repo, user) for repo in org.get_repos()])
+        users_repos.delete(user_id=user.id)
+        users_repos.store(repos)
+
+        return user.id
+
+    def get_user(self, user):
+        return {
+            'id': user.id,
+            'email': user.email,
+            'name': user.name,
+        }
+
+    def get_repo(self, repo, user):
+        return {
+            'id': repo.id,
+            'user_id': user.id,
+            'project': repo.full_name,
+            'url': repo.clone_url,
+        }
+
     def get_auth_token(self, code):
-        import urllib
+        from urllib import parse, request
         import json
 
         config = self.config()
@@ -51,9 +93,9 @@ class Controller(fallback.Controller):
             'Accept': 'application/json'
         }
 
-        data = urllib.parse.urlencode(values).encode("utf-8")
-        req = urllib.request.Request(url, data, headers)
-        response = urllib.request.urlopen(req)
+        data = parse.urlencode(values).encode("utf-8")
+        req = request.Request(url, data, headers)
+        response = request.urlopen(req)
         result = response.read().decode("utf=8")
         result = json.loads(result)
 
