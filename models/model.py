@@ -29,16 +29,9 @@ class DbManager(object):
         :return: list[dict]
         """
 
-        # split into a list of tuple pairs; we'll be splitting
-        # them apart & I want to be sure of the order of the items
-        items = kwargs.items()
-
         # build `WHERE key = %s AND key2 = %s` clause
-        where = [key + " = %s" for key, value in items]
+        where = [key + " = %s" for key in kwargs.keys()]
         where = "WHERE " + " AND ".join(where)
-
-        # gather list of params for where clause
-        params = [value for key, value in items]
 
         # options can be a list or a string - flatten into string from here on
         options = " ".join(list(options))
@@ -49,40 +42,41 @@ class DbManager(object):
             "FROM %s " % self.table +
             where + " " +  # string of `WHERE key = %s AND key2 = %s`
             options,  # additional options (e.g. ORDER BY, LIMIT)
-            params  # params for WHERE-clause
+            list(kwargs.values())  # params for WHERE-clause
         )
         result = cursor.fetchall()
         return [self.bytes_to_string(row) for row in result]
 
     def store(self, data=None, **kwargs):
-        """ Performs an INSERT ... ON DUPLICATE KEY UPDATE ... query
+        """ Performs a REPLACE INTO query
 
-        Make sure your primary keys are fine as they'll decide over insert or update.
+        Make sure your primary keys are fine as they'll decide over insert or "update"
+        (well, not really update - REPLACE first deletes, then reinserts)
 
         Data is not validated (though a child class could implement that) so make
         sure the dict you pass is conform the schema.
 
-        :param data: dict in {'key': 'value', 'key2': 'value2'} format
+        :param data: dict in {'key': 'value', 'key2': 'value2'} format, or list[dict]
         :return: int amount of rows inserted/updated (1 or 0)
         """
 
         # data can come in dict form, of as parameterized kwargs
         data = data if data is not None else kwargs
 
-        # split into a list of tuple pairs; we'll be splitting
-        # them apart & I want to be sure of the order of the items
-        items = data.items()
+        # data can also be a list of dicts (for multiple inserts) - make all of it a list now
+        data = data if isinstance(data, list) else [data]
 
+        keys = sorted(data[0])
+        params = []
         # gather list of params for insert & update
-        params = [value for key, value in items] * 2
+        for d in data:
+            params.extend([d[key] for key in keys])
 
         cursor = self.__connection.cursor()
         return cursor.execute(
-            "INSERT INTO %s " % self.table +
-            "(" + ", ".join([key for key, value in items]) + ") " +  # (key, key2)
-            "VALUES (" + ", ".join(["%s" for key, value in items]) + ") " +  # (%s, %s)
-            "ON DUPLICATE KEY UPDATE " +
-            ", ".join([key + " = %s" for key, value in items]),  # key = %s, key2 = %s
+            "REPLACE INTO %s " % self.table +
+            "(" + ", ".join(keys) + ") " +  # (key, key2)
+            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(data)) + ")",  # (%s, %s), (%s, %s)
             params
         )
 
@@ -97,22 +91,15 @@ class DbManager(object):
         :return: int amount of rows deleted
         """
 
-        # split into a list of tuple pairs; we'll be splitting
-        # them apart & I want to be sure of the order of the items
-        items = kwargs.items()
-
         # build `WHERE key = %s AND key2 = %s` clause
-        where = [key + " = %s" for key, value in items]
+        where = [key + " = %s" for key in kwargs.keys()]
         where = "WHERE " + " AND ".join(where)
-
-        # gather list of params for where clause
-        params = [value for key, value in items]
 
         cursor = self.__connection.cursor()
         return cursor.execute(
             "DELETE FROM %s " % self.table +
             where,  # string of `WHERE key = %s AND key2 = %s`
-            params  # params for WHERE-clause
+            list(kwargs.values())  # params for WHERE-clause
         )
 
     def bytes_to_string(self, result):
