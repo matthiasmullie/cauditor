@@ -26,5 +26,6 @@ CREATE TABLE IF NOT EXISTS `users_repos` ( -- data from GitHub
   `user_id` int(11) NOT NULL, -- user.id
   `project` varchar(255) NOT NULL, -- repo.full_name
   `url` blob NOT NULL, -- repo.clone_url
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
