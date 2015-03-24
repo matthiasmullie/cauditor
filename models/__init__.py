@@ -1,1 +1,1 @@
-from models import model, project, commit
+from models import model, projects, commits

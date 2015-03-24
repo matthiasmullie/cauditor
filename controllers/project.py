@@ -28,7 +28,7 @@ class Controller(fallback.Controller):
         return args
 
     def load_project(self, name):
-        model = models.project.Projects()
+        model = models.projects.Projects()
         data = model.select(name=name)
         if len(data) == 0:
             raise Exception("Invalid project")
@@ -36,7 +36,7 @@ class Controller(fallback.Controller):
         return data[0]
 
     def load_commit(self, project, hash=None):
-        model = models.commit.Commits()
+        model = models.commits.Commits()
 
         if hash is None:
             data = model.select(project=project, options=['ORDER BY date DESC', "LIMIT 1"])
