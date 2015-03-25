@@ -8,6 +8,10 @@
     <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-    <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Take me to GitHub</a>
+    {% if user %}
+        Hi there, <a href="/user">{{ user.name }}!</a>
+    {% else %}
+        <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Take me to GitHub</a>
+    {% endif %}
 </body>
 </html>

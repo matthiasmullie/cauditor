@@ -25,7 +25,12 @@ class Controller(object):
         return container.load_config()
 
     def args(self):
-        return self.config()
+        args = self.config()
+        args.update({
+            'user': self.session('user'),
+            'repos': self.session('repos'),
+        })
+        return args
 
     def headers(self):
         headers = ["Content-Type: text/html"]
