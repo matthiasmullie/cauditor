@@ -1,5 +1,6 @@
 from models import model
 from datetime import datetime, timedelta
+from random import randint, getrandbits
 import pickle
 
 
@@ -89,7 +90,6 @@ class Sessions(model.DbManager):
         We should clear old (expired) sessions every now and then,
         but only once in many requests is more than enough
         """
-        from random import randint
         if randint(0, 999) == 0:
             return
 
@@ -113,5 +113,4 @@ class Sessions(model.DbManager):
         """Generates a session id
         :return: string
         """
-        import random
-        return "%032x" % random.getrandbits(128)
+        return "%032x" % getrandbits(128)
