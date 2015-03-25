@@ -29,3 +29,10 @@ CREATE TABLE IF NOT EXISTS `users_repos` ( -- data from GitHub
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` varchar(32) NOT NULL, -- session id
+  `data` blob NOT NULL, -- session data
+  `touched` datetime NOT NULL, -- last read/written
+  PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;

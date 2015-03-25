@@ -1,1 +1,1 @@
-from models import model, projects, commits, users, users_repos
+from models import model, projects, commits, users, users_repos, sessions
