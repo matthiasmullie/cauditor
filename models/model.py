@@ -29,8 +29,9 @@ class DbManager(object):
         :return: list[dict]
         """
 
-        # build `WHERE key = %s AND key2 = %s` clause
-        where = [key + " = %s" for key in kwargs.keys()]
+        # build `WHERE key IN (%s) AND key2 IN (%s, %s)` clause
+        kwargs = {key: value if isinstance(value, list) else [value] for key, value in kwargs.items()}
+        where = [key + " IN (" + ", ".join((["%s"] * len(values))) + ")" for key, values in kwargs.items()]
         where = "WHERE " + " AND ".join(where)
 
         # options can be a list or a string - flatten into string from here on
@@ -42,7 +43,7 @@ class DbManager(object):
             "FROM %s " % self.table +
             where + " " +  # string of `WHERE key = %s AND key2 = %s`
             options,  # additional options (e.g. ORDER BY, LIMIT)
-            list(kwargs.values())  # params for WHERE-clause
+            [param for params in kwargs.values() for param in params]  # params for WHERE-clause
         )
         result = cursor.fetchall()
         return [self.bytes_to_string(row) for row in result]
