@@ -14,7 +14,13 @@
         Repos:
         <ul>
             {% for repo in repos %}
-                <li>{{ repo.project }}</li>
+                <li>
+                    {% if repo.project in user_projects|map(attribute='name') %}
+                        <a href="/{{ repo.project }}">{{ repo.project }}</a>
+                    {% else %}
+                        {{ repo.project }}
+                    {% endif %}
+                </li>
             {% endfor %}
         </ul>
     {% else %}

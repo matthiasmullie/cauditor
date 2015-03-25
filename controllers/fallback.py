@@ -27,8 +27,8 @@ class Controller(object):
     def args(self):
         args = self.config()
         args.update({
-            'user': self.session('user'),
-            'repos': self.session('repos'),
+            'user': self.session('user') or {},
+            'repos': self.session('repos') or [],
         })
         return args
 
