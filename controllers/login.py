@@ -20,19 +20,17 @@ class Controller(fallback.Controller):
         return re.match("^/login\?code=([a-f0-9]+)$", self.uri, flags=re.IGNORECASE)
 
     def headers(self):
-        import http.cookies
         import os
 
-        token = self.get_auth_token(self.code)
-        user_id = self.import_from_github(token)
+        try:
+            token = self.get_auth_token(self.code)
+            self.import_from_github(token)
 
-        # @todo: create session
-
-        cookie = http.cookies.SimpleCookie()
-        cookie['github_token'] = self.get_auth_token(self.code)
-
-        # success! set cookie & redirect
-        return [cookie, "Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
+            # success! set cookie & redirect
+            return [self.cookie_set, "Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
+        except Exception:
+            self.fail = True
+            return super(Controller, self).headers()
 
     def render(self):
         if self.fail:
@@ -43,22 +41,22 @@ class Controller(fallback.Controller):
 
     def import_from_github(self, token):
         import container
-        import models
 
         github = container.github(token)
-        users = models.users.Users()
-        users_repos = models.users_repos.UsersRepos()
-
-        # store user (will be updated if user with that id already exists)
         user = github.get_user()
-        users.store(self.get_user(user))
 
         # delete existing repos & re-save all of them
         repos = [self.get_repo(repo, user) for repo in user.get_repos()]
         for org in user.get_orgs():
             repos.extend([self.get_repo(repo, user) for repo in org.get_repos()])
-        users_repos.delete(user_id=user.id)
-        users_repos.store(repos)
+
+        # I only want to store this as session data - there's no point in storing it
+        # in a proper `user` table since:
+        # * GitHub is the real source of the data and we need to refresh it every login
+        # * if session expires, we have to re-login (using GitHub) anyway
+        # might as well not be tied to any schema if there's no benefit...
+        self.session('user', self.get_user(user))
+        self.session('repos', repos)
 
         return user.id
 
@@ -83,14 +81,14 @@ class Controller(fallback.Controller):
 
         config = self.config()
 
-        url = 'https://github.com/login/oauth/access_token'
+        url = "https://github.com/login/oauth/access_token"
         values = {
             'client_id': config['github']['id'],
             'client_secret': config['github']['secret'],
             'code': code
         }
         headers = {
-            'Accept': 'application/json'
+            'Accept': "application/json"
         }
 
         data = parse.urlencode(values).encode("utf-8")

@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
 
-    <title>Codegraphs: {% if user %}{{ user.login }}{% else %}login{% endif %}</title>
+    <title>Codegraphs: {% if user %}{{ user.name }}{% else %}login{% endif %}</title>
 
     <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
@@ -14,8 +14,7 @@
         Repos:
         <ul>
             {% for repo in repos %}
-                {# no private repos (yet?) #}
-                {% if not repo.private %}<li>{{ repo.name }}</li>{% endif %}
+                <li>{{ repo.project }}</li>
             {% endfor %}
         </ul>
     {% else %}
