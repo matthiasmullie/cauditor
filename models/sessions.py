@@ -1,7 +1,7 @@
 from models import model
 from datetime import datetime, timedelta
 from random import randint, getrandbits
-import pickle
+import json
 
 
 class Sessions(model.DbManager):
@@ -37,7 +37,7 @@ class Sessions(model.DbManager):
         :param value: mixed
         """
         # we have to load the existing data because all of it is
-        # serialized into 1 pickled dict when we store it again
+        # serialized into 1 json'ed dict when we store it again
         self.read()
         self.data[key] = value
 
@@ -56,12 +56,11 @@ class Sessions(model.DbManager):
             return self.data
 
         if data[0]['touched'] < self.timestamp(days_ago=30):
-            # check if session data hasn't yet expired (date-as-string comparison
-            # here will work fine in MySQL's DATETIME format)
+            # check if session data hasn't yet expired
             self.data = {}
             return self.data
 
-        self.data = pickle.loads(data[0]['data'])
+        self.data = json.loads(data[0]['data'])
         return self.data
 
     def write(self):
@@ -69,7 +68,7 @@ class Sessions(model.DbManager):
         if self.data:
             self.store({
                 'id': self.id,
-                'data': pickle.dumps(self.data),
+                'data': json.dumps(self.data),
                 'touched': self.timestamp(),
             })
 
@@ -101,13 +100,12 @@ class Sessions(model.DbManager):
         )
 
     def timestamp(self, days_ago=0):
-        """ Returns a MySQL DATETIME-formatted timestamp
+        """ Returns a timestamp of a certain amount of days ago
         :param days_ago: int
         :return: string
         """
         now = datetime.now()
-        expired = now - timedelta(days=days_ago)
-        return expired.strftime("%Y-%m-%d %H:%M:%S")
+        return now - timedelta(days=days_ago)
 
     def generate(self):
         """Generates a session id
