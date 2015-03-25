@@ -6,11 +6,11 @@ class DbManager(object):
 
     def __init__(self):
         import container
-        self.__connection = container.mysql()
+        self.connection = container.mysql()
 
     def __del__(self):
-        self.__connection.commit()
-        self.__connection.close()
+        self.connection.commit()
+        self.connection.close()
 
     def select(self, options="", **kwargs):
         """ Arguments will refer to columns to be selected. E.g.: select(name='vendor/project')
@@ -36,7 +36,7 @@ class DbManager(object):
         # options can be a list or a string - flatten into string from here on
         options = " ".join(list(options))
 
-        cursor = self.__connection.cursor(pymysql.cursors.DictCursor)
+        cursor = self.connection.cursor(pymysql.cursors.DictCursor)
         cursor.execute(
             "SELECT * "
             "FROM %s " % self.table +
@@ -72,7 +72,7 @@ class DbManager(object):
         for d in data:
             params.extend([d[key] for key in keys])
 
-        cursor = self.__connection.cursor()
+        cursor = self.connection.cursor()
         return cursor.execute(
             "REPLACE INTO %s " % self.table +
             "(" + ", ".join(keys) + ") " +  # (key, key2)
@@ -95,7 +95,7 @@ class DbManager(object):
         where = [key + " = %s" for key in kwargs.keys()]
         where = "WHERE " + " AND ".join(where)
 
-        cursor = self.__connection.cursor()
+        cursor = self.connection.cursor()
         return cursor.execute(
             "DELETE FROM %s " % self.table +
             where,  # string of `WHERE key = %s AND key2 = %s`

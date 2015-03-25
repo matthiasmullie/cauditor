@@ -1,18 +1,19 @@
 from models import model
+from datetime import datetime, timedelta
 import pickle
 
 
 class Sessions(model.DbManager):
     """ (Ab)use model for session management """
-    def __init__(self, id=None):
+    def __init__(self, session_id=None):
         super(Sessions, self).__init__()
         self.table = 'sessions'
 
-        self.id = id or self.generate()
+        self.id = session_id or self.generate()
 
         # don't load data just yet, wait until we actually need it
         # ... or initialize with empty dict, if there can't be any
-        self.data = {} if id is None else None
+        self.data = {} if session_id is None else None
 
     def __del__(self):
         # depending on whether or not we've loaded existing data
@@ -35,7 +36,7 @@ class Sessions(model.DbManager):
         :param value: mixed
         """
         # we have to load the existing data because all of it is
-        # serialized into 1 pickeded dict when we store it again
+        # serialized into 1 pickled dict when we store it again
         self.read()
         self.data[key] = value
 
@@ -48,7 +49,7 @@ class Sessions(model.DbManager):
         self.clear_old()
 
         data = self.select(id=self.id)
-        if data is None:
+        if len(data) == 0:
             # no existing session data
             self.data = {}
             return self.data
@@ -60,19 +61,20 @@ class Sessions(model.DbManager):
             return self.data
 
         self.data = pickle.loads(data[0]['data'])
+        return self.data
 
     def write(self):
         """ Store all session data """
         if self.data:
-            self.store(
-                id=self.id,
-                data=pickle.dumps(self.data),
-                touched=self.timestamp(),
-            )
+            self.store({
+                'id': self.id,
+                'data': pickle.dumps(self.data),
+                'touched': self.timestamp(),
+            })
 
     def extend(self):
         """ Set new date for session data, prolonging its expiration time """
-        cursor = self.__connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(
             "UPDATE %s " % self.table +
             "SET touched = %s " +
@@ -91,7 +93,7 @@ class Sessions(model.DbManager):
         if randint(0, 999) == 0:
             return
 
-        cursor = self.__connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute(
             "DELETE FROM %s " % self.table +
             "WHERE touched < %s",
@@ -103,9 +105,8 @@ class Sessions(model.DbManager):
         :param days_ago: int
         :return: string
         """
-        import datetime
-        now = datetime.datetime.now()
-        expired = now - datetime.timedelta(days=days_ago)
+        now = datetime.now()
+        expired = now - timedelta(days=days_ago)
         return expired.strftime("%Y-%m-%d %H:%M:%S")
 
     def generate(self):
