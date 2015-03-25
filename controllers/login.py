@@ -46,9 +46,9 @@ class Controller(fallback.Controller):
         user = github.get_user()
 
         # delete existing repos & re-save all of them
-        repos = [self.get_repo(repo, user) for repo in user.get_repos()]
+        repos = [self.get_repo(repo) for repo in user.get_repos()]
         for org in user.get_orgs():
-            repos.extend([self.get_repo(repo, user) for repo in org.get_repos()])
+            repos.extend([self.get_repo(repo) for repo in org.get_repos()])
 
         # I only want to store this as session data - there's no point in storing it
         # in a proper `user` table since:
@@ -67,10 +67,9 @@ class Controller(fallback.Controller):
             'name': user.name,
         }
 
-    def get_repo(self, repo, user):
+    def get_repo(self, repo):
         return {
             'id': repo.id,
-            'user_id': user.id,
             'project': repo.full_name,
             'url': repo.clone_url,
         }
