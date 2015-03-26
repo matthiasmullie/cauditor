@@ -13,7 +13,8 @@ class Controller(object):
         # init session (but don't load session data yet)
         import models
         session_id = self.cookie('session_id')
-        self.session_data = models.sessions.Sessions(session_id)
+        max_age = self.config()['session']['max_age']
+        self.session_data = models.sessions.Sessions(session_id, max_age)
 
     def match(self):
         """ matches anything; 404 is fallback for every request """
@@ -48,10 +49,12 @@ class Controller(object):
         args = self.args()
         return template.render(args)
 
-    def cookie(self, key, value=None):
+    def cookie(self, key, value=None, expire=None):
         if value is not None:
             # new cookie data to be stored
             self.cookie_set[key] = value
+            if expire is not None:
+                self.cookie_set[key]['max-age'] = expire
 
         # check if value was written to cookie in this request
         if key in self.cookie_set:
@@ -67,6 +70,7 @@ class Controller(object):
         if value is not None:
             self.session_data.set(key, value)
             # make sure session_id is stored!
-            self.cookie('session_id', self.session_data.id)
+            max_age = self.config()['session']['max_age']
+            self.cookie('session_id', self.session_data.id, max_age)
 
         return self.session_data.get(key)

@@ -52,3 +52,7 @@ graphs:
         name: "Instability"
         file: "/assets/js/visualizations/treemap/Instability.js"
         class: "Codegraphs.Visualization.Treemap.Instability"
+
+session:
+    # 30 days (30 * 24 * 60 * 60 seconds)
+    max_age: 2592000

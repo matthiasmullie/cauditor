@@ -6,11 +6,20 @@ import json
 
 class Sessions(model.DbManager):
     """ (Ab)use model for session management """
-    def __init__(self, session_id=None):
+    def __init__(self, session_id=None, max_age=None):
         super(Sessions, self).__init__()
         self.table = 'sessions'
 
         self.id = session_id or self.generate()
+
+        # session expiration is actually handled by the cookie (which will
+        # be killed after its max_age), but since we're storing the data
+        # on the server, we want to discard it at some point if it's no
+        # longer valid
+        # if no max_age was specified, default to storing date for 30 days
+        # without max_age, the cookie will likely have expired by then
+        # (when browser closes) and data is safe to be deleted
+        self.max_age = max_age or 30 * 60 * 60 * 24
 
         # don't load data just yet, wait until we actually need it
         # ... or initialize with empty dict, if there can't be any
@@ -55,7 +64,7 @@ class Sessions(model.DbManager):
             self.data = {}
             return self.data
 
-        if data[0]['touched'] < self.timestamp(days_ago=30):
+        if data[0]['touched'] < self.timestamp(seconds_ago=self.max_age):
             # check if session data hasn't yet expired
             self.data = {}
             return self.data
@@ -96,16 +105,16 @@ class Sessions(model.DbManager):
         cursor.execute(
             "DELETE FROM %s " % self.table +
             "WHERE touched < %s",
-            [self.timestamp(days_ago=30)]
+            [self.timestamp(seconds_ago=self.max_age)]
         )
 
-    def timestamp(self, days_ago=0):
+    def timestamp(self, seconds_ago=0):
         """ Returns a timestamp of a certain amount of days ago
         :param days_ago: int
         :return: string
         """
         now = datetime.now()
-        return now - timedelta(days=days_ago)
+        return now - timedelta(seconds=seconds_ago)
 
     def generate(self):
         """Generates a session id
