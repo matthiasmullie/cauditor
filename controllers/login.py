@@ -26,8 +26,8 @@ class Controller(fallback.Controller):
             token = self.get_auth_token(self.code)
             self.import_from_github(token)
 
-            # success! set cookie & redirect
-            return [self.cookie_set, "Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
+            # success! redirect
+            return ["Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
         except Exception:
             self.fail = True
             return super(Controller, self).headers()

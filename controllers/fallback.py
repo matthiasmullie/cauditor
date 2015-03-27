@@ -34,13 +34,7 @@ class Controller(object):
         return args
 
     def headers(self):
-        headers = ["Content-Type: text/html"]
-
-        # add any cookies that have to be stored
-        if self.cookie_set:
-            headers.insert(0, self.cookie_set)
-
-        return headers
+        return ["Content-Type: text/html"]
 
     def render(self):
         from jinja2 import Environment, FileSystemLoader
