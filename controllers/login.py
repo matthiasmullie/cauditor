@@ -65,6 +65,7 @@ class Controller(fallback.Controller):
             'id': user.id,
             'email': user.email,
             'name': user.name,
+            'avatar': user.avatar_url,
         }
 
     def get_repo(self, repo):
