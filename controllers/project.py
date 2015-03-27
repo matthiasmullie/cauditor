@@ -12,7 +12,8 @@ class Controller(fallback.Controller):
 
         self.template = "project.html"
         self.project = self.load_project(match.group(1))
-        self.commit = self.load_commit(match.group(1), match.group(3))
+        self.commit = self.load_commit(match.group(1), match.group(3)) if match.group(3) is not None else {}
+        self.commits = self.load_commits(match.group(1))
 
     def match(self):
         """ matches /vendor/repo and /vendor/repo/commit """
@@ -24,6 +25,7 @@ class Controller(fallback.Controller):
         args.update({
             'project': self.project,
             'commit': self.commit,
+            'commits': self.commits,
         })
         return args
 
@@ -35,12 +37,18 @@ class Controller(fallback.Controller):
 
         return data[0]
 
-    def load_commit(self, project, hash=None):
+    def load_commit(self, project, hash):
         model = models.commits.Commits()
+        data = model.select(project=project, hash=hash)
+        if len(data) == 0:
+            raise Exception("Commit not found")
 
-        if hash is None:
-            data = model.select(project=project, options=['ORDER BY date DESC', "LIMIT 1"])
-        else:
-            data = model.select(project=project, hash=hash)
+        return data[0]
 
-        return data[0] if len(data) > 0 else None
+    def load_commits(self, project):
+        model = models.commits.Commits()
+        data = model.select(project=project, options=['ORDER BY date DESC', "LIMIT 25"])
+        if len(data) == 0:
+            raise Exception("No commits")
+
+        return data

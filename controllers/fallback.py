@@ -28,6 +28,7 @@ class Controller(object):
     def args(self):
         args = self.config()
         args.update({
+            'template': self.template,
             'user': self.session('user') or {},
             'repos': self.session('repos') or [],
         })
@@ -39,7 +40,7 @@ class Controller(object):
     def render(self):
         from jinja2 import Environment, FileSystemLoader
         env = Environment(loader=FileSystemLoader("templates"))
-        template = env.get_template(self.template)
+        template = env.get_template("codegraphs.html")
         args = self.args()
         return template.render(args)
 

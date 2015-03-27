@@ -1,30 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
+{% if not user %}
+    @todo style me!
+    <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Take me to GitHub</a>
+{% else %}
+    @todo style me!
+    Hi there, {{ user.name }}!
 
-    <title>Codegraphs: {% if user %}{{ user.name }}{% else %}login{% endif %}</title>
-
-    <link href="/assets/css/styles.css" rel="stylesheet">
-</head>
-<body>
-    {% if user %}
-        Hi there, {{ user.name }}!
-
-        Repos:
-        <ul>
-            {% for repo in repos %}
-                <li>
-                    {% if repo.project in user_projects|map(attribute='name') %}
-                        <a href="/{{ repo.project }}">{{ repo.project }}</a>
-                    {% else %}
-                        {{ repo.project }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Take me to GitHub</a>
-    {% endif %}
-</body>
-</html>
+    Repos:
+    <ul>
+        {% for repo in repos %}
+            <li>
+                {% if repo.project in user_projects|map(attribute='name') %}
+                    <a href="/{{ repo.project }}">{{ repo.project }}</a>
+                {% else %}
+                    {{ repo.project }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

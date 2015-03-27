@@ -1,43 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
+<script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
+<script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
+<script src="/assets/js/Codegraphs.js"></script>
+<script src="/assets/js/visualizations/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Class.js"></script>
+<script src="/assets/js/visualizations/treemap/Method.js"></script>
+{% for graph in graphs %}
+<script src="{{ graph.file }}"></script>
+{% endfor %}
 
-    <title>Codegraphs: {{ project.name }}</title>
 
-    <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
-    <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
-    <script src="/assets/js/Codegraphs.js"></script>
-    <script src="/assets/js/visualizations/Abstract.js"></script>
-    <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
-    <script src="/assets/js/visualizations/treemap/Class.js"></script>
-    <script src="/assets/js/visualizations/treemap/Method.js"></script>
+{% if commits %}
+    {% if not commit %}{% set commit = commits[0] %}{% endif %}
+
     {% for graph in graphs %}
-    <script src="{{ graph.file }}"></script>
+    <section id="{{ graph.code }}" class="column small">
+        <h1>{{ graph.name }}</h1>
+        <a href="/{{ project.name }}/{{ graph.code }}">
+            <span class="graph"></span>
+        </a>
+    </section>
     {% endfor %}
 
-    <link href="/assets/css/styles.css" rel="stylesheet">
-</head>
-<body>
-    {% if commit %}
+    <script>
+        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
+
         {% for graph in graphs %}
-        <section id="{{ graph.code }}" class="column small">
-            <h1>{{ graph.name }}</h1>
-            <a href="/{{ project.name }}/{{ graph.code }}">
-                <span class="graph"></span>
-            </a>
-        </section>
+        graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
         {% endfor %}
-
-        <script>
-            var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
-
-            {% for graph in graphs %}
-            graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
-            {% endfor %}
-        </script>
-    {% else %}
-        <p>Couldn't find any commit for {{ project.name }}. If it was recently added, it may be importing.</p>
-    {% endif %}
-</body>
-</html>
+    </script>
+{% else %}
+    <p>Couldn't find any commits for {{ project.name }}. If it was recently added, it may be importing.</p>
+{% endif %}

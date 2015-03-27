@@ -3,6 +3,33 @@ body {
     margin: 0;
 }
 
+#header {
+    width: 100%;
+}
+
+.navbar-nav > li > a.avatar {
+    height: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.navbar img {
+    height: 100%;
+    padding-right: 15px;
+}
+
+.dimmed {
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    -webkit-opacity: 0.5;
+}
+
+
+.dropdown-menu>li>a.active {
+    font-weight: bold;
+}
+
+/* @todo replace all of this code below */
 .column.small {
     display: inline-block;
     width: calc(33% - 3px);

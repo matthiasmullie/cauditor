@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Codegraphs @todo configurable title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/codegraphs.css">
+
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                {# hamburger menu for collapsed mobile nav #}
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="/">Codegraphs</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {% if project %}
+                        {% if not repos %}
+                            <li><a>{{ project.name }}</a></li>
+                        {% else %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ project.name }} <span class="caret"></span></a>
+
+                                {# show list of user's own repos #}
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for repo in repos %}
+                                        <li><a href="/{{ repo.project }}" {% if repo.project == project.name %}class="active"{% endif %}>{{ repo.project }}</a></li>
+                                        {% if not loop.last %}<li class="divider"></li>{% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+
+                        <li class="dropdown">
+                            {% if not commit %}
+                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">HEAD <span class="caret"></span></a>
+                            {% else %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ commit.hash }} <span class="caret"></span></a>
+                            {% endif %}
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/{{ project.name }}" {% if commit and commit.hash == commits[0].hash %}class="active"{% endif %}>HEAD</a></li>
+                                {% if commits|length > 1 %}<li class="divider"></li>{% endif %}
+
+                                {% for c in commits %}
+                                    {# skip first commit, we're already showing it as HEAD #}
+                                    {% if not loop.first %}
+                                        <li><a href="/{{ project.name }}/{{ c.hash }}" {% if commit and commit.hash == c.hash %}class="active"{% endif %}>{{ c.hash }}</a></li>
+                                        {% if not loop.last %}<li class="divider"></li>{% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            {% if not graph %}
+                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Overview <span class="caret"></span></a>
+                            {% else %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ graph.name }} <span class="caret"></span></a>
+                            {% endif %}
+
+                            <ul class="dropdown-menu" role="menu">
+                                {% if not commit %}
+                                    <li><a href="/{{ project.name }}" {% if not graph %}class="active"{% endif %}>Overview</a></li>
+                                {% else %}
+                                    <li><a href="/{{ project.name }}/{{ commit.hash }}" {% if not graph %}class="active"{% endif %}>Overview</a></li>
+                                {% endif %}
+                                <li class="divider"></li>
+
+                                {% for g in graphs %}
+                                    {% if not commit %}
+                                        <li><a href="/{{ project.name }}/{{ g.code }}" {% if graph and graph.code == g.code %}class="active"{% endif %}>{{ g.name }}</a></li>
+                                    {% else %}
+                                        <li><a href="/{{ project.name }}/{{ commit.hash }}/{{ g.code }}" {% if graph and graph.code == g.code %}class="active"{% endif %}>{{ g.name }}</a></li>
+                                    {% endif %}
+                                    {% if not loop.last %}<li class="divider"></li>{% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not user %}
+                        <li>
+                            <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="avatar">
+                                <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png"> Sign in
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="avatar dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <img src="{{ user.avatar }}" /> {{ user.name }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Repos</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Stats</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Settings</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="content" class="container">
+        {% include template %}
+    </div>
+</body>
+</html>
