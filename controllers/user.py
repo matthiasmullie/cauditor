@@ -23,7 +23,8 @@ class Controller(fallback.Controller):
 
         # get all of this user's active projects
         model = models.projects.Projects()
-        projects = model.select(name=[repo['project'] for repo in args['repos']])
+        repos = [repo['project'] for repo in args['repos']]
+        projects = model.select(name=repos) if repos else []
 
         args.update({
             'user_projects': projects,
