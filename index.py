@@ -22,12 +22,11 @@ for name in controllers.__all__:
 # pick the first route (there'll always be at least 1, the fallback (404))
 controller = sorted(matched_controllers, key=matched_controllers.get, reverse=True)[0]
 
-# add any cookies that have to be stored
+# headers
+headers = controller.headers()
 if controller.cookie_set:
     print(controller.cookie_set)
-
-# headers
-for header in controller.headers():
+for header in headers:
     print(header)
 
 print()
