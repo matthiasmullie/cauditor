@@ -1,10 +1,11 @@
 body {
     padding: 0;
     margin: 0;
+    background-color: #f8f8f8;
 }
 
-#header {
-    width: 100%;
+.navbar {
+    background-color: #fff;
 }
 
 .navbar-nav > li > a.avatar {
@@ -24,29 +25,26 @@ body {
     -webkit-opacity: 0.5;
 }
 
-
 .dropdown-menu>li>a.active {
     font-weight: bold;
 }
 
-/* @todo replace all of this code below */
-.column.small {
-    display: inline-block;
-    width: calc(33% - 3px);
-    height: 300px;
-    padding: 3px;
-    box-sizing: border-box;
-}
-
-h1 {
-    font-family: "Helvetica Neue", "HelveticaNeue", "Helvetica", "Arial", "sans-serif";
-    font-size: 20px;
-    margin: 10px 0 5px;
-    padding: 0;
-}
-
 .graph {
-    display: block;
+    display: inline-block;
+    min-height: 400px;
+}
+
+
+/* @todo replace all of this code below */
+h1 {
+    font-family: 'Lato';
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 100;
+}
+h1::first-letter {
+    font-size: 17px;
+    font-weight: 900;
 }
 
 /*

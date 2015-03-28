@@ -13,14 +13,16 @@
 {% if commits %}
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
 
-    {% for graph in graphs %}
-    <section id="{{ graph.code }}" class="column small">
-        <h1>{{ graph.name }}</h1>
-        <a href="/{{ project.name }}/{{ graph.code }}">
-            <span class="graph"></span>
-        </a>
-    </section>
-    {% endfor %}
+    <div class="row">
+        {% for graph in graphs %}
+            <div id="{{ graph.code }}" class="col-md-4">
+                <h1>{{ graph.name }}</h1>
+                <a href="/{{ project.name }}/{{ graph.code }}">
+                    <span class="graph"></span>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 
     <script>
         var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json' );
