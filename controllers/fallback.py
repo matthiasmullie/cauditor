@@ -35,7 +35,7 @@ class Controller(object):
         return args
 
     def headers(self):
-        return ["Content-Type: text/html"]
+        return ["Content-Type: text/html; charset=UTF-8"]
 
     def render(self):
         from jinja2 import Environment, FileSystemLoader
