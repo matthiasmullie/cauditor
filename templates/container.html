@@ -54,7 +54,7 @@
                             {% if not commit %}
                                 <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> HEAD <span class="caret"></span></a>
                             {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> {{ commit.hash }} <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> {{ commit.hash|truncate(7, True, "") }} <span class="caret"></span></a>
                             {% endif %}
 
                             <ul class="dropdown-menu" role="menu">
@@ -64,7 +64,7 @@
                                 {% for c in commits %}
                                     {# skip first commit, we're already showing it as HEAD #}
                                     {% if not loop.first %}
-                                        <li><a href="/{{ project.name }}/{{ c.hash }}" {% if commit and commit.hash == c.hash %}class="active"{% endif %}>{{ c.hash }}</a></li>
+                                        <li><a href="/{{ project.name }}/{{ c.hash }}" {% if commit and commit.hash == c.hash %}class="active"{% endif %}>{{ c.hash|truncate(7, True, "") }}</a></li>
                                         {% if not loop.last %}<li class="divider"></li>{% endif %}
                                     {% endif %}
                                 {% endfor %}
