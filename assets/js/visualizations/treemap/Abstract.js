@@ -1,11 +1,11 @@
 // visualizations/Abstract.js must be loaded before this file
 
-Codegraphs.Visualization.Treemap = Codegraphs.Visualization.Treemap || {};
+Codecharts.Visualization.Treemap = Codecharts.Visualization.Treemap || {};
 
-Codegraphs.Visualization.Treemap.Abstract = function() {
-    Codegraphs.Visualization.Abstract.call(this, arguments);
+Codecharts.Visualization.Treemap.Abstract = function() {
+    Codecharts.Visualization.Abstract.call(this, arguments);
 };
-Codegraphs.Visualization.Treemap.Abstract.prototype = Object.create(Codegraphs.Visualization.Abstract.prototype);
+Codecharts.Visualization.Treemap.Abstract.prototype = Object.create(Codecharts.Visualization.Abstract.prototype);
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
@@ -13,7 +13,7 @@ Codegraphs.Visualization.Treemap.Abstract.prototype = Object.create(Codegraphs.V
  * @param {object} data
  * @return {object}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.data = function(data) {
+Codecharts.Visualization.Treemap.Abstract.prototype.data = function(data) {
     return data;
 };
 
@@ -22,7 +22,7 @@ Codegraphs.Visualization.Treemap.Abstract.prototype.data = function(data) {
  *
  * @return {d3plus.viz}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.visualization = function() {
+Codecharts.Visualization.Treemap.Abstract.prototype.visualization = function() {
     return d3plus.viz()
         .type('tree_map')
         // nesting package > class
@@ -72,25 +72,25 @@ Codegraphs.Visualization.Treemap.Abstract.prototype.visualization = function() {
  *
  * @type {string[]}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.id = ['name'];
+Codecharts.Visualization.Treemap.Abstract.prototype.id = ['name'];
 
 /**
  * Column to base blocks' size on (d3plus.viz().size())
  *
  * @type {string[]}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.size = 'loc';
+Codecharts.Visualization.Treemap.Abstract.prototype.size = 'loc';
 
 /**
  * Column to color blocks by, and green-yellow-red thresholds.
  *
  * @type {{string: number[]}}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.color = ['loc', [0, 10, 100]];
+Codecharts.Visualization.Treemap.Abstract.prototype.color = ['loc', [0, 10, 100]];
 
 /**
  * Array of columns to include in tooltip
  *
  * @type {string[]}
  */
-Codegraphs.Visualization.Treemap.Abstract.prototype.tooltip = [];
+Codecharts.Visualization.Treemap.Abstract.prototype.tooltip = [];

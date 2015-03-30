@@ -1,9 +1,9 @@
 // visualizations/treemap/Abstract.js must be loaded before this file
 
-Codegraphs.Visualization.Treemap.Method = function() {
-    Codegraphs.Visualization.Treemap.Abstract.call(this, arguments);
+Codecharts.Visualization.Treemap.Method = function() {
+    Codecharts.Visualization.Treemap.Abstract.call(this, arguments);
 };
-Codegraphs.Visualization.Treemap.Method.prototype = Object.create(Codegraphs.Visualization.Treemap.Abstract.prototype);
+Codecharts.Visualization.Treemap.Method.prototype = Object.create(Codecharts.Visualization.Treemap.Abstract.prototype);
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
@@ -11,7 +11,7 @@ Codegraphs.Visualization.Treemap.Method.prototype = Object.create(Codegraphs.Vis
  * @param {object} data
  * @return {object}
  */
-Codegraphs.Visualization.Treemap.Method.prototype.data = function(data) {
+Codecharts.Visualization.Treemap.Method.prototype.data = function(data) {
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // if there's a children node, we're not on method-level
         if (d.children !== undefined) {
@@ -30,5 +30,5 @@ Codegraphs.Visualization.Treemap.Method.prototype.data = function(data) {
     });
 };
 
-Codegraphs.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];
-Codegraphs.Visualization.Treemap.Method.prototype.tooltip = ['loc', 'ccn', 'npath'];
+Codecharts.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];
+Codecharts.Visualization.Treemap.Method.prototype.tooltip = ['loc', 'ccn', 'npath'];

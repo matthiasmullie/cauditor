@@ -1,8 +1,8 @@
 // main.js must be loaded before this file
 
-Codegraphs.Visualization = Codegraphs.Visualization || {};
+Codecharts.Visualization = Codecharts.Visualization || {};
 
-Codegraphs.Visualization.Abstract = function() {
+Codecharts.Visualization.Abstract = function() {
     // constructor
 };
 
@@ -12,7 +12,7 @@ Codegraphs.Visualization.Abstract = function() {
  * @param {object} data
  * @return {object}
  */
-Codegraphs.Visualization.Abstract.prototype.nodes = function(data) {
+Codecharts.Visualization.Abstract.prototype.nodes = function(data) {
     return data;
 };
 
@@ -21,6 +21,6 @@ Codegraphs.Visualization.Abstract.prototype.nodes = function(data) {
  *
  * @return {d3plus.viz}
  */
-Codegraphs.Visualization.Abstract.prototype.visualization = function() {
+Codecharts.Visualization.Abstract.prototype.visualization = function() {
     return d3plus.viz();
 };

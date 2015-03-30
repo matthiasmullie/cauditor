@@ -36,24 +36,15 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato';
+    font-family: Lato, Helvetica, arial, sans-serif;
     text-transform: uppercase;
-    font-weight: 100;
-}
-h1::first-letter, h2::first-letter, h3::first-letter, h4::first-letter, h5::first-letter, h6::first-letter {
-    font-weight: 900;
+    font-weight: 300;
 }
 h1 {
     font-size: 18px;
 }
-h1::first-letter {
-    font-size: 20px;
-}
 h2 {
     font-size: 15px;
-}
-h2::first-letter {
-    font-size: 17px;
 }
 
 .graph {

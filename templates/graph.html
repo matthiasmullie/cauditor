@@ -1,6 +1,6 @@
 <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
 <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
-<script src="/assets/js/Codegraphs.js"></script>
+<script src="/assets/js/Codecharts.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Class.js"></script>
@@ -14,7 +14,7 @@
     <div class="graph"></div>
 
     <script>
-        var graph = new Codegraphs('/data/{{ project.name }}/{{ commit.hash }}.json');
+        var graph = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json');
         graph.draw('.graph', new {{ graph.class }}());
     </script>
 {% else %}
