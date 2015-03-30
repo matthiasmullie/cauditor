@@ -58,7 +58,7 @@
                             {% endif %}
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/{{ project.name }}" {% if commit and commit.hash == commits[0].hash %}class="active"{% endif %}>HEAD</a></li>
+                                <li><a href="/{{ project.name }}" {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}>HEAD</a></li>
                                 {% if commits|length > 1 %}<li class="divider"></li>{% endif %}
 
                                 {% for c in commits %}
