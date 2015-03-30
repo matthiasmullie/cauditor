@@ -35,6 +35,11 @@ class Controller(object):
         return args
 
     def headers(self):
+        # all controllers extend from this one, so I'm going to special-case
+        # the 404 header
+        if self.__class__.__module__ == "controllers.fallback":
+            return ["Status: 404 Not Found", "Content-Type: text/html; charset=UTF-8"]
+
         return ["Content-Type: text/html; charset=UTF-8"]
 
     def render(self):
