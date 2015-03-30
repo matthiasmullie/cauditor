@@ -45,7 +45,7 @@ class Controller(object):
     def render(self):
         from jinja2 import Environment, FileSystemLoader
         env = Environment(loader=FileSystemLoader("templates"))
-        template = env.get_template("codecharts.html")
+        template = env.get_template("container.html")
         args = self.args()
         return template.render(args)
 
