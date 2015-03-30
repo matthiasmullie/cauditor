@@ -47,8 +47,4 @@ class Controller(fallback.Controller):
 
     def load_commits(self, project):
         model = models.commits.Commits()
-        data = model.select(project=project, options=['ORDER BY date DESC', "LIMIT 25"])
-        if len(data) == 0:
-            raise Exception("No commits")
-
-        return data
+        return model.select(project=project, options=['ORDER BY date DESC', "LIMIT 25"])
