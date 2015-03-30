@@ -2,7 +2,7 @@ from controllers import fallback
 
 
 class Controller(fallback.Controller):
-    fail = False
+    fail = True
 
     def __init__(self, uri):
         super(Controller, self).__init__(uri)
@@ -25,12 +25,13 @@ class Controller(fallback.Controller):
         try:
             token = self.get_auth_token(self.code)
             self.import_from_github(token)
-
-            # success! redirect
-            return ["Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
+            self.session('github_token', token)
         except Exception:
-            self.fail = True
             return super(Controller, self).headers()
+
+        # success! redirect
+        self.fail = False
+        return ["Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
 
     def render(self):
         if self.fail:
@@ -71,8 +72,9 @@ class Controller(fallback.Controller):
     def get_repo(self, repo):
         return {
             'id': repo.id,
-            'project': repo.full_name,
-            'url': repo.clone_url,
+            'name': repo.full_name,
+            'url': repo.url,
+            'private': repo.private,
         }
 
     def get_auth_token(self, code):
