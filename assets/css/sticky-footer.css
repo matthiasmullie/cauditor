@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+}
+
+.content {
+    /* navbar height, border & margin-bottom */
+    padding-top: calc(50px + 2px + 20px);
+
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -25px;
+}
+
+.footer, .push {
+    height: 25px;
+}

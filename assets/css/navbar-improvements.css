@@ -1,0 +1,37 @@
+.navbar {
+    box-shadow: 0 1px 3px #e7e7e7;
+    background-color: #fff;
+}
+
+/* Make fonts larger */
+.navbar-nav, .navbar-nav .dropdown-menu > li > a {
+    font-weight: 300;
+    font-size: 16px;
+}
+.navbar-nav .dropdown-menu > li > a {
+    font-size: 14px;
+}
+
+/* Active links in dropdown weren't discernible */
+.dropdown-menu > li > a.active {
+    font-weight: bold;
+}
+
+/* Navbar links may be considered "default" and shouldn't appear too prominent */
+.dimmed {
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    -webkit-opacity: 0.5;
+}
+
+/* User avatar should be full navbar height */
+.navbar-nav > li > a.avatar {
+    height: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.navbar img {
+    height: 100%;
+    padding-right: 15px;
+}

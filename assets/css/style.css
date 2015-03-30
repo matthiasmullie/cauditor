@@ -1,98 +1,11 @@
+@import "sticky-footer.css";
+@import "logo.css";
+@import "chart.css";
+@import "navbar-improvements.css";
+@import "font.css";
+
 html, body {
     padding: 0;
     margin: 0;
     background-color: #f8f8f8;
-    height: 100%;
-}
-
-.navbar {
-    box-shadow: 0 1px 3px #e7e7e7;
-    background-color: #fff;
-}
-
-.navbar-nav, .navbar-nav .dropdown-menu > li > a, .navbar-brand {
-    font-family: Lato, Helvetica, arial, sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-}
-.navbar-brand {
-    font-size: 18px;
-    text-transform: uppercase;
-}
-
-a.navbar-brand {
-    position: relative;
-    text-indent: -9999px;
-}
-a.navbar-brand:not(:hover) {
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-}
-a.navbar-brand::before {
-    content: "";
-    width: 100px;
-    height: 100px;
-
-    position: absolute;
-    top: -6px;
-    left: 15px;
-
-    background: url(http://www.mullie.eu/public/assets/images/logo.png) no-repeat;
-    background-size: 75px;
-}
-
-.navbar-nav .dropdown-menu > li > a {
-    font-size: 14px;
-}
-.dropdown-menu > li > a.active {
-    font-weight: bold;
-}
-
-.navbar-nav > li > a.avatar {
-    height: 50px;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.navbar img {
-    height: 100%;
-    padding-right: 15px;
-}
-
-#content {
-    /* navbar height, border & margin-bottom */
-    padding-top: calc(50px + 2px + 20px);
-    height: calc(100% - 10px);
-}
-
-.dimmed {
-    opacity: 0.5;
-    -moz-opacity: 0.5;
-    -webkit-opacity: 0.5;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: Lato, Helvetica, arial, sans-serif;
-    text-transform: uppercase;
-    font-weight: 300;
-}
-h1 {
-    font-size: 18px;
-}
-h2 {
-    font-size: 15px;
-}
-
-.graph {
-    display: inline-block;
-    min-height: 400px;
-    height: 100%;
-    width: 100%;
-}
-
-strong {
-    font-weight: 900;
 }
