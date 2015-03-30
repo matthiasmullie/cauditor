@@ -16,7 +16,7 @@
     <div class="row">
         {% for graph in graphs %}
             <div id="{{ graph.code }}" class="col-md-4">
-                <h1>{{ graph.name }}</h1>
+                <h2>{{ graph.name }}</h2>
                 <a href="/{{ project.name }}/{{ graph.code }}">
                     <span class="graph"></span>
                 </a>
