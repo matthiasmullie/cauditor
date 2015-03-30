@@ -9,13 +9,17 @@ html, body {
     background-color: #fff;
 }
 
-.navbar-nav, .navbar-nav .dropdown-menu > li > a {
+.navbar-nav, .navbar-nav .dropdown-menu > li > a, .navbar-brand {
     font-family: Lato, Helvetica, arial, sans-serif;
     font-weight: 300;
+    font-size: 16px;
+}
+.navbar-brand {
     font-size: 18px;
+    text-transform: uppercase;
 }
 .navbar-nav .dropdown-menu > li > a {
-    font-size: 16px;
+    font-size: 14px;
 }
 .dropdown-menu > li > a.active {
     font-weight: bold;
@@ -23,8 +27,7 @@ html, body {
 
 .navbar-nav > li > a.avatar {
     height: 50px;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
 }
 
 .navbar img {
@@ -60,4 +63,8 @@ h2 {
     min-height: 400px;
     height: 100%;
     width: 100%;
+}
+
+strong {
+    font-weight: 900;
 }
