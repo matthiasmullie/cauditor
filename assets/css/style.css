@@ -19,6 +19,31 @@ html, body {
     font-size: 18px;
     text-transform: uppercase;
 }
+
+a.navbar-brand {
+    position: relative;
+    text-indent: -9999px;
+}
+a.navbar-brand:not(:hover) {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+a.navbar-brand::before {
+    content: "";
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top: -6px;
+    left: 15px;
+
+    background: url(http://www.mullie.eu/public/assets/images/logo.png) no-repeat;
+    background-size: 75px;
+}
+
 .navbar-nav .dropdown-menu > li > a {
     font-size: 14px;
 }
