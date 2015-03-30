@@ -1,7 +1,8 @@
-body {
+html, body {
     padding: 0;
     margin: 0;
     background-color: #f8f8f8;
+    height: 100%;
 }
 
 .navbar {
@@ -19,6 +20,11 @@ body {
     padding-right: 15px;
 }
 
+#content {
+    /* navbar height, border & margin-bottom, and then some more */
+    height: calc(100% - 50px - 2px - 20px - 15px);
+}
+
 .dimmed {
     opacity: 0.5;
     -moz-opacity: 0.5;
@@ -29,13 +35,6 @@ body {
     font-weight: bold;
 }
 
-.graph {
-    display: inline-block;
-    min-height: 400px;
-}
-
-
-/* @todo replace all of this code below */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lato';
     text-transform: uppercase;
@@ -57,17 +56,9 @@ h2::first-letter {
     font-size: 17px;
 }
 
-/*
- * Add an invisible overlay to the small graphs; they're merely meant as a link
- * to the full version; I don't want them to display the informational tooltips.
- */
-a span.graph:after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+.graph {
+    display: inline-block;
+    min-height: 400px;
     height: 100%;
-    z-index: 1;
+    width: 100%;
 }
