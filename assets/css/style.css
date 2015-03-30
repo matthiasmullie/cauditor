@@ -9,6 +9,18 @@ html, body {
     background-color: #fff;
 }
 
+.navbar-nav, .navbar-nav .dropdown-menu > li > a {
+    font-family: Lato, Helvetica, arial, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+}
+.navbar-nav .dropdown-menu > li > a {
+    font-size: 16px;
+}
+.dropdown-menu > li > a.active {
+    font-weight: bold;
+}
+
 .navbar-nav > li > a.avatar {
     height: 50px;
     padding-top: 0;
@@ -29,10 +41,6 @@ html, body {
     opacity: 0.5;
     -moz-opacity: 0.5;
     -webkit-opacity: 0.5;
-}
-
-.dropdown-menu>li>a.active {
-    font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
