@@ -5,17 +5,17 @@
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Class.js"></script>
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
-<script src="{{ graph.file }}"></script>
+<script src="{{ chart.file }}"></script>
 
 
 {% if commits %}
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
 
-    <div class="graph"></div>
+    <div class="chart"></div>
 
     <script>
-        var graph = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json');
-        graph.draw('.graph', new {{ graph.class }}());
+        var chart = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json');
+        chart.draw('.chart', new {{ chart.class }}());
     </script>
 {% else %}
     <div class="container">

@@ -11,7 +11,7 @@ github:
     # https://developer.github.com/v3/oauth/#scopes
     scopes: user:email,repo,write:repo_hook
 
-graphs:
+charts:
     -
         code: "ccn"
         name: "Cyclomatic Complexity"

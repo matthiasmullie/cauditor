@@ -47,21 +47,21 @@ Whatever CSS is needed...
 
 ### assets/js/*
 
-Graphs will be drawn using [d3.js](http://d3js.org/) and [d3plus.js](http://d3plus.org/), which are in data/js/vendor/*
+Charts will be drawn using [d3.js](http://d3js.org/) and [d3plus.js](http://d3plus.org/), which are in data/js/vendor/*
 
-data/js/Codecharts.js is an easy entrypoint to draw the graphs.
+data/js/Codecharts.js is an easy entrypoint to draw the charts.
 `Codecharts` takes the path to a JSON data file in the constructor.
-`.draw` takes a selector (element to draw the graph to) and a visualization object.
+`.draw` takes a selector (element to draw the chart to) and a visualization object.
 
-All of the graph types have their own constructors:
+All of the chart types have their own constructors:
 data/js/visualizations/Abstract.js is the abstract class that all vizualizations should inherit from.
 
-Currently, the only graph type is a treemap, so all graphs are in data/js/visualizations/treemap/*, where
-Abstract.js defines the shared treemap-type code among all these type of graphs.
-Method.js adds some additional info for the graphs that have data on method-level.
-Class.js adds some additional info for the graphs that have data on class-level.
+Currently, the only chart type is a treemap, so all charts are in data/js/visualizations/treemap/*, where
+Abstract.js defines the shared treemap-type code among all these type of charts.
+Method.js adds some additional info for the charts that have data on method-level.
+Class.js adds some additional info for the charts that have data on class-level.
 
-All other files contain specific details for that specific graph. This will be very little, since most of the code will
+All other files contain specific details for that specific chart. This will be very little, since most of the code will
 already be in (Method|Class).js, which they extend from, or Abstract.js, or that other Abstract.js.
 
 ## data/*

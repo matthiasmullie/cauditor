@@ -5,8 +5,8 @@
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Class.js"></script>
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
-{% for graph in graphs %}
-<script src="{{ graph.file }}"></script>
+{% for chart in charts %}
+<script src="{{ chart.file }}"></script>
 {% endfor %}
 
 
@@ -14,21 +14,21 @@
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
 
     <div class="row">
-        {% for graph in graphs %}
-            <div id="{{ graph.code }}" class="col-md-4">
-                <h2><strong>{{ graph.name }}</strong> chart</h2>
-                <a href="/{{ project.name }}/{{ graph.code }}">
-                    <span class="graph"></span>
+        {% for chart in charts %}
+            <div id="{{ chart.code }}" class="col-md-4">
+                <h2><strong>{{ chart.name }}</strong> chart</h2>
+                <a href="/{{ project.name }}/{{ chart.code }}">
+                    <span class="chart"></span>
                 </a>
             </div>
         {% endfor %}
     </div>
 
     <script>
-        var graph = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json' );
+        var chart = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json' );
 
-        {% for graph in graphs %}
-        graph.draw('#{{ graph.code }} .graph', new {{ graph.class }}());
+        {% for chart in charts %}
+        chart.draw('#{{ chart.code }} .chart', new {{ chart.class }}());
         {% endfor %}
     </script>
 {% else %}
