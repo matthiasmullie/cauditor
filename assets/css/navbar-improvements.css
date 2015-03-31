@@ -1,6 +1,10 @@
-.navbar {
+.navbar, .footer {
     box-shadow: 0 1px 3px #e7e7e7;
     background-color: #fff;
+}
+
+.footer {
+    box-shadow: 0 -1px 3px #e7e7e7;
 }
 
 /* Make fonts larger */
