@@ -16,13 +16,16 @@ The controller returning the highest value for `.match()` will be rendered.
 
 Controllers for all web requests.
 
-__init__ will receive `os.environ["REQUEST_URI"]` and either correctly instantiate, or throw an exception if it's not
+`__init__` will receive `os.environ["REQUEST_URI"]` and either correctly instantiate, or throw an exception if it's not
 suited to handle this request. Exception should be thrown as early as possible (if the regex doesn't even match, don't
 do any DB-lookup) because we'll instantiate every controller. `__init__` should fail fast!
 
 .match() will return a re.match result for the relevant portion of the uri that was matched.
 .args() will return all arguments needed to render the template.
+.headers() will return HTTP headers to be output
 .render() will return the parsed template indicated by `self.template` (in templates/*)
+.cookie() can be used to get and set data from/to cookie
+.session() can be used to get and set data from/to session
 
 There will always be at least 1 matching controller object: fallback.py matches everything and will render a 404.
 
