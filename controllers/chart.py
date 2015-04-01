@@ -22,6 +22,7 @@ class Controller(project.Controller):
         args = super(Controller, self).args()
         args.update({
             'chart': self.chart,
+            'title': self.project['name'] + ': ' + self.chart['name']
         })
         return args
 

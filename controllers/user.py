@@ -28,5 +28,6 @@ class Controller(fallback.Controller):
 
         args.update({
             'user_projects': projects,
+            'title': args['user']['name'] if args['user'] else ''
         })
         return args

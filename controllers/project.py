@@ -26,6 +26,7 @@ class Controller(fallback.Controller):
             'project': self.project,
             'commit': self.commit,
             'commits': self.commits,
+            'title': self.project['name']
         })
         return args
 
