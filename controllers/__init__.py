@@ -3,10 +3,10 @@ import re
 
 
 routes = {
-    ".*": fallback,  # matches anything; 404 is fallback for every request
+    "": fallback,  # matches anything; 404 is fallback for every request
     "^/$": index,  # matches /
-    "^/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": project,  # matches /vendor/repo and /vendor/repo/commit
-    "^/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>[a-z]+)$": chart,  # matches /vendor/repo/chart and /vendor/repo/commit/chart
+    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": project,  # matches /vendor/repo and /vendor/repo/commit
+    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>[a-z]+)$": chart,  # matches /vendor/repo/chart and /vendor/repo/commit/chart
     "^/login\?code=(?P<code>[a-f0-9]+)$": login,  # matches /login?code=xyz
     "^/logout$": logout,  # matches /logout
     "^/user$": user,  # matches /user
