@@ -23,9 +23,9 @@ class Controller(fallback.Controller):
         self.fail = False
         return ["Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
 
-    def render(self):
+    def render(self, template):
         if self.fail:
-            return super(Controller, self).render()
+            return super(Controller, self).render(template)
         else:
             # don't render anything; we'll only be sending redirect headers
             return ""

@@ -36,10 +36,10 @@ class Controller(object):
 
         return ["Content-Type: text/html; charset=UTF-8"]
 
-    def render(self):
+    def render(self, template):
         from jinja2 import Environment, FileSystemLoader
         env = Environment(loader=FileSystemLoader("templates"))
-        template = env.get_template("container.html")
+        template = env.get_template(template)
         args = self.args()
         return template.render(args)
 

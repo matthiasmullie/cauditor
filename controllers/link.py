@@ -42,12 +42,9 @@ class Controller(fallback.Controller):
         self.fail = False
         return headers
 
-    def render(self):
-        from jinja2 import Environment, FileSystemLoader
-        env = Environment(loader=FileSystemLoader("templates"))
-        template = env.get_template(self.template)
-        args = self.args()
-        return template.render(args)
+    def render(self, template):
+        # don't render within container.html, just render this specific template
+        return super(Controller, self).render(self.template)
 
     def process(self, repo, action):
         import models

@@ -17,4 +17,4 @@ for header in headers:
     print(header)
 
 print()
-print(controller.render())
+print(controller.render("container.html"))
