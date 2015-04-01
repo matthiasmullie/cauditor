@@ -1,15 +1,15 @@
 // visualizations/treemap/Class.js must be loaded before this file
 
-Codecharts.Visualization.Treemap.Instability = function() {
-    Codecharts.Visualization.Treemap.Class.call(this, arguments);
+QualityControl.Visualization.Treemap.Instability = function() {
+    QualityControl.Visualization.Treemap.Class.call(this, arguments);
 };
-Codecharts.Visualization.Treemap.Instability.prototype = Object.create(Codecharts.Visualization.Treemap.Class.prototype);
+QualityControl.Visualization.Treemap.Instability.prototype = Object.create(QualityControl.Visualization.Treemap.Class.prototype);
 
 // range from 0 to 1, with 0 indicating a package very resilient to change in
 // dependency classes; 1 being very unstable
 // going with green-ish for 75% of the index so only the really problematic
 // parts light up (it's pretty easy to score very high on this metric)
-Codecharts.Visualization.Treemap.Instability.prototype.color = [ function(d) {
+QualityControl.Visualization.Treemap.Instability.prototype.color = [ function(d) {
     // Due to how instability is calculated (ce / (ce + ca)) it's pretty
     // likely to light up red for small classes that have no ca and little
     // ce. Instead of coloring based on the real instability value, I'll

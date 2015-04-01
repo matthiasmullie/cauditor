@@ -1,8 +1,8 @@
-// main.js must be loaded before this file
+// ../QualityControl.js must be loaded before this file
 
-Codecharts.Visualization = Codecharts.Visualization || {};
+QualityControl.Visualization = QualityControl.Visualization || {};
 
-Codecharts.Visualization.Abstract = function() {
+QualityControl.Visualization.Abstract = function() {
     // constructor
 };
 
@@ -12,7 +12,7 @@ Codecharts.Visualization.Abstract = function() {
  * @param {object} data
  * @return {object}
  */
-Codecharts.Visualization.Abstract.prototype.nodes = function(data) {
+QualityControl.Visualization.Abstract.prototype.nodes = function(data) {
     return data;
 };
 
@@ -21,6 +21,6 @@ Codecharts.Visualization.Abstract.prototype.nodes = function(data) {
  *
  * @return {d3plus.viz}
  */
-Codecharts.Visualization.Abstract.prototype.visualization = function() {
+QualityControl.Visualization.Abstract.prototype.visualization = function() {
     return d3plus.viz();
 };

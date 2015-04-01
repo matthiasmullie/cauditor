@@ -1,6 +1,6 @@
 <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
 <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
-<script src="/assets/js/Codecharts.js"></script>
+<script src="/assets/js/QualityControl.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Class.js"></script>
@@ -25,7 +25,7 @@
     </div>
 
     <script>
-        var chart = new Codecharts('/data/{{ project.name }}/{{ commit.hash }}.json' );
+        var chart = new QualityControl('/data/{{ project.name }}/{{ commit.hash }}.json' );
 
         {% for chart in charts %}
         chart.draw('#{{ chart.code }} .chart', new {{ chart.class }}());

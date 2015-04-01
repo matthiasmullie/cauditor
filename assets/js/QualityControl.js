@@ -1,6 +1,6 @@
 // vendor/d3.min.js & vendor/d3plus.min.js must be loaded before this file
 
-var Codecharts = function(path) {
+var QualityControl = function(path) {
     this.path = path;
 };
 
@@ -8,9 +8,9 @@ var Codecharts = function(path) {
  * Draw a new visualization.
  *
  * @param {string} selector
- * @param {Codecharts.Visualization.Abstract} visualization
+ * @param {QualityControl.Visualization.Abstract} visualization
  */
-Codecharts.prototype.draw = function(selector, visualization) {
+QualityControl.prototype.draw = function(selector, visualization) {
     d3.json(this.path, function(data) {
         data = visualization.data(data);
 

@@ -1,4 +1,4 @@
-# Codecharts
+# quality-control.io
 
 So, I don't really know any Python but I wanted to give it a go for this project. It will be bad!
 
@@ -56,8 +56,8 @@ Whatever CSS is needed...
 
 Charts will be drawn using [d3.js](http://d3js.org/) and [d3plus.js](http://d3plus.org/), which are in data/js/vendor/*
 
-data/js/Codecharts.js is an easy entrypoint to draw the charts.
-`Codecharts` takes the path to a JSON data file in the constructor.
+data/js/QualityControl.js is an easy entrypoint to draw the charts.
+`QualityControl` takes the path to a JSON data file in the constructor.
 `.draw` takes a selector (element to draw the chart to) and a visualization object.
 
 All of the chart types have their own constructors:
