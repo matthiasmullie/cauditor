@@ -35,6 +35,10 @@ Extremely simple database-interaction handlers.
 
 Allows for simple select, upsert & delete.
 
+## import/*
+
+Import-related scripts will be shoved in here. Makefile will orchestrate everything.
+
 ## templates/*
 
 jinja2 templates
@@ -72,7 +76,3 @@ already be in (Method|Class).js, which they extend from, or Abstract.js, or that
 JSON files holding the metrics.
 
 Files will be stored in data/[vendor]/[project]/[commit-sha].json
-
-## scripts/*
-
-Just a bunch of non-categorized scripts so far. We'll have plenty, and they may be grouped & cleaned up at some point.
