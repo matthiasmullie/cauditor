@@ -2,6 +2,6 @@
 {
   "name": "{{ project.name }}",
   "git": "{{ project.git }}",
-  "hook": {{ project.hook }}
+  "hook": "{{ project.hook }}"
 }
 {% endif %}
