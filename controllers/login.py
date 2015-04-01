@@ -2,22 +2,12 @@ from controllers import fallback
 
 
 class Controller(fallback.Controller):
+    template = "login.html"
     fail = True
 
-    def __init__(self, uri):
-        super(Controller, self).__init__(uri)
-
-        match = self.match()
-        if match is None:
-            raise Exception("Invalid route")
-
-        self.template = "login.html"
-        self.code = match.group(1)
-
-    def match(self):
-        """ matches /login?code=xyz """
-        import re
-        return re.match("^/login\?code=([a-f0-9]+)$", self.uri, flags=re.IGNORECASE)
+    def __init__(self, code):
+        super(Controller, self).__init__()
+        self.code = code
 
     def headers(self):
         import os

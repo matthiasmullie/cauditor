@@ -2,23 +2,14 @@ from controllers import fallback
 
 
 class Controller(fallback.Controller):
+    template = "link.json"
     fail = True
 
-    def __init__(self, uri):
-        super(Controller, self).__init__(uri)
+    def __init__(self):
+        super(Controller, self).__init__()
 
-        match = self.match()
-        if match is None:
-            raise Exception("Invalid route")
-
-        self.template = "link.json"
         self.project = {}
         self.hook = {}
-
-    def match(self):
-        """ matches /api/link """
-        import re
-        return re.match("^/api/link", self.uri, flags=re.IGNORECASE)
 
     def args(self):
         args = super(Controller, self).args()

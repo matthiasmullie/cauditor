@@ -3,22 +3,14 @@ import models
 
 
 class Controller(fallback.Controller):
-    def __init__(self, uri):
-        super(Controller, self).__init__(uri)
+    template = "project.html"
 
-        match = self.match()
-        if match is None:
-            raise Exception("Invalid route")
+    def __init__(self, project, commit=None):
+        super(Controller, self).__init__()
 
-        self.template = "project.html"
-        self.project = self.load_project(match.group(1))
-        self.commit = self.load_commit(match.group(1), match.group(3)) if match.group(3) is not None else {}
-        self.commits = self.load_commits(match.group(1))
-
-    def match(self):
-        """ matches /vendor/repo and /vendor/repo/commit """
-        import re
-        return re.match("^/([a-z0-9_.-]+/[a-z0-9_.-]+)(/([a-f0-9]{40}))?$", self.uri, flags=re.IGNORECASE)
+        self.project = self.load_project(project)
+        self.commit = self.load_commit(project, commit) if commit is not None else {}
+        self.commits = self.load_commits(project)
 
     def args(self):
         args = super(Controller, self).args()

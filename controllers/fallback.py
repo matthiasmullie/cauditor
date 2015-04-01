@@ -1,8 +1,7 @@
 class Controller(object):
-    def __init__(self, uri):
-        self.uri = uri
-        self.template = "404.html"
+    template = "404.html"
 
+    def __init__(self):
         # init cookies
         import http.cookies
         import os
@@ -15,11 +14,6 @@ class Controller(object):
         session_id = self.cookie('session_id')
         max_age = self.config()['session']['max_age']
         self.session_data = models.sessions.Sessions(session_id, max_age)
-
-    def match(self):
-        """ matches anything; 404 is fallback for every request """
-        import re
-        return re.match("", self.uri)
 
     def config(self):
         import container

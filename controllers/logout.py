@@ -2,22 +2,13 @@ from controllers import fallback
 
 
 class Controller(fallback.Controller):
-    def __init__(self, uri):
-        super(Controller, self).__init__(uri)
+    template = ""
 
-        match = self.match()
-        if match is None:
-            raise Exception("Invalid route")
-
-        self.template = ""
+    def __init__(self):
+        super(Controller, self).__init__()
 
         # expire session cookie
         self.cookie('session_id', self.session_data.id, -1)
-
-    def match(self):
-        """ matches /logout """
-        import re
-        return re.match("^/logout$", self.uri, flags=re.IGNORECASE)
 
     def headers(self):
         import os
