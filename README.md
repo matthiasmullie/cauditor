@@ -24,12 +24,12 @@ The controller can still fail on `__init__()`, in which case the next matched co
 tried. Exceptions should be thrown as early as possible (if the regex doesn't even match, don't
 do any DB-lookup) because we'll instantiate every controller. `__init__` should fail fast!
 
-`match()` will return a re.match result for the relevant portion of the uri that was matched.
-`args()` will return all arguments needed to render the template.
-`headers()` will return HTTP headers to be output
-`render()` will return the parsed template indicated by `self.template` (in templates/*)
-`cookie()` can be used to get and set data from/to cookie
-`session()` can be used to get and set data from/to session
+* `match()` will return a re.match result for the relevant portion of the uri that was matched.
+* `args()` will return all arguments needed to render the template.
+* `headers()` will return HTTP headers to be output
+* `render()` will return the parsed template indicated by `self.template` (in templates/*)
+* `cookie()` can be used to get and set data from/to cookie
+* `session()` can be used to get and set data from/to session
 
 There will always be at least 1 matching controller object: fallback.py matches everything and will render a 404.
 
