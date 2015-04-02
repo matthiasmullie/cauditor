@@ -49,7 +49,7 @@ class DbManager(object):
         return [self.bytes_to_string(row) for row in result]
 
     def store(self, data=None, **kwargs):
-        """ Performs a REPLACE INTO query
+        """ Performs a INSERT INTO ... ON DUPLICATE KEY ... query
 
         Make sure your primary keys are fine as they'll decide over insert or "update"
         (well, not really update - REPLACE first deletes, then reinserts)
@@ -75,9 +75,11 @@ class DbManager(object):
 
         cursor = self.connection.cursor()
         return cursor.execute(
-            "REPLACE INTO %s " % self.table +
+            "INSERT INTO %s " % self.table +
             "(" + ", ".join(keys) + ") " +  # (key, key2)
-            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(data)) + ")",  # (%s, %s), (%s, %s)
+            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(data)) + ") " +  # (%s, %s), (%s, %s)
+            "ON DUPLICATE KEY UPDATE "+
+            ", ".join(["%s = VALUES(%s)" % ((key,) * 2) for key in keys]),  # "key1 = VALUES(key1), key2 = VALUES(key2)"
             params
         )
 
