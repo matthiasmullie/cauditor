@@ -66,7 +66,7 @@ class Controller(fallback.Controller):
 
         # https://developer.github.com/v3/repos/hooks/#create-a-hook
         return repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
-            'url': "%s://%s/webhook" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]),
+            'url': "%s://%s/api/webhook" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]),
             'content_type': "json",
         })
 

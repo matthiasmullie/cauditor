@@ -1,4 +1,4 @@
-from controllers import fallback, index, project, chart, login, logout, user, link, repos
+from controllers import fallback, index, project, chart, login, logout, user, link, repos, webhook
 import re
 
 
@@ -12,6 +12,7 @@ routes = {
     "^/user$": user,  # matches /user
     "^/api/link": link,  # matches /api/link
     "^/api/repos$": repos,  # matches /api/repos
+    "^/api/webhook": webhook,  # matches /api/webhook
 }
 
 
