@@ -2,22 +2,11 @@ from controllers import fallback
 
 
 class Controller(fallback.Controller):
-    template = "link.json"
-    fail = True
+    template = ""
 
     def __init__(self):
         super(Controller, self).__init__()
-
         self.project = {}
-        self.hook = {}
-
-    def args(self):
-        args = super(Controller, self).args()
-        args.update({
-            'fail': self.fail,
-            'project': self.project,
-        })
-        return args
 
     def headers(self):
         import cgi
@@ -34,17 +23,16 @@ class Controller(fallback.Controller):
             return headers
 
         try:
-            self.process(form["repo"].value, form["action"].value)
+            self.project = self.process(form["repo"].value, form["action"].value)
         except Exception:
             headers.append("Status: 401 Unauthorized")
             return headers
 
-        self.fail = False
         return headers
 
     def render(self, template):
-        # don't render within container.html, just render this specific template
-        return super(Controller, self).render(self.template)
+        import json
+        return json.dumps(self.project)
 
     def process(self, repo, action):
         import models
@@ -54,16 +42,18 @@ class Controller(fallback.Controller):
 
         if action == "link":
             hook = self.create_hook(repo)
-            self.project = {
+            project = {
                 'name': repo.full_name,
                 'git': repo.clone_url,
                 'hook': hook.id,
             }
-            model.store(self.project)
-        elif action == "unlink":
-            self.project = model.select(name=repo.full_name)[0]
+            model.store(project)
+        else:  # unlink
+            project = model.select(name=repo.full_name)[0]
             model.delete(name=repo.full_name)
-            self.delete_hook(repo, self.project)
+            self.delete_hook(repo, project)
+
+        return project
 
     def get_repo(self, repo):
         import container
