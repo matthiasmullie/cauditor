@@ -50,3 +50,5 @@ class Controller(login.Controller):
             'github_id': repo['id']
         } for repo in changed]
         model.store(changed)
+
+        # @todo: also update commits...
