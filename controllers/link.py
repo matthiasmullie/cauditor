@@ -43,9 +43,10 @@ class Controller(fallback.Controller):
         if action == "link":
             hook = self.create_hook(repo)
             project = {
-                'name': repo.full_name,
-                'git': repo.clone_url,
-                'hook': hook.id,
+                'name': repo['name'],
+                'git': repo['git'],
+                'github_id': repo['id'],
+                'github_hook': hook.id,
             }
             model.store(project)
         else:  # unlink
@@ -55,13 +56,10 @@ class Controller(fallback.Controller):
 
         return project
 
-    def get_repo(self, repo):
-        import container
-
-        token = self.session('github_token')
-        github = container.github(token)
-
-        return github.get_repo(repo)
+    def get_repo(self, name):
+        repos = self.session('repos')
+        repo = next(repo for repo in repos if repo['name'] == name)
+        return repo
 
     def create_hook(self, repo):
         import os

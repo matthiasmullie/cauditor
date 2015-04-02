@@ -64,6 +64,7 @@ class Controller(fallback.Controller):
             'id': repo.id,
             'name': repo.full_name,
             'url': repo.url,
+            'git': repo.clone_url,
             'private': repo.private,
         }
 
