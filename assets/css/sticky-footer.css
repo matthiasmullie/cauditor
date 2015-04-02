@@ -9,7 +9,7 @@ html, body {
     padding-top: calc(50px + 2px + 20px);
 
     /* footer height + margin */
-    margin-bottom: calc(-50px - 20px);
+    margin-bottom: calc(-50px - 10px);
 }
 
 /*
@@ -23,7 +23,7 @@ body[data-template="chart.html"] .content {
 }
 
 .footer, .push {
-    margin-top: 20px;
+    margin-top: 10px;
     height: 50px;
 }
 
