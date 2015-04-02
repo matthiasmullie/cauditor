@@ -27,7 +27,14 @@ def route(uri):
 
     # sort routes based on match length (the more of a url matches, the better)
     # pick the first route (there'll always be at least 1, the fallback (404))
-    (controller, match) = sorted(matched_controllers.items(), key=lambda controller: controller[1].end(0), reverse=True)[0]
+    matched_controllers = sorted(matched_controllers.items(), key=lambda controller: controller[1].end(0), reverse=True)
+    for i in range(0, len(matched_controllers)):
+        try:
+            # init controller with named args as provided by the route regex
+            (controller, match) = matched_controllers[i]
+            return controller.Controller(**match.groupdict())
+        except Exception:
+            # controller failed to init - try next!
+            pass
 
-    # init controller with named args as provided by the route regex
-    return controller.Controller(**match.groupdict())
+    raise Exception("No available route")
