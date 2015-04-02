@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS `projects` (
   `name` varchar(255) NOT NULL, -- vendor/project
   `git` blob NOT NULL, -- clone url
-  `hook` int(11) DEFAULT NULL, -- hook id
-  PRIMARY KEY (`name`)
+  `github_id` int(11) DEFAULT NULL, -- repo id
+  `github_hook` int(11) DEFAULT NULL, -- hook id
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `idx_git` (`github_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `commits` (
