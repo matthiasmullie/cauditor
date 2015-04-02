@@ -39,7 +39,7 @@ QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function
                 color = d3.scale.linear()
                     .domain(range)
                     // green - yellow - red
-                    .range(['#006600', '#EECC00', '#EE6600']);
+                    .range(['#1F9B1F', '#F4BE00', '#F45800']);
 
             /*
              * value can be:
