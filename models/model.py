@@ -48,37 +48,37 @@ class DbManager(object):
         result = cursor.fetchall()
         return [self.bytes_to_string(row) for row in result]
 
-    def store(self, data=None, **kwargs):
+    def store(self, values=None, **kwargs):
         """ Performs a INSERT INTO ... ON DUPLICATE KEY ... query
 
         Make sure your primary keys are fine as they'll decide over insert or "update"
         (well, not really update - REPLACE first deletes, then reinserts)
 
-        Data is not validated (though a child class could implement that) so make
+        `values` is not validated (though a child class could implement that) so make
         sure the dict you pass is conform the schema.
 
-        :param data: dict in {'key': 'value', 'key2': 'value2'} format, or list[dict]
+        :param values: dict in {'key': 'value', 'key2': 'value2'} format, or list[dict]
         :return: int amount of rows inserted/updated (1 or 0)
         """
 
-        # data can come in dict form, of as parameterized kwargs
-        data = data if data is not None else kwargs
+        # values can come in dict form, of as parameterized kwargs
+        values = values if values is not None else kwargs
 
-        # data can also be a list of dicts (for multiple inserts) - make all of it a list now
-        data = data if isinstance(data, list) else [data]
+        # values can also be a list of dicts (for multiple inserts) - make all of it a list now
+        values = values if isinstance(values, list) else [values]
 
-        keys = sorted(data[0])
+        keys = sorted(values[0])
         params = []
         # gather list of params for insert & update
-        for d in data:
+        for d in values:
             params.extend([d[key] for key in keys])
 
         cursor = self.connection.cursor()
         return cursor.execute(
             "INSERT INTO %s " % self.table +
             "(" + ", ".join(keys) + ") " +  # (key, key2)
-            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(data)) + ") " +  # (%s, %s), (%s, %s)
-            "ON DUPLICATE KEY UPDATE "+
+            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(values)) + ") " +  # (%s, %s), (%s, %s)
+            "ON DUPLICATE KEY UPDATE " +
             ", ".join(["%s = VALUES(%s)" % ((key,) * 2) for key in keys]),  # "key1 = VALUES(key1), key2 = VALUES(key2)"
             params
         )
