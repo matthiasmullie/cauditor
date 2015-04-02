@@ -9,7 +9,7 @@
 {% else %}
     <div class="row">
         {% for repo in repos %}
-            <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}">
+            <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
                 <h2>
                     {{ repo.name }}
                     <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
@@ -62,5 +62,25 @@
                 alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
             });
         });
+
+        $.ajax({
+            url: '/api/repos',
+            method: 'GET'
+        })
+        .done(function(data) {
+            var existing = [],
+                current = data.map(function(repo) {
+                    return repo.name;
+                });
+
+            $('.repo').each(function() {
+                existing.push($(this).data('repo'));
+            });
+
+            if (existing.sort().toString() !== current.sort().toString()) {
+                // @todo: ideally, I would re-render in-page, not refresh
+                location.reload();
+            }
+        })
     </script>
 {% endif %}
