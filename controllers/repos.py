@@ -52,4 +52,7 @@ class Controller(login.Controller):
         if len(changed) > 0:
             model.store(changed)
 
-        # @todo: also update commits...
+        commits = models.commits.Commits()
+        for repo in changed:
+            select = commits.select(project=projects[repo['github_id']]['name'])
+            select.update(project=repo['name'])
