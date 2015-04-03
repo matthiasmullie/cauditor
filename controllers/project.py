@@ -25,18 +25,12 @@ class Controller(fallback.Controller):
     def load_project(self, name):
         model = models.projects.Projects()
         data = model.select(name=name)
-        if len(data) == 0:
-            raise Exception("Invalid project")
-
-        return data[0]
+        return next(data)
 
     def load_commit(self, project, hash):
         model = models.commits.Commits()
         data = model.select(project=project, hash=hash)
-        if len(data) == 0:
-            raise Exception("Commit not found")
-
-        return data[0]
+        return next(data)
 
     def load_commits(self, project):
         model = models.commits.Commits()

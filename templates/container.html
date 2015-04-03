@@ -57,13 +57,12 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/{{ project.name }}" {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}>HEAD</a></li>
-                                {% if commits|length > 1 %}<li class="divider"></li>{% endif %}
 
                                 {% for c in commits %}
                                     {# skip first commit, we're already showing it as HEAD #}
                                     {% if not loop.first %}
+                                        <li class="divider"></li>
                                         <li><a href="/{{ project.name }}/{{ c.hash }}" {% if commit and commit.hash == c.hash %}class="active"{% endif %}>{{ c.hash|truncate(7, True, "") }}</a></li>
-                                        {% if not loop.last %}<li class="divider"></li>{% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </ul>

@@ -49,6 +49,7 @@ class Controller(login.Controller):
             'git': repo['git'],
             'github_id': repo['id']
         } for repo in changed]
-        model.store(changed)
+        if len(changed) > 0:
+            model.store(changed)
 
         # @todo: also update commits...

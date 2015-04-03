@@ -8,6 +8,9 @@
     </div>
 {% else %}
     <div class="row">
+        {% set project_names = user_projects|map(attribute='name')|list %}
+        {{ project_names }}
+
         {% for repo in repos %}
             <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
                 <h2>
@@ -17,7 +20,7 @@
                 <div class="buttons">
                     {# If any content in this div changes, make sure those changes are also reflected in the JS below (yes I'm lazy here, both should reuse same code) #}
 
-                    {% if repo.name in user_projects|map(attribute='name') %}
+                    {% if repo.name in project_names %}
                         <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
                         <a class="btn btn-success" href="/{{ repo.name }}">See stats <i class="fa fa-caret-right"></i></a>
                     {% else %}

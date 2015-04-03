@@ -59,17 +59,19 @@ class Sessions(model.DbManager):
         self.clear_old()
 
         data = self.select(id=self.id)
-        if len(data) == 0:
+        try:
+            data = data[0]
+        except IndexError:
             # no existing session data
             self.data = {}
             return self.data
 
-        if data[0]['touched'] < self.timestamp(seconds_ago=self.max_age):
+        if data['touched'] < self.timestamp(seconds_ago=self.max_age):
             # check if session data hasn't yet expired
             self.data = {}
             return self.data
 
-        self.data = json.loads(data[0]['data'])
+        self.data = json.loads(data['data'])
         return self.data
 
     def write(self):
