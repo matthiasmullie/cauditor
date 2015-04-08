@@ -9,7 +9,6 @@
 {% else %}
     <div class="row">
         {% set project_names = user_projects|map(attribute='name')|list %}
-        {{ project_names }}
 
         {% for repo in repos %}
             <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
