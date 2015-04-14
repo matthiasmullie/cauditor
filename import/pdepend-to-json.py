@@ -23,6 +23,30 @@ class PdependConverter:
             'nom': int(node.attrib['nom']),
         }
 
+        # calculate totals for class & method metrics to get a project-wide
+        # idea of how we're doing
+        # these totals don't really mean much: high CCN could be either a
+        # simple & big project, or a tiny & complex project
+        # it gets more interesting when divided by number of classes/methods,
+        # to get average metrics across the entire project
+
+        # sum class metrics
+        for metric in ['ca', 'ce', 'i', 'cr', 'wmc', 'dit']:
+            data[metric] = sum([
+                class_data[metric]
+                for package_data in data['children']
+                for class_data in package_data['children']
+            ])
+
+        # sum method metrics
+        for metric in ['ccn', 'npath', 'he', 'hi', 'mi']:
+            data[metric] = sum([
+                method_data[metric]
+                for package_data in data['children']
+                for class_data in package_data['children']
+                for method_data in class_data['children']
+            ])
+
         return data
 
     def save(self, path):
