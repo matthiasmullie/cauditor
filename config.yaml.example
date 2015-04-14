@@ -23,6 +23,21 @@ charts:
         file: "/assets/js/visualizations/treemap/NpathComplexity.js"
         class: "QualityControl.Visualization.Treemap.NpathComplexity"
     -
+        code: "mi"
+        name: "Maintainability Index"
+        file: "/assets/js/visualizations/treemap/MaintainabilityIndex.js"
+        class: "QualityControl.Visualization.Treemap.MaintainabilityIndex"
+    -
+        code: "he"
+        name: "Halstead Effort"
+        file: "/assets/js/visualizations/treemap/HalsteadEffort.js"
+        class: "QualityControl.Visualization.Treemap.HalsteadEffort"
+    -
+        code: "hi"
+        name: "Halstead Intelligent Content"
+        file: "/assets/js/visualizations/treemap/HalsteadIntelligentContent.js"
+        class: "QualityControl.Visualization.Treemap.HalsteadIntelligentContent"
+    -
         code: "wmc"
         name: "Weighted Metric Count"
         file: "/assets/js/visualizations/treemap/WeightedMetricCount.js"

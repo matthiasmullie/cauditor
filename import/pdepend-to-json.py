@@ -8,23 +8,22 @@ class PdependConverter:
         self.path = path
 
     def convert(self):
-        ''' convert pdepend's --summary-xml file to json '''
+        """ convert pdepend's --summary-xml file to json """
         import xml.etree.ElementTree as etree
 
         tree = etree.parse(self.path)
         node = tree.getroot()  # node <metrics>
 
-        return {
+        data = {
+            'children': [self.packageData(child) for child in node.findall('package')],
             # executable lines of code
             'loc': int(node.attrib['eloc']),
-            # number of methods
+            # number of classes & methods
+            'noc': int(node.attrib['noc']),
             'nom': int(node.attrib['nom']),
-            # cyclomatic complexity
-            'ccn': int(node.attrib['ccn2']),
-            'avg-ccn': int(node.attrib['ccn2']) / (int(node.attrib['nom']) or 1),
-            # @todo aggregate more metrics
-            'children': [self.packageData(child) for child in node.findall('package')]
         }
+
+        return data
 
     def save(self, path):
         import json
@@ -44,6 +43,7 @@ class PdependConverter:
     def classData(self, node):
         return {
             'name': node.attrib['name'],
+            'children': [self.methodData(child) for child in node.findall('method')],
             # executable lines of code
             'loc': int(node.attrib['eloc']),
             # afferent coupling
@@ -58,7 +58,6 @@ class PdependConverter:
             'wmc': int(node.attrib['wmc']),
             # depth of inheritance tree
             'dit': int(node.attrib['dit']),
-            'children': [self.methodData(child) for child in node.findall('method')],
         }
 
     def methodData(self, node):
@@ -70,6 +69,14 @@ class PdependConverter:
             'ccn': int(node.attrib['ccn2']),
             # npath complexity
             'npath': int(node.attrib['npath']),
+
+            # below metrics need https://github.com/pdepend/pdepend/pull/198
+            # halstead effort
+            'he': float(node.attrib['he']),
+            # halstead intelligent content
+            'hi': float(node.attrib['hi']),
+            # maintainability index
+            'mi': float(node.attrib['mi']),
         }
 
 if __name__ == "__main__":
