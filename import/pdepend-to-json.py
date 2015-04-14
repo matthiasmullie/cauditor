@@ -31,7 +31,7 @@ class PdependConverter:
         # to get average metrics across the entire project
 
         # sum class metrics
-        for metric in ['ca', 'ce', 'i', 'cr', 'wmc', 'dit']:
+        for metric in ['ca', 'ce', 'i', 'dit']:
             data[metric] = sum([
                 class_data[metric]
                 for package_data in data['children']
@@ -76,10 +76,6 @@ class PdependConverter:
             'ce': int(node.attrib['ce']),
             # instability
             'i': int(node.attrib['ce']) / ((int(node.attrib['ce']) + int(node.attrib['ca'])) or 1),
-            # code rank
-            'cr': float(node.attrib['cr']),
-            # weighted metric count
-            'wmc': int(node.attrib['wmc']),
             # depth of inheritance tree
             'dit': int(node.attrib['dit']),
         }

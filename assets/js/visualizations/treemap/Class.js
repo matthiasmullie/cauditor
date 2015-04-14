@@ -30,4 +30,4 @@ QualityControl.Visualization.Treemap.Class.prototype.data = function(data) {
 };
 
 QualityControl.Visualization.Treemap.Class.prototype.id = ['package', 'name'];
-QualityControl.Visualization.Treemap.Class.prototype.tooltip = ['loc', 'ca', 'ce', 'i', 'cr', 'wmc', 'dit'];
+QualityControl.Visualization.Treemap.Class.prototype.tooltip = ['loc', 'ca', 'ce', 'i', 'dit'];
