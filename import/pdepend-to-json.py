@@ -15,7 +15,7 @@ class PdependConverter:
         node = tree.getroot()  # node <metrics>
 
         data = {
-            'children': [self.packageData(child) for child in node.findall('package')],
+            'children': [self.package_data(child) for child in node.findall('package')],
             # executable lines of code
             'loc': int(node.attrib['eloc']),
             # number of classes & methods
@@ -58,16 +58,16 @@ class PdependConverter:
         f = open(path, 'w')
         f.write(data)
 
-    def packageData(self, node):
+    def package_data(self, node):
         return {
             'name': node.attrib['name'],
-            'children': [self.classData(child) for child in node.findall('class')],
+            'children': [self.class_data(child) for child in node.findall('class')],
         }
 
-    def classData(self, node):
+    def class_data(self, node):
         return {
             'name': node.attrib['name'],
-            'children': [self.methodData(child) for child in node.findall('method')],
+            'children': [self.method_data(child) for child in node.findall('method')],
             # executable lines of code
             'loc': int(node.attrib['eloc']),
             # afferent coupling
@@ -80,7 +80,7 @@ class PdependConverter:
             'dit': int(node.attrib['dit']),
         }
 
-    def methodData(self, node):
+    def method_data(self, node):
         return {
             'name': node.attrib['name'],
             # executable lines of code
