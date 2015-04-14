@@ -1,7 +1,10 @@
 // vendor/d3.min.js & vendor/d3plus.min.js must be loaded before this file
 
 var QualityControl = function(path) {
-    this.path = path;
+    var that = this;
+    d3.json(path, function(data) {
+        that.data = data;
+    });
 };
 
 /**
@@ -11,12 +14,15 @@ var QualityControl = function(path) {
  * @param {QualityControl.Visualization.Abstract} visualization
  */
 QualityControl.prototype.draw = function(selector, visualization) {
-    d3.json(this.path, function(data) {
-        data = visualization.data(data);
+    if (this.data === undefined) {
+        setTimeout(this.draw.bind(this, selector, visualization), 50);
+        return;
+    }
 
-        visualization.visualization()
-            .container(selector)
-            .data(data)
-            .draw();
-    });
+    var data = visualization.data(this.data);
+
+    visualization.visualization()
+        .container(selector)
+        .data(data)
+        .draw();
 };
