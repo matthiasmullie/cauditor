@@ -19,5 +19,5 @@ QualityControl.Visualization.Treemap.Instability.prototype.color = [ function(d)
     // The result of this operation will be that classes with a lot of
     // coupling + instability will light up more than those with lots of
     // instability due to no (or very little) ce.
-    return d.ce / (d.ce + d.ca + 1);
-}, [0, .75, .85] ];
+    return d.ce / (d.ce + d.ca + 3);
+}, [0, .7, .8] ];
