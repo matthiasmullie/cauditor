@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `commits` (
   `hi` float NOT NULL, -- average hi in this commits: (this commit total - prev commit total) / lines
   `mi` float NOT NULL, -- average mi in this commits: (this commit total - prev commit total) / lines
   PRIMARY KEY (`project`,`hash`),
+  -- @todo below UNIQUE will fail to insert commits in forks - fix this DB to allow that some day (but not store stats more than once)
   UNIQUE KEY `idx_unique` (`project`,`hash`,`author`), -- ensure commits only get in once (don't care about same commit in forks)
   KEY `idx_project` (`project`,`commit_date`), -- fetching last x commits per project
   KEY `idx_author` (`author`,`author_date`) -- fetching last x commits per author
