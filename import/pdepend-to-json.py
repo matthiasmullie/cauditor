@@ -28,24 +28,32 @@ class PdependConverter:
         # these totals don't really mean much: high CCN could be either a
         # simple & big project, or a tiny & complex project
         # it gets more interesting when divided by number of classes/methods,
-        # to get average metrics across the entire project
+        # to get average metrics across the entire project, or when comparing
+        # them between commits to see the impact of a commit
+
+        loc = data['loc']
 
         # sum class metrics
-        for metric in ['ca', 'ce', 'i', 'dit']:
+        for metric in ['loc', 'ca', 'ce', 'i', 'dit']:
             data[metric] = sum([
                 class_data[metric]
                 for package_data in data['children']
                 for class_data in package_data['children']
             ])
+        data['cloc'] = data['loc']
 
         # sum method metrics
-        for metric in ['ccn', 'npath', 'he', 'hi', 'mi']:
+        for metric in ['loc', 'ccn', 'npath', 'he', 'hi', 'mi']:
             data[metric] = sum([
                 method_data[metric]
                 for package_data in data['children']
                 for class_data in package_data['children']
                 for method_data in class_data['children']
             ])
+        data['mloc'] = data['loc']
+
+        # we've overwritten 'loc' twice, restore the real project-wide loc now
+        data['loc'] = loc
 
         return data
 
