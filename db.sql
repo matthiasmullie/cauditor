@@ -11,10 +11,23 @@ CREATE TABLE IF NOT EXISTS `commits` (
   `project` varchar(255) NOT NULL, -- vendor/project
   `hash` binary(40) NOT NULL, -- commit sha
   `author` varchar(255) NOT NULL, -- author email
-  `date` datetime NOT NULL, -- date of commit
-  PRIMARY KEY (`project`,`commit`),
-  UNIQUE KEY `idx_author` (`project`,`commit`,`author`),
-  UNIQUE KEY `idx_date` (`project`,`commit`,`date`)
+  `author_date` datetime NOT NULL, -- date authored
+  `committer` varchar(255) NOT NULL, -- committer email
+  `commit_date` datetime NOT NULL, -- date of commit
+  `loc` int(11) NOT NULL, -- amount of added lines in this commit
+  `ca` float NOT NULL, -- average ca in this commits: (this commit total - prev commit total) / lines
+  `ce` float NOT NULL, -- average ce in this commits: (this commit total - prev commit total) / lines
+  `i` float NOT NULL, -- average i in this commits: (this commit total - prev commit total) / lines
+  `dit` float NOT NULL, -- average dit in this commits: (this commit total - prev commit total) / lines
+  `ccn` float NOT NULL, -- average ccn in this commits: (this commit total - prev commit total) / lines
+  `npath` float NOT NULL, -- average npath in this commits: (this commit total - prev commit total) / lines
+  `he` float NOT NULL, -- average he in this commits: (this commit total - prev commit total) / lines
+  `hi` float NOT NULL, -- average hi in this commits: (this commit total - prev commit total) / lines
+  `mi` float NOT NULL, -- average mi in this commits: (this commit total - prev commit total) / lines
+  PRIMARY KEY (`project`,`hash`),
+  UNIQUE KEY `idx_unique` (`project`,`hash`,`author`), -- ensure commits only get in once (don't care about same commit in forks)
+  KEY `idx_project` (`project`,`commit_date`), -- fetching last x commits per project
+  KEY `idx_author` (`author`,`author_date`) -- fetching last x commits per author
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `sessions` (
