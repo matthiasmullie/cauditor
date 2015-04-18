@@ -8,16 +8,6 @@ QualityControl.Visualization.Treemap.Abstract = function() {
 QualityControl.Visualization.Treemap.Abstract.prototype = Object.create(QualityControl.Visualization.Abstract.prototype);
 
 /**
- * Callback method transforming data to however 'visualization' needs it.
- *
- * @param {object} data
- * @return {object}
- */
-QualityControl.Visualization.Treemap.Abstract.prototype.data = function(data) {
-    return data;
-};
-
-/**
  * d3plus visualization.
  *
  * @return {d3plus.viz}

@@ -11,7 +11,7 @@ QualityControl.Visualization.Treemap.Class.prototype = Object.create(QualityCont
  * @param {object} data
  * @return {object}
  */
-QualityControl.Visualization.Treemap.Class.prototype.data = function(data) {
+QualityControl.Visualization.Treemap.Class.prototype.filter = function(data) {
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // CA metric is only on class-level (also project-wide sum, which is excluded by the d.name check)
         if (d.ca === undefined || d.name === undefined) {

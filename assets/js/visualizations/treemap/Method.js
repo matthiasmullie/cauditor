@@ -11,10 +11,10 @@ QualityControl.Visualization.Treemap.Method.prototype = Object.create(QualityCon
  * @param {object} data
  * @return {object}
  */
-QualityControl.Visualization.Treemap.Method.prototype.data = function(data) {
+QualityControl.Visualization.Treemap.Method.prototype.filter = function(data) {
     return d3.layout.treemap().nodes(data).filter(function(d) {
-        // if there's a children node, we're not on method-level
-        if (d.children !== undefined) {
+        // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
+        if (d.ccn === undefined || d.name === undefined) {
             return false;
         }
 

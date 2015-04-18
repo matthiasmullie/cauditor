@@ -12,7 +12,7 @@ QualityControl.Visualization.Abstract = function() {
  * @param {object} data
  * @return {object}
  */
-QualityControl.Visualization.Abstract.prototype.nodes = function(data) {
+QualityControl.Visualization.Abstract.prototype.filter = function(data) {
     return data;
 };
 
