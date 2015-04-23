@@ -39,9 +39,19 @@ Extremely simple database-interaction handlers.
 
 Allows for simple select, upsert & delete.
 
-## import/*
+## analyzers/*
 
-Import-related scripts will be shoved in here. Makefile will orchestrate everything.
+Classes to analyze code. It'll clone the project, fetch all commits (since last imported commit), loop them & analyze
+all of them. After analyzing the code, the result will be handed off to listeners/*
+
+There is currently only support for PHP.
+
+## listeners/*
+
+After analyzing commits, the result will be passed off to these files, who can then further process that data.
+
+* `store_file.py` will store the result to a json file
+* `store_db.py` will record the commit in DB along with metric differences between commits
 
 ## templates/*
 
