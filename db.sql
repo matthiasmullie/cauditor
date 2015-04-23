@@ -14,16 +14,7 @@ CREATE TABLE IF NOT EXISTS `commits` (
   `author_date` datetime NOT NULL, -- date authored
   `committer` varchar(255) NOT NULL, -- committer email
   `commit_date` datetime NOT NULL, -- date of commit
-  `loc` int(11) NOT NULL, -- amount of added lines in this commit
-  `ca` float NOT NULL, -- average ca in this commits: (this commit total - prev commit total) / lines
-  `ce` float NOT NULL, -- average ce in this commits: (this commit total - prev commit total) / lines
-  `i` float NOT NULL, -- average i in this commits: (this commit total - prev commit total) / lines
-  `dit` float NOT NULL, -- average dit in this commits: (this commit total - prev commit total) / lines
-  `ccn` float NOT NULL, -- average ccn in this commits: (this commit total - prev commit total) / lines
-  `npath` float NOT NULL, -- average npath in this commits: (this commit total - prev commit total) / lines
-  `he` float NOT NULL, -- average he in this commits: (this commit total - prev commit total) / lines
-  `hi` float NOT NULL, -- average hi in this commits: (this commit total - prev commit total) / lines
-  `mi` float NOT NULL, -- average mi in this commits: (this commit total - prev commit total) / lines
+  `metrics` blob DEFAULT NULL, -- metrics for this specific commit
   PRIMARY KEY (`project`,`hash`),
   -- @todo below UNIQUE will fail to insert commits in forks - fix this DB to allow that some day (but not store stats more than once)
   UNIQUE KEY `idx_unique` (`project`,`hash`,`author`), -- ensure commits only get in once (don't care about same commit in forks)
