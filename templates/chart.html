@@ -15,7 +15,7 @@
     <div class="chart"></div>
 
     <script>
-        d3.json('/data/{{ project.name }}/{{ commit.hash }}.json', function(data) {
+        d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
                 chart = new QualityControl(data);
             chart.draw('.chart', new {{ chart.class }}());
