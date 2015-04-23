@@ -12,6 +12,7 @@ QualityControl.Visualization.Treemap.Class.prototype = Object.create(QualityCont
  * @return {object}
  */
 QualityControl.Visualization.Treemap.Class.prototype.filter = function(data) {
+    var fqcn = [];
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // CA metric is only on class-level (also project-wide sum, which is excluded by the d.name check)
         if (d.ca === undefined || d.name === undefined) {
@@ -24,6 +25,12 @@ QualityControl.Visualization.Treemap.Class.prototype.filter = function(data) {
         if (d.package !== '+global') {
             d.fqcn = d.package + '\\' + d.fqcn;
         }
+
+        // skip duplicates
+        if (fqcn.indexOf(d.fqcn) >= 0) {
+            return false;
+        }
+        fqcn.push(d.fqcn);
 
         return true;
     });
