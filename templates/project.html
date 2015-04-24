@@ -4,12 +4,17 @@
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
-<script src="/assets/js/visualizations/treemap/Class.js"></script>
-<script src="/assets/js/visualizations/treemap/Method.js"></script>
-{% for chart in charts %}
-<script src="{{ chart.file }}"></script>
-{% endfor %}
 
+{# Elaborate workaround to only include unique files #}
+{% set files = [] %}
+{% for grouper, charts in charts|groupby('files') %}
+    {% for file in grouper %}
+        {% if file not in files %}
+            <script src="{{ file }}"></script>
+        {% endif %}
+    {% endfor %}
+    {% set files = files + grouper %}
+{% endfor %}
 
 {% if commits %}
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
@@ -28,10 +33,15 @@
     <script>
         d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
-                chart = new QualityControl(data);
+                visualization, chart;
 
-            {% for chart in charts %}
-                chart.draw('#{{ chart.code }} .chart', new {{ chart.class }}());
+            {% for class, charts in charts|groupby('class') %}
+                visualization = new {{ class }}();
+                chart = new QualityControl(data, visualization);
+
+                {% for chart in charts %}
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
+                {% endfor %}
             {% endfor %}
         });
     </script>

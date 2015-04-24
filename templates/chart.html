@@ -4,9 +4,9 @@
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
-<script src="/assets/js/visualizations/treemap/Class.js"></script>
-<script src="/assets/js/visualizations/treemap/Method.js"></script>
-<script src="{{ chart.file }}"></script>
+{% for file in chart.files %}
+    <script src="{{ file }}"></script>
+{% endfor %}
 
 
 {% if commits %}
@@ -17,8 +17,10 @@
     <script>
         d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
-                chart = new QualityControl(data);
-            chart.draw('.chart', new {{ chart.class }}());
+                visualization = new {{ chart.class }}();
+                chart = new QualityControl(data, visualization);
+
+            chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
         });
     </script>
 {% else %}

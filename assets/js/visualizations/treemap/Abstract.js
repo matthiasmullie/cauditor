@@ -3,16 +3,18 @@
 QualityControl.Visualization.Treemap = QualityControl.Visualization.Treemap || {};
 
 QualityControl.Visualization.Treemap.Abstract = function() {
-    QualityControl.Visualization.Abstract.call(this, arguments);
+    QualityControl.Visualization.Abstract.apply(this, arguments);
 };
 QualityControl.Visualization.Treemap.Abstract.prototype = Object.create(QualityControl.Visualization.Abstract.prototype);
 
 /**
  * d3plus visualization.
  *
+ * @param {string|callback} value Name of the column holding value to color by, or callback function
+ * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
  * @return {d3plus.viz}
  */
-QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function() {
+QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function(value, range) {
     return d3plus.viz()
         .type('tree_map')
         // nesting package > class
@@ -22,23 +24,6 @@ QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function
         .size({ 'threshold' : false, 'value': this.size })
         // show full depth (0 = package level; 1 = class)
         .depth(this.id.length)
-        // color blocks from green to red, based on a particular column & range
-        .color(function(d) {
-            var value = this.color[0],
-                range = this.color[1],
-                color = d3.scale.linear()
-                    .domain(range)
-                    // green - yellow - red
-                    .range(['#1F9B1F', '#F4BE00', '#F45800']);
-
-            /*
-             * value can be:
-             * * column name for value in d
-             * * callback function, accepting d, returning value
-             */
-            value = typeof(value) === 'function' ? value(d) : d[value];
-            return color(value)
-        }.bind(this))
         // don't show a legend of the colors; that'd be pretty useless since
         // our weighed value isn't the actual value anymore
         .legend(false)
@@ -54,7 +39,22 @@ QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function
         // don't show any labels; fqcn are too long for those tiny blocks
         .labels(false)
         // can't zoom in, everything's shown on class-level already
-        .zoom(false);
+        .zoom(false)
+        // color blocks from green to red, based on a particular column & range
+        .color(function(value, range, d) {
+            var color = d3.scale.linear()
+                .domain(range)
+                // green - yellow - red
+                .range(['#1F9B1F', '#F4BE00', '#F45800']);
+
+            /*
+             * value can be:
+             * * column name for value in d
+             * * callback function, accepting d, returning value
+             */
+            value = typeof(value) === 'function' ? value(d) : d[value];
+            return color(value)
+        }.bind(this, value, range));
 };
 
 /**
@@ -70,13 +70,6 @@ QualityControl.Visualization.Treemap.Abstract.prototype.id = ['name'];
  * @type {string[]}
  */
 QualityControl.Visualization.Treemap.Abstract.prototype.size = 'loc';
-
-/**
- * Column to color blocks by, and green-yellow-red thresholds.
- *
- * @type {{string: number[]}}
- */
-QualityControl.Visualization.Treemap.Abstract.prototype.color = ['loc', [0, 10, 100]];
 
 /**
  * Array of columns to include in tooltip

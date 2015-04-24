@@ -1,7 +1,7 @@
 // visualizations/treemap/Abstract.js must be loaded before this file
 
 QualityControl.Visualization.Treemap.Method = function() {
-    QualityControl.Visualization.Treemap.Abstract.call(this, arguments);
+    QualityControl.Visualization.Treemap.Abstract.apply(this, arguments);
 };
 QualityControl.Visualization.Treemap.Method.prototype = Object.create(QualityControl.Visualization.Treemap.Abstract.prototype);
 
