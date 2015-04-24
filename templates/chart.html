@@ -17,8 +17,8 @@
     <script>
         d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
-                visualization = new {{ chart.class }}();
-                chart = new QualityControl(data, visualization);
+                visualization = new {{ chart.class }}(data);
+                chart = new QualityControl(visualization);
 
             chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
         });

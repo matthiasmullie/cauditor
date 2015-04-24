@@ -2,8 +2,11 @@
 
 QualityControl.Visualization = QualityControl.Visualization || {};
 
-QualityControl.Visualization.Abstract = function() {
-    // constructor
+/**
+ * @param {QualityControl.Data} data
+ */
+QualityControl.Visualization.Abstract = function(data) {
+    this.data = data.filter(this.filter);
 };
 
 /**
