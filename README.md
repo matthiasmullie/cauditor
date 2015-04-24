@@ -39,10 +39,14 @@ Extremely simple database-interaction handlers.
 
 Allows for simple select, upsert & delete.
 
+## importers/*
+
+Importers: clone the project, fetch all commits (since last imported commit), loop them & run analyzers (to generate our
+data) & listeners (post-processing, like storing data)
+
 ## analyzers/*
 
-Classes to analyze code. It'll clone the project, fetch all commits (since last imported commit), loop them & analyze
-all of them. After analyzing the code, the result will be handed off to listeners/*
+Classes to analyze code & generate the results we need for the graphs.
 
 There is currently only support for PHP.
 

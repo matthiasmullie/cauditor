@@ -1,4 +1,4 @@
-def process(project, commit, data, previous):
+def execute(project, commit, data, previous):
     avg = averages(data)
     old_avg = averages(previous) if previous else {metric: 0 for metric, value in avg.items()}  # previous can be empty
 
