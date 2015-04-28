@@ -1,7 +1,3 @@
-from importers import full
-
-# @todo need imports for:
-# * last commit (so that we can display results fast instead of waiting for complete import...)
-# * new-since-last-imported (for regular cronjobs)
-# * full import
-# current 'full' is hybrid between new-since-last-imported & full import
+from importers import last_commit  # just most current commit on master (for fast results)
+from importers import from_first_commit  # full repo, all commits up to most current commit on master
+from importers import since_last_commit  # updates: import any new commit since last imported

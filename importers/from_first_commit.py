@@ -5,6 +5,9 @@ import models
 
 
 class Importer(object):
+    list_commits_command = "git log --pretty=format:'%H\t%ae\t%ad\t%ce\t%cd' --reverse --date=local {hash}"
+    includes_skip = False  # skips first item returned by list_commits_command, because it's "previous" to compare with
+
     def __init__(self, project):
         projects = models.projects.Projects()
         self.project = projects.select(name=project)[0]
@@ -25,11 +28,11 @@ class Importer(object):
             self.clone(self.project['git'], self.path)
             commits = self.list_commits(self.path, self.commit['hash'] if self.commit else None)
 
-            # analyze already-imported last revision: this makes it possible to calculate
+            # analyze previous revision: this makes it possible to calculate
             # differences between commits. We could rely on the data from when we
-            # previously analyzed that commit, but it analyzer software changes, that would
-            # be unreliable
-            previous = self.analyze(self.commit) if self.commit else {}
+            # previously analyzed that commit, but it analyzer software changes,
+            # that would be unreliable
+            previous = self.analyze(self.project, self.path) if self.commit else {}
             for commit in commits:
                 self.checkout(self.path, commit)
                 data = self.analyze(self.project, self.path)
