@@ -135,7 +135,7 @@ class Select(object):
         kwargs = {key: value if isinstance(value, list) else [value] for key, value in kwargs.items()}
         where = [key + " IN (" + ", ".join((["%s"] * len(values))) + ")" for key, values in kwargs.items()]
 
-        self.__where = "WHERE " + " AND ".join(where)
+        self.__where = "WHERE " + " AND ".join(where) if where else ""
         self.__params = [param for params in kwargs.values() for param in params]
 
         return self
