@@ -6,11 +6,11 @@ def load_config():
     return yaml.load(stream)
 
 
-def mysql():
+def mysql(**kwargs):
     import pymysql
 
     config = load_config()['mysql']
-    return pymysql.connect(host=config['host'], user=config['user'], passwd=config['pass'], db=config['db'], charset='utf8')
+    return pymysql.connect(host=config['host'], user=config['user'], passwd=config['pass'], db=config['db'], charset='utf8', **kwargs)
 
 
 def github(token):
