@@ -74,7 +74,7 @@ class Select(object):
     cursor = None
 
     def __init__(self, parent):
-        self.parent = parent  # keep parent around because we don't want __del__ to be called on it until this object is dead
+        self.parent = parent  # keep parent around so its __del__ isn't run until this object is dead
         self.connection = parent.connection
         self.table = parent.table
         self.__where = ""
@@ -196,4 +196,8 @@ class Select(object):
         :param result: dict
         :return: dict
         """
-        return {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in result.items()}
+        try :
+            return {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in result.items()}
+        except UnicodeDecodeError:
+            # pickled data, for example, will fail to decode - just fallback to original `bytes `data in that case
+            return result
