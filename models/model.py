@@ -74,7 +74,7 @@ class Select(object):
     cursor = None
 
     def __init__(self, parent):
-        self.parent = parent # @todo: need comment
+        self.parent = parent  # keep parent around because we don't want __del__ to be called on it until this object is dead
         self.connection = parent.connection
         self.table = parent.table
         self.__where = ""
