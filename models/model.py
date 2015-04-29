@@ -6,10 +6,9 @@ class DbManager(object):
 
     def __init__(self):
         import container
-        self.connection = container.mysql()  # could set autocommit=True, if so desired
+        self.connection = container.mysql(autocommit=True)
 
     def __del__(self):
-        self.connection.commit()
         self.connection.close()
 
     def select(self, options="", **kwargs):
