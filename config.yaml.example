@@ -15,7 +15,7 @@ charts:
     -
         code: "ccn"
         name: "Cyclomatic Complexity"
-        files: "/assets/js/visualizations/treemap/Method.js"
+        files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
         # 1-4 green-ish; 5-7 yellow-ish; 8-10: orange-ish; 10+: red
         # @see http://phpmd.org/rules/codesize.html#npathcomplexity
@@ -23,7 +23,7 @@ charts:
     -
         code: "npath"
         name: "Npath Complexity"
-        files: "/assets/js/visualizations/treemap/Method.js"
+        files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
         # 0-100: green to yellow; 100-200: orange to red; 200+: red
         # @see http://pdepend.org/documentation/software-metrics/cyclomatic-complexity.html
@@ -31,7 +31,7 @@ charts:
     -
         code: "mi"
         name: "Maintainability Index"
-        files: "/assets/js/visualizations/treemap/Method.js"
+        files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
         # 100-20 is considered ok; 20-10 suspicious; 10-0 bad
         # given the long green range and very low threshold, things can start to turn orange-ish a bit earlier
@@ -40,19 +40,19 @@ charts:
     -
         code: "he"
         name: "Halstead Effort"
-        files: "/assets/js/visualizations/treemap/Method.js"
+        files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
         range: [0, 5000, 10000]
     -
         code: "hi"
         name: "Halstead Intelligent Content"
-        files: "/assets/js/visualizations/treemap/Method.js"
+        files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
         range: [0, 30, 60]
     -
         code: "dit"
         name: "Depth of Inheritance Tree"
-        files: "/assets/js/visualizations/treemap/Class.js"
+        files: ["/assets/js/visualizations/treemap/Class.js"]
         class: "QualityControl.Visualization.Treemap.Class"
         # anything inheriting from <2 classes is manageable, but then it starts
         # to get complex...
@@ -60,7 +60,7 @@ charts:
     -
         code: "ca"
         name: "Afferent Coupling"
-        files: "/assets/js/visualizations/treemap/Class.js"
+        files: ["/assets/js/visualizations/treemap/Class.js"]
         class: "QualityControl.Visualization.Treemap.Class"
         # being used by lots of other packages can signify the class isn't independent enough
         # being high means having a lot of impact on the codebase, lots of others depend on you
@@ -68,7 +68,7 @@ charts:
     -
         code: "ce"
         name: "Efferent Coupling"
-        files: "/assets/js/visualizations/treemap/Class.js"
+        files: ["/assets/js/visualizations/treemap/Class.js"]
         class: "QualityControl.Visualization.Treemap.Class"
         # using lots of other packages can signify the class has too much responsibilities
         range: [0, 10, 20]
