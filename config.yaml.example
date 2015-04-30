@@ -21,13 +21,11 @@ charts:
         # @see http://phpmd.org/rules/codesize.html#npathcomplexity
         range: [0, 6, 11]
     -
-        code: "npath"
-        name: "Npath Complexity"
+        code: "hi"
+        name: "Halstead Intelligent Content"
         files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
-        # 0-100: green to yellow; 100-200: orange to red; 200+: red
-        # @see http://pdepend.org/documentation/software-metrics/cyclomatic-complexity.html
-        range: [0, 100, 200]
+        range: [0, 30, 60]
     -
         code: "mi"
         name: "Maintainability Index"
@@ -37,26 +35,6 @@ charts:
         # given the long green range and very low threshold, things can start to turn orange-ish a bit earlier
         # @see http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx
         range: [75, 30, 20]
-    -
-        code: "he"
-        name: "Halstead Effort"
-        files: ["/assets/js/visualizations/treemap/Method.js"]
-        class: "QualityControl.Visualization.Treemap.Method"
-        range: [0, 5000, 10000]
-    -
-        code: "hi"
-        name: "Halstead Intelligent Content"
-        files: ["/assets/js/visualizations/treemap/Method.js"]
-        class: "QualityControl.Visualization.Treemap.Method"
-        range: [0, 30, 60]
-    -
-        code: "dit"
-        name: "Depth of Inheritance Tree"
-        files: ["/assets/js/visualizations/treemap/Class.js"]
-        class: "QualityControl.Visualization.Treemap.Class"
-        # anything inheriting from <2 classes is manageable, but then it starts
-        # to get complex...
-        range: [0, 2, 4]
     -
         code: "ca"
         name: "Afferent Coupling"

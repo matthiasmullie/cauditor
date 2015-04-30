@@ -37,4 +37,4 @@ QualityControl.Visualization.Treemap.Class.prototype.filter = function(data) {
 };
 
 QualityControl.Visualization.Treemap.Class.prototype.id = ['package', 'name'];
-QualityControl.Visualization.Treemap.Class.prototype.tooltip = ['loc', 'ca', 'ce', 'i', 'dit'];
+QualityControl.Visualization.Treemap.Class.prototype.tooltip = ['loc', 'ca', 'ce', 'i'];
