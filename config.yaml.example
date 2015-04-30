@@ -25,7 +25,7 @@ charts:
         name: "Halstead Intelligent Content"
         files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "QualityControl.Visualization.Treemap.Method"
-        range: [0, 30, 60]
+        range: [0, 40, 60]
     -
         code: "mi"
         name: "Maintainability Index"
