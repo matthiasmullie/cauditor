@@ -30,3 +30,41 @@
     height: 100%;
     padding-right: 15px;
 }
+
+/* Take away border that would show up after the colored thingy we're appending after navbar */
+nav.navbar {
+    border-bottom: 0
+}
+
+nav.navbar::after {
+    /* Reinstate the 1px border again */
+    border-top: 1px solid;
+
+    /* Using ::after + background, but some day (once properly supported) this should be border-image on .navbar */
+    content: ' ';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg,
+        #1F9B1F 10%, /* green */
+        #FFF 10%, #FFF 11%,
+        #F4BE00 11%, #F4BE00 16%, /* yellow */
+        #FFF 16%, #FFF 17%,
+        #1F9B1F 17%, #1F9B1F 27%, /* green */
+        #FFF 27%, #FFF 28%,
+        #F4BE00 28%, #F4BE00 33%, /* yellow */
+        #FFF 33%, #FFF 34%,
+        #F45800 34%, #F45800 44%, /* red */
+        #FFF 44%, #FFF 45%,
+        #1F9B1F 45%, #1F9B1F 55%, /* green */
+        #FFF 55%, #FFF 56%,
+        #F45800 56%, #F45800 61%, /* red */
+        #FFF 61%, #FFF 62%,
+        #F4BE00 62%, #F4BE00 72%, /* yellow */
+        #FFF 72%, #FFF 73%,
+        #1F9B1F 73%, #1F9B1F 83%, /* green */
+        #FFF 83%, #FFF 84%,
+        #F4BE00 84%, #F4BE00 89%, /* yellow */
+        #FFF 89%, #FFF 90%,
+        #F45800 90% /* red */
+    );
+}
