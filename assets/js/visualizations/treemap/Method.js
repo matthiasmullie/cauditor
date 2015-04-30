@@ -38,4 +38,3 @@ QualityControl.Visualization.Treemap.Method.prototype.filter = function(data) {
 };
 
 QualityControl.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];
-QualityControl.Visualization.Treemap.Method.prototype.tooltip = ['loc', 'ccn', 'hi', 'mi'];

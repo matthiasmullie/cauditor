@@ -10,9 +10,10 @@ QualityControl.Visualization.Treemap.Instability.prototype = Object.create(Quali
  *
  * @param {string|callback} value Name of the column holding value to color by, or callback function
  * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
+ * @param {object} tooltip Object in { columnname: text } format
  * @return {d3plus.viz}
  */
-QualityControl.Visualization.Treemap.Instability.prototype.visualization = function(value, range) {
+QualityControl.Visualization.Treemap.Instability.prototype.visualization = function(value, range, tooltip) {
     /*
      * Overriding value.
      * Due to how instability is calculated (ce / (ce + ca)) it's pretty
@@ -28,5 +29,5 @@ QualityControl.Visualization.Treemap.Instability.prototype.visualization = funct
     var value = function(d) {
         return d.ce / (d.ce + d.ca + 3);
     };
-    return QualityControl.Visualization.Treemap.Class.prototype.visualization.call(this, value, range);
+    return QualityControl.Visualization.Treemap.Class.prototype.visualization.call(this, value, range, tooltip);
 };

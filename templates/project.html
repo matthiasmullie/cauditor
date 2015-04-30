@@ -33,6 +33,7 @@
     <script>
         d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
+                tooltip = {},
                 visualization, chart;
 
             {% for class, charts in charts|groupby('class') %}
@@ -40,7 +41,8 @@
                 chart = new QualityControl(visualization);
 
                 {% for chart in charts %}
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
+                    tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
                 {% endfor %}
             {% endfor %}
         });

@@ -17,10 +17,11 @@
     <script>
         d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
             var data = new QualityControl.Data(data),
-                visualization = new {{ chart.class }}(data);
-                chart = new QualityControl(visualization);
+                visualization = new {{ chart.class }}(data),
+                chart = new QualityControl(visualization),
+                tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});
 
-            chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
+            chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
         });
     </script>
 {% else %}
