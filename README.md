@@ -37,7 +37,9 @@ There will always be at least 1 matching controller object: fallback.py matches 
 
 Extremely simple database-interaction handlers.
 
-Allows for simple select, upsert & delete.
+Allows for simple select, upsert, update & delete.
+
+Session handler (sessions.py) & job queue (jobs.py) are in here too (they use DB)
 
 ## importers/*
 
