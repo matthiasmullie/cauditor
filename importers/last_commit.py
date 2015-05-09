@@ -15,7 +15,7 @@ class Importer(object):
         # figure out last imported commit in this project (if any)
         try:
             commits = models.commits.Commits()
-            self.commit = commits.select(project=project, option=["ORDER BY commit_date DESC", "LIMIT 1"])[0]
+            self.commit = commits.select(project=project, options=["ORDER BY commit_date DESC", "LIMIT 1"])[0]
         except Exception:
             self.commit = None
 
