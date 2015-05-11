@@ -1,88 +1,90 @@
-{% if not user %}
-    <div class="container">
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            You are not currently logged in. Please <a class="alert-link" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">authenticate via GitHub</a>.
-        </div>
-    </div>
-{% else %}
-    <div class="row">
-        {% set project_names = user_projects|map(attribute='name')|list %}
-
-        {% for repo in repos %}
-            <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                <h2>
-                    {{ repo.name }}
-                    <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
-                </h2>
-                <div class="buttons">
-                    {# If any content in this div changes, make sure those changes are also reflected in the JS below (yes I'm lazy here, both should reuse same code) #}
-
-                    {% if repo.name in project_names %}
-                        <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
-                        <a class="btn btn-success" href="/{{ repo.name }}">See stats <i class="fa fa-caret-right"></i></a>
-                    {% else %}
-                        {% if not repo.private %}
-                            <a class="btn btn-primary link" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
-                        {% else %}
-                            <a class="btn btn-primary disabled" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
-                        {% endif %}
-                    {% endif %}
-                </div>
+<div class="container">
+    {% if not user %}
+        <div class="container">
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                You are not currently logged in. Please <a class="alert-link" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">authenticate via GitHub</a>.
             </div>
-        {% endfor %}
-    </div>
+        </div>
+    {% else %}
+        <div class="row">
+            {% set project_names = user_projects|map(attribute='name')|list %}
 
-    <script>
-        $(document).on('click', '.link', function(e) {
-            e.preventDefault();
+            {% for repo in repos %}
+                <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
+                    <h2>
+                        {{ repo.name }}
+                        <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
+                    </h2>
+                    <div class="buttons">
+                        {# If any content in this div changes, make sure those changes are also reflected in the JS below (yes I'm lazy here, both should reuse same code) #}
+
+                        {% if repo.name in project_names %}
+                            <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
+                            <a class="btn btn-success" href="/{{ repo.name }}">See stats <i class="fa fa-caret-right"></i></a>
+                        {% else %}
+                            {% if not repo.private %}
+                                <a class="btn btn-primary link" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
+                            {% else %}
+                                <a class="btn btn-primary disabled" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <script>
+            $(document).on('click', '.link', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/api/link',
+                    method: 'POST',
+                    data: $(this).data()
+                })
+                .done(function(data) {
+                    var $button = $(e.target),
+                        $div = $button.parent('.buttons').empty(),
+                        action = $button.data('action');
+
+                    if (action === 'link') {
+                        // we just linked the repo
+                        $div.append(
+                            '<a class="btn btn-danger link" data-repo="'+ data.name +'" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>' + "\n" +
+                            '<a class="btn btn-success" href="/'+ data.name +'">See stats <i class="fa fa-caret-right"></i></a>'
+                        );
+                    } else if (action === 'unlink') {
+                        // we just unlinked the repo
+                        $div.append('<a class="btn btn-primary link" href="#" data-repo="'+ data.name +'" data-action="link"><i class="fa fa-link"></i> Link</a>');
+                    }
+                })
+                .fail(function() {
+                    // @todo better error handling; this is piss-poor!
+                    alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
+                });
+            });
 
             $.ajax({
-                url: '/api/link',
-                method: 'POST',
-                data: $(this).data()
+                url: '/api/repos',
+                method: 'GET'
             })
             .done(function(data) {
-                var $button = $(e.target),
-                    $div = $button.parent('.buttons').empty(),
-                    action = $button.data('action');
+                var existing = [],
+                    current = data.map(function(repo) {
+                        return repo.name;
+                    });
 
-                if (action === 'link') {
-                    // we just linked the repo
-                    $div.append(
-                        '<a class="btn btn-danger link" data-repo="'+ data.name +'" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>' + "\n" +
-                        '<a class="btn btn-success" href="/'+ data.name +'">See stats <i class="fa fa-caret-right"></i></a>'
-                    );
-                } else if (action === 'unlink') {
-                    // we just unlinked the repo
-                    $div.append('<a class="btn btn-primary link" href="#" data-repo="'+ data.name +'" data-action="link"><i class="fa fa-link"></i> Link</a>');
-                }
-            })
-            .fail(function() {
-                // @todo better error handling; this is piss-poor!
-                alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
-            });
-        });
-
-        $.ajax({
-            url: '/api/repos',
-            method: 'GET'
-        })
-        .done(function(data) {
-            var existing = [],
-                current = data.map(function(repo) {
-                    return repo.name;
+                $('.repo').each(function() {
+                    existing.push($(this).data('repo'));
                 });
 
-            $('.repo').each(function() {
-                existing.push($(this).data('repo'));
-            });
-
-            if (existing.sort().toString() !== current.sort().toString()) {
-                // @todo: ideally, I would re-render in-page, not refresh
-                location.reload();
-            }
-        })
-    </script>
-{% endif %}
+                if (existing.sort().toString() !== current.sort().toString()) {
+                    // @todo: ideally, I would re-render in-page, not refresh
+                    location.reload();
+                }
+            })
+        </script>
+    {% endif %}
+</div>

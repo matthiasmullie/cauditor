@@ -17,7 +17,8 @@ html, body {
  * I'd rather have the chart be slightly bigger and the footer be
  * just below the fold.
  */
-body[data-template="chart.html"] .content {
+body[data-template="chart.html"] .content,
+body[data-template="chart.html"] .content > div.container-fluid {
     height: 100%;
     margin-bottom: 0;
 }
