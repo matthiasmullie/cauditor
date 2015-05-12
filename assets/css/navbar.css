@@ -37,38 +37,3 @@ nav.navbar {
     text-transform: uppercase;
     color: #CCC;
 }
-
-nav.navbar::after {
-    /* Reinstate the 1px border again */
-    border-top: 1px solid;
-
-    /* Using ::after + background, but some day (once properly supported) this should be border-image on .navbar */
-    content: ' ';
-    display: block;
-    height: 4px;
-    background: linear-gradient(90deg,
-        #1F9B1F 100px, /* green */
-        #FFF 100px, #FFF 105px,
-        #F4BE00 105px, #F4BE00 155px, /* yellow */
-        #FFF 155px, #FFF 160px,
-        #1F9B1F 160px, #1F9B1F 260px, /* green */
-        #FFF 260px, #FFF 265px,
-        #F4BE00 265px, #F4BE00 315px, /* yellow */
-        #FFF 315px, #FFF 320px,
-        #F45800 320px, #F45800 420px, /* red */
-        #FFF 420px, #FFF 425px,
-        #1F9B1F 425px, #1F9B1F 525px, /* green */
-        #FFF 525px, #FFF 530px,
-        #F45800 530px, #F45800 580px, /* red */
-        #FFF 580px, #FFF 585px,
-        #F4BE00 585px, #F4BE00 685px, /* yellow */
-        #FFF 685px, #FFF 690px,
-        #1F9B1F 690px, #1F9B1F 790px, /* green */
-        #FFF 790px, #FFF 795px,
-        #F4BE00 795px, #F4BE00 845px, /* yellow */
-        #FFF 845px, #FFF 850px,
-        #F45800 850px, #F45800 950px, /* red */
-        #FFF 950px, #FFF 955px
-    ) repeat;
-    background-size: 955px;
-}
