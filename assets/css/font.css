@@ -7,21 +7,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Reformat title fonts */
-h1, h2, h3, h4, h5, h6 {
-    text-transform: uppercase;
-    font-weight: 300;
-}
-
 h1 {
+    text-transform: uppercase;
     font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 15px;
 }
 
 h2 {
+    text-transform: uppercase;
     font-size: 15px;
+    font-weight: 300;
+    margin-bottom: 15px;
 }
 
 h3 {
-    font-size: 14px;
+    font-size: 16px;
+    margin: 0;
 }
 
 /* Make bold really really bold */
