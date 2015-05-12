@@ -36,12 +36,12 @@
                             <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
                         {% else %}
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> {{ project.name }} <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> {{ project.name }} <i class="fa fa-angle-down"></i></a>
 
                                 {# show list of user's own repos #}
                                 <ul class="dropdown-menu" role="menu">
                                     {% for repo in repos %}
-                                        <li><a href="/{{ repo.project }}" {% if repo.project == project.name %}class="active"{% endif %}>{{ repo.project }}</a></li>
+                                        <li><a href="/{{ repo.name }}" {% if repo.name == project.name %}class="active"{% endif %}>{{ repo.name }}</a></li>
                                         {% if not loop.last %}<li class="divider"></li>{% endif %}
                                     {% endfor %}
                                 </ul>
@@ -50,9 +50,9 @@
 
                         <li class="dropdown">
                             {% if not commit %}
-                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}<span class="caret"></span></a>
+                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}<i class="fa fa-angle-down"></i></a>
                             {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> {{ commit.hash|truncate(7, True, "") }} {% if commit.commit_date %}({{ commit.commit_date.strftime('%Y-%m-%d') }}){% endif %}<span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> {{ commit.hash|truncate(7, True, "") }} {% if commit.commit_date %}({{ commit.commit_date.strftime('%Y-%m-%d') }}){% endif %}<i class="fa fa-angle-down"></i></a>
                             {% endif %}
 
                             <ul class="dropdown-menu" role="menu">
@@ -70,9 +70,9 @@
 
                         <li class="dropdown">
                             {% if not chart %}
-                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> Overview <span class="caret"></span></a>
+                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> Overview <i class="fa fa-angle-down"></i></a>
                             {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> {{ chart.name }} <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
                             {% endif %}
 
                             <ul class="dropdown-menu" role="menu">
@@ -106,7 +106,7 @@
                     {% else %}
                         <li class="dropdown">
                             <a href="#" class="avatar dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <img src="{{ user.avatar }}" /> {{ user.name }} <span class="caret"></span>
+                                <img src="{{ user.avatar }}" /> {{ user.name }} <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/user">Repos</a></li>

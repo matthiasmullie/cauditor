@@ -1,0 +1,24 @@
+/* Change bootstrap's border-radius */
+.panel, .btn {
+    border-radius: 2px;
+}
+.panel-heading {
+    border-radius: 0;
+}
+
+/* Repo titles in /user can be too long & I don't want them to span multiple lines */
+.panel-heading {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Real default background color is butt-ugly */
+.panel-default > .panel-heading {
+    background-color: #FCFCFC;
+}
+
+/* Footer buttons should fill entire width */
+.panel-footer.buttons {
+    padding: 0;
+}

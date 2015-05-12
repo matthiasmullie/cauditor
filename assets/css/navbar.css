@@ -1,10 +1,7 @@
 /* Make fonts larger */
 .navbar-nav, .navbar-nav .dropdown-menu > li > a {
     font-weight: 300;
-    font-size: 16px;
-}
-.navbar-nav .dropdown-menu > li > a {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 /* Active links in dropdown weren't discernible */
@@ -34,6 +31,11 @@
 /* Take away border that would show up after the colored thingy we're appending after navbar */
 nav.navbar {
     border-bottom: 0
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    text-transform: uppercase;
+    color: #CCC;
 }
 
 nav.navbar::after {

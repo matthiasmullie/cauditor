@@ -8,32 +8,59 @@
             </div>
         </div>
     {% else %}
-        <div class="row">
-            {% set project_names = user_projects|map(attribute='name')|list %}
+        {% set project_names = user_projects|map(attribute='name')|list %}
+        {% set vendor = '' %}
 
-            {% for repo in repos %}
-                <div class="col-md-4 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                    <h2>
-                        {{ repo.name }}
+        {#
+            We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
+            but they seem to be in the correct order already and I don't really want vendors to be
+            ordered alphabetically (I want username vendor first, then organizations)
+        #}
+        {% for repo in repos %}
+            {% if vendor != repo.name.split('/')[0] %}
+                {% if vendor != '' %}
+                    <hr class="col-md-12" />
+                {% endif %}
+
+                {% set vendor = repo.name.split('/')[0] %}
+                <h2 class="col-md-12"><strong>{{ vendor }}</strong></h2>
+            {% endif %}
+
+            <div class="col-md-3 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
-                    </h2>
-                    <div class="buttons">
+                        {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
+                        {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
+                        {{ repo.name.split('/')[1] }}
+                    </div>
+                    <table class="table text-center">
+                        <tr>
+                            <td class="col-md-3">
+                                <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
+                            </td>
+                            <td class="col-md-3">
+                                <i class="fa fa-star"></i> {{ repo.stargazers_count }}
+                            </td>
+                            <td class="col-md-6">
+                                <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="panel-footer buttons">
                         {# If any content in this div changes, make sure those changes are also reflected in the JS below (yes I'm lazy here, both should reuse same code) #}
-
-                        {% if repo.name in project_names %}
-                            <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
-                            <a class="btn btn-success" href="/{{ repo.name }}">See stats <i class="fa fa-caret-right"></i></a>
-                        {% else %}
-                            {% if not repo.private %}
-                                <a class="btn btn-primary link" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
+                        <div class="btn-group btn-group-justified" role="group">
+                            {% if repo.name in project_names %}
+                                <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
+                                <a class="btn btn-success" href="/{{ repo.name }}">Metrics <i class="fa fa-caret-right"></i></a>
                             {% else %}
-                                <a class="btn btn-primary disabled" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
+                                <a class="btn btn-primary {% if not repo.private %}link{% else %}disabled{% endif %}" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
                             {% endif %}
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
 
         <script>
             $(document).on('click', '.link', function(e) {
@@ -46,7 +73,7 @@
                 })
                 .done(function(data) {
                     var $button = $(e.target),
-                        $div = $button.parent('.buttons').empty(),
+                        $div = $button.parent('.buttons .btn-group').empty(),
                         action = $button.data('action');
 
                     if (action === 'link') {

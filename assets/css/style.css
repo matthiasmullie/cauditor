@@ -1,7 +1,8 @@
 @import "sticky-footer.css";
 @import "logo.css";
 @import "chart.css";
-@import "navbar-improvements.css";
+@import "navbar.css";
+@import "panel.css";
 @import "font.css";
 
 html, body {

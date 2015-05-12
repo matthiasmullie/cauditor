@@ -63,9 +63,14 @@ class Controller(fallback.Controller):
         return {
             'id': repo.id,
             'name': repo.full_name,
-            'url': repo.url,
+            'url': repo.html_url,
             'git': repo.clone_url,
             'private': repo.private,
+            'language': repo.language,
+            'fork': repo.fork,
+            'forks_count': repo.forks_count,
+            # 'subscribers_count': repo.subscribers_count,  # doesn't yet exist in this version of pygithub
+            'stargazers_count': repo.stargazers_count,
         }
 
     def get_auth_token(self, code):
