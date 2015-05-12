@@ -52,7 +52,7 @@
                         <div class="btn-group btn-group-justified" role="group">
                             {% if repo.name in project_names %}
                                 <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
-                                <a class="btn btn-success" href="/{{ repo.name }}">Metrics <i class="fa fa-caret-right"></i></a>
+                                <a class="btn btn-success" href="/{{ repo.name }}">Metrics <i class="fa fa-angle-right"></i></a>
                             {% else %}
                                 <a class="btn btn-primary {% if not repo.private %}link{% else %}disabled{% endif %}" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
                             {% endif %}
