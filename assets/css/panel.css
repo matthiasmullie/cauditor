@@ -5,21 +5,3 @@
 .panel-heading {
     border-radius: 0;
 }
-
-/* Repo titles in /user can be too long & I don't want them to span multiple lines */
-.panel h3 {
-    /* max 2 lines for repo name */
-    line-height: 20px;
-    height: 40px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
-}
-.panel i.fa-github {
-    font-size: 40px;
-}
-
-/* Footer buttons should fill entire width */
-.panel-footer.buttons {
-    padding: 0;
-}

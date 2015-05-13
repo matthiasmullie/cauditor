@@ -11,65 +11,53 @@
         {% set project_names = user_projects|map(attribute='name')|list %}
         {% set vendor = '' %}
 
-        {#
-            We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
-            but they seem to be in the correct order already and I don't really want vendors to be
-            ordered alphabetically (I want username vendor first, then organizations)
-        #}
         <div class="row">
-            {% for repo in repos %}
-                {% if vendor != repo.name.split('/')[0] %}
-                    {% if vendor != '' %}
-                        </div><hr /><div class="row">
+            {# <table> is opened a couple of lines down, after outputting the new vendor title #}
+                {#
+                    We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
+                    but they seem to be in the correct order already and I don't really want vendors to be
+                    ordered alphabetically (I want username vendor first, then organizations)
+                #}
+                {% for repo in repos %}
+                    {% if vendor != repo.name.split('/')[0] %}
+                        {% if vendor != '' %}
+                            </table></div><hr /><div class="row"><table class="table">
+                        {% endif %}
+
+                        {% set vendor = repo.name.split('/')[0] %}
+                        <h2 class="col-md-12"><strong>{{ vendor }}</strong></h2>
+                        <table class="table">
                     {% endif %}
 
-                    {% set vendor = repo.name.split('/')[0] %}
-                    <h2 class="col-md-12"><strong>{{ vendor }}</strong></h2>
-                {% endif %}
-
-                <div class="col-md-3 repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                    <div class="panel panel-default">
-                        <table class="table">
-                            <tr>
-                                <td class="col-md-9">
-                                    <h3>{{ repo.name.split('/')[1] }}</h3>
-                                </td>
-                                <td class="col-md-2">
-                                    <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
-                                </td>
-                                <td class="col-md-1">
-                                    {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
-                                    {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="table">
-                            <tr>
-                                <td class="col-md-6">
-                                    <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
-                                </td>
-                                <td class="col-md-3">
-                                    <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
-                                </td>
-                                <td class="col-md-3">
-                                    <i class="fa fa-star"></i> {{ repo.stargazers_count }}
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="panel-footer buttons">
+                    <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
+                        <td class="col-md-6">
+                            {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
+                                <span class="title">{{ repo.name.split('/')[1] }}</span>
+                            {% if repo.name in project_names %}</a>{% endif %}
+                            {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
+                            {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
+                            <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
+                        </td>
+                        <td class="col-md-1">
+                            <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
+                        </td>
+                        <td class="col-md-1 text-center">
+                            <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
+                        </td>
+                        <td class="col-md-1 text-center">
+                            <i class="fa fa-star"></i> {{ repo.stargazers_count }}
+                        </td>
+                        <td class="col-md-1 text-right buttons">
                             {# If any content in this div changes, make sure those changes are also reflected in the JS below (yes I'm lazy here, both should reuse same code) #}
-                            <div class="btn-group btn-group-justified" role="group">
-                                {% if repo.name in project_names %}
-                                    <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
-                                    <a class="btn btn-success" href="/{{ repo.name }}">Metrics <i class="fa fa-angle-right"></i></a>
-                                {% else %}
-                                    <a class="btn btn-primary {% if not repo.private %}link{% else %}disabled{% endif %}" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+                            {% if repo.name in project_names %}
+                                <a class="btn btn-danger link" data-repo="{{ repo.name }}" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>
+                            {% else %}
+                                <a class="btn btn-primary {% if not repo.private %}link{% else %}disabled{% endif %}" href="#" data-repo="{{ repo.name }}" data-action="link"><i class="fa fa-link"></i> Link</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
 
         <script>
@@ -83,18 +71,18 @@
                 })
                 .done(function(data) {
                     var $button = $(e.target),
-                        $div = $button.parent('.buttons .btn-group').empty(),
+                        $title = $button.closest('.repo').find('.title'),
+                        $div = $button.parent('.buttons').empty(),
                         action = $button.data('action');
 
                     if (action === 'link') {
                         // we just linked the repo
-                        $div.append(
-                            '<a class="btn btn-danger link" data-repo="'+ data.name +'" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>' + "\n" +
-                            '<a class="btn btn-success" href="/'+ data.name +'">See stats <i class="fa fa-caret-right"></i></a>'
-                        );
+                        $div.append('<a class="btn btn-danger link" data-repo="'+ data.name +'" data-action="unlink"><i class="fa fa-unlink"></i> Unlink</a>');
+                        $title.wrap('<a href="/'+ data.name +'"></a>');
                     } else if (action === 'unlink') {
                         // we just unlinked the repo
                         $div.append('<a class="btn btn-primary link" href="#" data-repo="'+ data.name +'" data-action="link"><i class="fa fa-link"></i> Link</a>');
+                        $title.unwrap('<a href="/'+ data.name +'"></a>');
                     }
                 })
                 .fail(function() {
