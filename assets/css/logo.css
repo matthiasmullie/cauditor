@@ -1,32 +1,33 @@
-a.navbar-brand {
+.top-bar .title-area .name a {
     position: relative;
     text-indent: -9999px;
 
-    width: 125px;
+    width: 5rem;
+    padding: 0;
 }
 
 /*
  * Need ::before to hack around the fact that a background image
  * can't be bigger than the node it's on
  */
-a.navbar-brand::after {
+.title-area .name a::after {
     content: "";
-    width: 100px;
-    height: 100px;
+    width: 5rem;
+    height: 5rem;
 
     /* Line up nicely, so bottom corners align with nav bottom */
     position: absolute;
-    top: -6px;
-    left: 15px;
+    top: -0.5rem;
+    left: 0;
 
     background: url(http://www.mullie.eu/public/assets/images/logo.png) no-repeat;
-    background-size: 75px;
+    background-size: 4.5rem;
 }
 
-a.navbar-brand:hover {
-    -webkit-filter: grayscale(50%);
-    -moz-filter: grayscale(50%);
-    -ms-filter: grayscale(50%);
-    -o-filter: grayscale(50%);
-    filter: grayscale(50%);
+.title-area .name a:not(:hover) {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
 }

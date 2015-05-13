@@ -1,7 +1,0 @@
-/* Change bootstrap's border-radius */
-.panel, .btn {
-    border-radius: 2px;
-}
-.panel-heading {
-    border-radius: 0;
-}

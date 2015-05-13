@@ -1,3 +1,6 @@
+import models
+
+
 class Controller(object):
     template = "404.html"
 
@@ -21,10 +24,20 @@ class Controller(object):
 
     def args(self):
         args = self.config()
+
+        repos = self.session('repos') or []
+        projects = []
+        if repos:
+            # get all of this user's active projects
+            model = models.projects.Projects()
+            repo_names = [repo['name'] for repo in repos]
+            projects = model.select(name=repo_names)
+
         args.update({
             'template': self.template,
             'user': self.session('user') or {},
-            'repos': self.session('repos') or [],
+            'repos': repos,
+            'imported_repos': projects,
         })
         return args
 

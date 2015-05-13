@@ -2,11 +2,43 @@
 @import "logo.css";
 @import "chart.css";
 @import "navbar.css";
-@import "panel.css";
 @import "font.css";
 
 html, body {
     padding: 0;
     margin: 0;
     background-color: #f8f8f8;
+}
+
+pre, code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 13px;
+    background: #FCFCFC;
+    border: 1px solid #dfdfdf;
+}
+
+pre {
+    padding: 0.3rem 0.5rem;
+    margin-bottom: 0.75rem;
+
+    /* https://longren.io/wrapping-text-inside-pre-tags/ */
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Make the site wider; 1000max is still so tiny... */
+@media only screen and (min-width: 40.0625em) {
+    .contain-to-grid .top-bar,
+    .row {
+        max-width: 75rem; /* ~1200px */
+    }
+}
+
+.dimmed {
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    -webkit-opacity: 0.5;
 }

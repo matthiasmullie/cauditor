@@ -1,32 +1,39 @@
 @import "http://fonts.googleapis.com/css?family=Lato:300,400,700,900";
 
-/* Navbar & titles should get Lato */
-.navbar-nav, .navbar-nav .dropdown-menu > li > a,
+/* Nav & titles should get uppercase Lato */
+.top-bar-section ul li > a,
+.top-bar-section .dropdown li > a,
 h1, h2, h3, h4, h5, h6 {
     font-family: Lato, Helvetica, arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: 100;
 }
 
 /* Reformat title fonts */
 h1 {
-    text-transform: uppercase;
-    font-size: 18px;
     font-weight: 300;
     margin-bottom: 15px;
 }
 
 h2 {
-    text-transform: uppercase;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 300;
     margin-bottom: 15px;
 }
 
 h3 {
-    font-size: 16px;
+    font-size: 0.9rem;
+    text-transform: none;
     margin: 0;
 }
 
 /* Make bold really really bold */
 strong {
     font-weight: 900;
+}
+
+/* Some minor size adjustments; it was just too big... */
+p {
+    font-size: 14px;
+    margin-bottom: 0.75rem;
 }

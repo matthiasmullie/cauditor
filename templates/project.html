@@ -16,88 +16,93 @@
     {% set files = files + grouper %}
 {% endfor %}
 
-<div class="container">
-    {% if commits %}
-        {% if not commit %}{% set commit = commits[0] %}{% endif %}
+{% if commits %}
+    {% if not commit %}{% set commit = commits[0] %}{% endif %}
 
-        <div class="row">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="panel">
+                <p>
+                    <i class="fa fa-info-circle"></i>
                     Square size = lines of code. Square color = metric score. <strong>Focus on anomalies</strong>.
 
                     {# This link will expand below panel-body (see JS later in this tpl) #}
-                    <a id="expand-panel">more...</a>
-                </div>
-                <div class="panel-body" style="display: none;">
-                    <p>
-                        The size of the square represents the amount of lines of code in that method or class.
-                        The color is determined by the metric score, ranging from green to red. Red means worse.
-                    </p>
-                    <p>
-                        Focus on really high or unexpected red spots. Red spots are not necessarily bad! Not all code is alike and different problems need different solutions.<br />
-                        E.g. you're likely to find a higher complexity where your business logic lives.
-                    </p>
-                </div>
+                    <a id="expand-panel">More&hellip;</a>
+                </p>
+
+            </div>
+            <div class="panel panel-more" style="display: none;">
+                <p>
+                    The size of the square represents the amount of lines of code in that method or class.
+                    The color is determined by the metric score, ranging from green to red. Red means worse.
+                </p>
+                <p>
+                    Focus on really high or unexpected red spots. Red spots are not necessarily bad! Not all code is alike and different problems need different solutions.<br />
+                    E.g. you're likely to find a higher complexity where your business logic lives.
+                </p>
             </div>
         </div>
+    </div>
 
-        {% for chart in charts %}
-            <div class="row">
-                <div id="{{ chart.code }}" class="col-md-8">
-                    <h2><strong>{{ chart.name }}</strong></h2>
-                    <a href="/{{ project.name }}/{{ chart.code }}">
-                        <span class="chart"></span>
-                    </a>
-                </div>
-
-                <div class="col-md-4">
-                    <h2>
-                        {#
-                            Don't keep repeating the title; only show it once & fill it with &nbsp; in other places
-                            (to push down real content below 'space reserved for title')
-                        #}
-                        {% if loop.first %}
-                            <strong>What</strong> is this?
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </h2>
-
-                    {{ chart.description }}
-                </div>
+    {% for chart in charts %}
+        <div class="row">
+            <div id="{{ chart.code }}" class="small-12 large-8 columns">
+                <h2><strong>{{ chart.name }}</strong></h2>
+                <a href="/{{ project.name }}/{{ chart.code }}">
+                    <span class="chart"></span>
+                </a>
             </div>
 
-            {% if not loop.last %}<hr />{% endif %}
-        {% endfor %}
+            <div class="small-12 large-4 columns">
+                <h2>
+                    {#
+                        Don't keep repeating the title; only show it once & fill it with &nbsp; in other places
+                        (to push down real content below 'space reserved for title')
+                    #}
+                    {% if loop.first %}
+                        <strong>What</strong> is this?
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </h2>
 
-        <script>
-            d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
-                var data = new QualityControl.Data(data),
-                    tooltip = {},
-                    visualization, chart;
+                {{ chart.description }}
+            </div>
 
-                {% for class, charts in charts|groupby('class') %}
-                    visualization = new {{ class }}(data);
-                    chart = new QualityControl(visualization);
+            {% if not loop.last %}<div class="small-12 columns"><hr /></div>{% endif %}
+        </div>
 
-                    {% for chart in charts %}
-                        tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});
-                        chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
-                    {% endfor %}
+    {% endfor %}
+
+    <script>
+        d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
+            var data = new QualityControl.Data(data),
+                tooltip = {},
+                visualization, chart;
+
+            {% for class, charts in charts|groupby('class') %}
+                visualization = new {{ class }}(data);
+                chart = new QualityControl(visualization);
+
+                {% for chart in charts %}
+                    tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
                 {% endfor %}
-            });
+            {% endfor %}
+        });
 
-            $('#expand-panel').click(function() {
-                $(this).parent().siblings('.panel-body').show();
-                $(this).hide();
-            });
-        </script>
-    {% else %}
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            Couldn't find any commits for {{ project.name }}. If it was recently added, it may be importing.
+        $('#expand-panel').click(function() {
+            $(this).parent().parent().hide().siblings('.panel-more').show();
+            $(this).hide();
+        });
+    </script>
+{% else %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div data-alert class="alert-box alert">
+                <i class="fa fa-exclamation-circle"></i>
+                Couldn't find any commits for {{ project.name }}. If it was recently added, it may be importing.
+            </div>
         </div>
-    {% endif %}
-</div>
+    </div>
+{% endif %}

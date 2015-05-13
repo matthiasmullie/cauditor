@@ -5,11 +5,11 @@ html, body {
 .content {
     min-height: 100%;
 
-    /* navbar height, border & margin-bottom */
-    padding-top: calc(50px + 2px + 20px);
+    /* preserve some space below header and around other edges */
+    padding: 1.5rem 1rem;
 
     /* footer height + margin */
-    margin-bottom: calc(-50px - 10px);
+    margin-bottom: -3rem;
 }
 
 /*
@@ -17,21 +17,11 @@ html, body {
  * I'd rather have the chart be slightly bigger and the footer be
  * just below the fold.
  */
-body[data-template="chart.html"] .content,
-body[data-template="chart.html"] .content > div.container-fluid {
+body[data-template="chart.html"] .content {
     height: 100%;
     margin-bottom: 0;
 }
 
 .footer, .push {
-    margin-top: 10px;
-    height: 50px;
-}
-
-/*
- * Footer links have no proper hamburger button + dropdown (yet?)
- * for mobile view, so just inline them
- */
-.footer .nav > li {
-    display: inline-block;
+    height: 3rem;
 }

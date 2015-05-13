@@ -1,39 +1,21 @@
-/* Make fonts larger */
-.navbar-nav, .navbar-nav .dropdown-menu > li > a {
-    font-weight: 300;
-    font-size: 13px;
+/* Change navbar height */
+.top-bar,
+.top-bar-section li:not(.has-form) a:not(.button) {
+    height: 3rem;
+    line-height: 3rem;
+}
+.top-bar-section .has-dropdown > a:after {
+    top: 1.5rem;
 }
 
-/* Active links in dropdown weren't discernible */
-.dropdown-menu > li > a.active {
-    font-weight: bold;
-}
-
-/* Navbar links may be considered "default" and shouldn't appear too prominent */
-.dimmed {
-    opacity: 0.5;
-    -moz-opacity: 0.5;
-    -webkit-opacity: 0.5;
-}
-
-/* User avatar should be full navbar height */
-.navbar-nav > li > a.avatar {
-    height: 50px;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-.navbar img {
+/* User avatar should be full nav height */
+nav .avatar img {
     height: 100%;
     padding-right: 15px;
+    vertical-align: top;
 }
 
-/* Take away border that would show up after the colored thingy we're appending after navbar */
-nav.navbar {
-    border-bottom: 0
-}
-
-.navbar-inverse .navbar-nav > li > a {
-    text-transform: uppercase;
-    color: #CCC;
+/* Background color for active links was some blue-ish, which doesn't go with the logo */
+.top-bar-section li.active:not(.has-form) a:not(.button) {
+    background: #fc7e3f;
 }

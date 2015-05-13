@@ -7,96 +7,25 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.foundation5.zurb.com/foundation.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//cdn.foundation5.zurb.com/foundation.js"></script>
 </head>
 <body data-template="{{ template }}">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                {# hamburger menu for collapsed mobile nav #}
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+    <div class="contain-to-grid fixed">
+        <nav class="top-bar" data-topbar role="navigation" data-options="is_hover: false">
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="/">Quality control</a></h1>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
 
-                <a class="navbar-brand" href="/"><strong>Code</strong>charts</a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav">
-                    {% if project %}
-                        {% if not repos %}
-                            <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
-                        {% else %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> {{ project.name }} <i class="fa fa-angle-down"></i></a>
-
-                                {# show list of user's own repos #}
-                                <ul class="dropdown-menu" role="menu">
-                                    {% for repo in repos %}
-                                        <li><a href="/{{ repo.name }}" {% if repo.name == project.name %}class="active"{% endif %}>{{ repo.name }}</a></li>
-                                        {% if not loop.last %}<li class="divider"></li>{% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
-
-                        <li class="dropdown">
-                            {% if not commit %}
-                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}<i class="fa fa-angle-down"></i></a>
-                            {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> {{ commit.hash|truncate(7, True, "") }} {% if commit.commit_date %}({{ commit.commit_date.strftime('%Y-%m-%d') }}){% endif %}<i class="fa fa-angle-down"></i></a>
-                            {% endif %}
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="/{{ project.name }}" {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}>HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
-
-                                {% for c in commits %}
-                                    {# skip first commit, we're already showing it as HEAD #}
-                                    {% if not loop.first %}
-                                        <li class="divider"></li>
-                                        <li><a href="/{{ project.name }}/{{ c.hash }}" {% if commit and commit.hash == c.hash %}class="active"{% endif %}>{{ c.hash|truncate(7, True, "") }} {% if c.commit_date %}({{ c.commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            {% if not chart %}
-                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> Overview <i class="fa fa-angle-down"></i></a>
-                            {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-pie-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
-                            {% endif %}
-
-                            <ul class="dropdown-menu" role="menu">
-                                {% if not commit %}
-                                    <li><a href="/{{ project.name }}" {% if not chart %}class="active"{% endif %}>Overview</a></li>
-                                {% else %}
-                                    <li><a href="/{{ project.name }}/{{ commit.hash }}" {% if not chart %}class="active"{% endif %}>Overview</a></li>
-                                {% endif %}
-                                <li class="divider"></li>
-
-                                {% for g in charts %}
-                                    {% if not commit %}
-                                        <li><a href="/{{ project.name }}/{{ g.code }}" {% if chart and chart.code == g.code %}class="active"{% endif %}>{{ g.name }}</a></li>
-                                    {% else %}
-                                        <li><a href="/{{ project.name }}/{{ commit.hash }}/{{ g.code }}" {% if chart and chart.code == g.code %}class="active"{% endif %}>{{ g.name }}</a></li>
-                                    {% endif %}
-                                    {% if not loop.last %}<li class="divider"></li>{% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    {% endif %}
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
+            <section class="top-bar-section">
+                <ul class="right">
                     {% if not user %}
                         <li>
                             <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="avatar">
@@ -104,21 +33,82 @@
                             </a>
                         </li>
                     {% else %}
-                        <li class="dropdown">
-                            <a href="#" class="avatar dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <img src="{{ user.avatar }}" /> {{ user.name }} <i class="fa fa-angle-down"></i>
+                        <li class="has-dropdown">
+                            <a href="#" class="avatar">
+                                <img src="{{ user.avatar }}" /> {{ user.name }}
                             </a>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown">
                                 <li><a href="/user">Repos</a></li>
-                                <li class="divider"></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
                         </li>
                     {% endif %}
                 </ul>
-            </div>
-        </div>
-    </nav>
+
+                <ul class="left">
+                    {% if project %}
+                        {% if not imported_repos %}
+                            <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
+                        {% else %}
+                        <li class="has-dropdown">
+                            <a href="#"><i class="fa fa-code-fork"></i> {{ project.name }}</a>
+
+                            {# show list of user's own, imported repos #}
+                            <ul class="dropdown">
+                                {% for repo in imported_repos %}
+                                    <li {% if repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <li class="has-dropdown">
+                            {% if not commit %}
+                                <a href="#" class="dimmed"><i class="fa fa-code"></i> HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}</a>
+                            {% else %}
+                                <a href="#"><i class="fa fa-code"></i> {{ commit.hash|truncate(7, True, "") }} {% if commit.commit_date %}({{ commit.commit_date.strftime('%Y-%m-%d') }}){% endif %}</a>
+                            {% endif %}
+
+                            <ul class="dropdown">
+                                <li {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}><a href="/{{ project.name }}">HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+
+                                {% for c in commits %}
+                                    {# skip first commit, we're already showing it as HEAD #}
+                                    {% if not loop.first %}
+                                        <li {% if commit and commit.hash == c.hash %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.hash }}">{{ c.hash|truncate(7, True, "") }} {% if c.commit_date %}({{ c.commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                        <li class="has-dropdown">
+                            {% if not chart %}
+                                <a href="#" class="dimmed"><i class="fa fa-pie-chart"></i> Overview</a>
+                            {% else %}
+                                <a href="#"><i class="fa fa-pie-chart"></i> {{ chart.name }}</a>
+                            {% endif %}
+
+                            <ul class="dropdown">
+                                {% if not commit %}
+                                    <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}">Overview</a></li>
+                                {% else %}
+                                    <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}">Overview</a></li>
+                                {% endif %}
+
+                                {% for g in charts %}
+                                    {% if not commit %}
+                                        <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ g.code }}">{{ g.name }}</a></li>
+                                    {% else %}
+                                        <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/{{ g.code }}">{{ g.name }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+            </section>
+        </nav>
+    </div>
 
     <div class="content">
         {% include template %}
@@ -126,17 +116,24 @@
         <div class="push"></div>
     </div>
 
-    <footer class="footer navbar-default">
-        <div class="container">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://www.mullie.eu">&copy; Matthias Mullie</a></li>
-                <li><a href="https://twitter.com/matthiasmullie/" title="Matthias on Twitter"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="https://www.linkedin.com/in/matthiasmullie" title="Matthias on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
-                <li><a href="https://github.com/matthiasmullie" title="Matthias on GitHub"><i class="fa fa-github"></i></a></li>
-                <li><a href="http://stackoverflow.com/users/802993/matthiasmullie" title="Matthias on StackOverflow"><i class="fa fa-stack-overflow"></i></a></li>
-                <li><a href="http://www.mullie.eu/contact.html" title="Contact Matthias"><i class="fa fa-envelope"></i></a></li>
-            </ul>
-        </div>
-    </footer>
+    <div class="contain-to-grid">
+        {# It's not really a top bar, but this has the CSS I want ... #}
+        <nav class="top-bar">
+            <section class="top-bar-section">
+                <ul class="right">
+                    <li><a href="http://www.mullie.eu">&copy; Matthias Mullie</a></li>
+                    <li><a href="https://twitter.com/matthiasmullie/" title="Matthias on Twitter"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/matthiasmullie" title="Matthias on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/matthiasmullie" title="Matthias on GitHub"><i class="fa fa-github"></i></a></li>
+                    <li><a href="http://stackoverflow.com/users/802993/matthiasmullie" title="Matthias on StackOverflow"><i class="fa fa-stack-overflow"></i></a></li>
+                    <li><a href="http://www.mullie.eu/contact.html" title="Contact Matthias"><i class="fa fa-envelope"></i></a></li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+
+    <script>
+        $(document).foundation();
+    </script>
 </body>
 </html>
