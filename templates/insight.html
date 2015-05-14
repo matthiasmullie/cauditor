@@ -1,0 +1,57 @@
+<script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
+<script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
+<script src="/assets/js/QualityControl.js"></script>
+<script src="/assets/js/visualizations/Data.js"></script>
+<script src="/assets/js/visualizations/Abstract.js"></script>
+<script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
+
+{% if commits %}
+    <div class="row">
+        <div class="large-12 columns">
+            <div data-alert class="alert-box info">
+                <p>
+                    <i class="fa fa-info-circle"></i>
+                    Changes in metrics per commit, averaged per month. The top & bottom 1% outliers are excluded.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% for chart in charts %}
+        <div class="row">
+            <div id="{{ chart.code }}" class="small-12 columns">
+                <h2><strong>{{ chart.name }}</strong></h2>
+                <span class="chart"></span>
+            </div>
+
+            {% if not loop.last %}<div class="small-12 columns"><hr /></div>{% endif %}
+        </div>
+    {% endfor %}
+
+    <script>
+        var data = [],
+            commit, visualization, chart;
+
+        {% for commit in commits %}
+            commit = $.extend({}, {{ commit.metrics }}, { date: '{{ commit.author_date.strftime('%Y-%m') }}' });
+            data.push(commit);
+        {% endfor %}
+
+        data = new QualityControl.Data(data);
+        visualization = new QualityControl.Visualization.Lineplot.Abstract(data);
+        chart = new QualityControl(visualization);
+
+        {% for chart in charts %}
+            chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}']);
+        {% endfor %}
+    </script>
+{% else %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div data-alert class="alert-box alert">
+                <i class="fa fa-exclamation-circle"></i>
+                Couldn't find any commits for {{ user.name }}. <a href="/user">Add some of your work</a>. If projects were recently added, they may still be importing.
+            </div>
+        </div>
+    </div>
+{% endif %}

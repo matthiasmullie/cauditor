@@ -37,6 +37,18 @@ pre {
     }
 }
 
+.alert-box > :last-child {
+    margin-bottom: 0;
+}
+.alert-box > :first-child {
+    margin-top: 0;
+}
+.alert-box a {
+    color: inherit;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .dimmed {
     opacity: 0.5;
     -moz-opacity: 0.5;

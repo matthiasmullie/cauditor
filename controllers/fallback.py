@@ -18,6 +18,8 @@ class Controller(object):
         max_age = self.config()['session']['max_age']
         self.session_data = models.sessions.Sessions(session_id, max_age)
 
+        self.user = self.session('user') or {}
+
     def config(self):
         import container
         return container.load_config()
@@ -35,7 +37,7 @@ class Controller(object):
 
         args.update({
             'template': self.template,
-            'user': self.session('user') or {},
+            'user': self.user,
             'repos': repos,
             'imported_repos': projects,
         })

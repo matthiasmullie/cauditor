@@ -1,4 +1,4 @@
-from controllers import fallback, index, project, chart, login, logout, user, link, repos, webhook
+from controllers import fallback, index, project, chart, login, logout, user, insight, link, repos, webhook
 import re
 
 
@@ -10,6 +10,7 @@ routes = {
     "^/login\?code=(?P<code>[a-f0-9]+)$": login,  # matches /login?code=xyz
     "^/logout$": logout,  # matches /logout
     "^/user$": user,  # matches /user
+    "^/insight$": insight,  # matches /insight
     "^/api/link": link,  # matches /api/link
     "^/api/repos$": repos,  # matches /api/repos
     "^/api/webhook": webhook,  # matches /api/webhook
