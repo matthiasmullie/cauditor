@@ -16,7 +16,6 @@ QualityControl.Visualization.Lineplot.Abstract = function(data) {
         y: 'score',
         aggs: { 'score': 'mean' },
         time: { 'value': 'date' },
-        title: { 'total': { 'prefix': 'Average change: ' } },
         format: {
             'number': function(number, key) {
                 return Math.round(number * 10000) / 10000;
@@ -46,19 +45,40 @@ QualityControl.Visualization.Lineplot.Abstract.prototype.visualization = functio
  */
 QualityControl.Visualization.Abstract.prototype.filter = function(data) {
     var total = data.length,
-        five = Math.round(data.length * 0.01),
+        outliers = Math.round(data.length * 0.05),
         result = [];
 
     if (data.length === 0) {
         return [];
     }
 
-    // split up per metric
+    // gather metrics (= all keys except for 'date')
+    metrics = {};
     for (metric in data[0]) {
         if (metric === 'date') {
             continue;
         }
+        metrics[metric] = metric;
+    }
 
+    // remove commits with 0 on all metrics; likely non-code related
+    // commits that shouldn't influence the results
+    for (i in data) {
+        empty = true;
+        for (metric in metrics) {
+            if (data[i][metric] !== 0) {
+                empty = false;
+                break;
+            }
+        }
+
+        if (empty) {
+            delete data[i];
+        }
+    }
+
+    // split up per metric
+    for (metric in metrics) {
         result[metric] = [];
         for (i in data) {
             result[metric].push({
@@ -75,8 +95,8 @@ QualityControl.Visualization.Abstract.prototype.filter = function(data) {
             return a.score > b.score ? 1 : -1;
         });
 
-        // remove 5% outliers on both sides
-        result[metric] = result[metric].slice(five, -five);
+        // remove % outliers on both sides
+        result[metric] = result[metric].slice(outliers, -outliers);
     }
 
     return result;

@@ -11,7 +11,7 @@
             <div data-alert class="alert-box info">
                 <p>
                     <i class="fa fa-info-circle"></i>
-                    Changes in metrics per commit, averaged per month. The top & bottom 1% outliers are excluded.
+                    Changes in metrics per commit, averaged per month. The top & bottom 5% outliers are excluded.
                 </p>
             </div>
         </div>
@@ -30,7 +30,8 @@
 
     <script>
         var data = [],
-            commit, visualization, chart;
+            commit, visualization, chart,
+            total, average;
 
         {% for commit in commits %}
             commit = $.extend({}, {{ commit.metrics }}, { date: '{{ commit.author_date.strftime('%Y-%m') }}' });
@@ -41,8 +42,19 @@
         visualization = new QualityControl.Visualization.Lineplot.Abstract(data);
         chart = new QualityControl(visualization);
 
+        data = visualization.data;
+
         {% for chart in charts %}
             chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}']);
+
+            // calculate averages & append to title
+            total = data['{{ chart.code }}'].reduce(function(previous, current) {
+                previous += current.score;
+                return previous;
+            }, 0);
+            average = total / data['{{ chart.code }}'].length;
+            average = Math.round(average * 10000) / 10000;
+            $('#{{ chart.code }} h2').append(': <span style="text-transform: none">' + average + ' avg</span>');
         {% endfor %}
     </script>
 {% else %}

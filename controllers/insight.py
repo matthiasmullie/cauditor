@@ -14,7 +14,7 @@ class Controller(fallback.Controller):
         args = super(Controller, self).args()
 
         args.update({
-            'commits': [commit for commit in self.commits],
+            'commits': self.commits,
             'title': args['user']['name'] if args['user'] else ''
         })
         return args
