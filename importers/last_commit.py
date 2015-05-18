@@ -83,6 +83,7 @@ class Importer(object):
 
     def checkout(self, path, commit):
         cmd = "git checkout {hash}".format(hash=commit['hash'])  # checkout this specific commit
+        cmd += " && git checkout -- *"
         subprocess.call(
             "cd {path} ".format(path=path) +  # cd into repo
             "&& " + cmd, shell=True)
