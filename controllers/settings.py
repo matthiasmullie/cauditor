@@ -17,7 +17,7 @@ class Controller(fallback.Controller):
         model = models.settings.Settings()
 
         try:
-            form = cgi.FieldStorage()
+            form = cgi.FieldStorage(keep_blank_values=True)
             for key in form:
                 model.store({
                     'user': self.user['id'],
