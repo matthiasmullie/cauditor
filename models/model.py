@@ -56,13 +56,16 @@ class DbManager(object):
         for d in values:
             params.extend([d[key] for key in keys])
 
+        # make sure column names can't be mistaken for reserved words
+        keys = ["`" + key + "`" for key in keys]
+
         cursor = self.connection.cursor()
         result = cursor.execute(
             "INSERT INTO %s " % self.table +
             "(" + ", ".join(keys) + ") " +  # (key, key2)
             "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(values)) + ") " +  # (%s, %s), (%s, %s)
             "ON DUPLICATE KEY UPDATE " +
-            ", ".join(["%s = VALUES(%s)" % ((key,) * 2) for key in keys]),  # "key1 = VALUES(key1), key2 = VALUES(key2)"
+            ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in keys]),  # "key1 = VALUES(key1), key2 = VALUES(key2)"
             params
         )
         cursor.close()
