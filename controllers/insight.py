@@ -8,7 +8,7 @@ class Controller(fallback.Controller):
     def __init__(self):
         super(Controller, self).__init__()
 
-        self.commits = self.load_commits() if self.settings else {}
+        self.commits = [i for i in self.load_commits()] if self.settings else {}
 
     def args(self):
         args = super(Controller, self).args()

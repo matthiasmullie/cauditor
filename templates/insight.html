@@ -62,7 +62,11 @@
         <div class="small-12 columns">
             <div data-alert class="alert-box alert">
                 <i class="fa fa-exclamation-circle"></i>
-                Couldn't find any commits for {{ user.name }}. <a href="/user">Add some of your work</a>. If projects were recently added, they may still be importing.
+                {% if not settings.emails %}
+                    Couldn't find any commits for {{ user.name }}. Please <a href="/user">fill out your git author email addresses</a> to locate your commits.
+                {% else %}
+                    Couldn't find any commits for {{ settings.emails }}. <a href="/user">Add some of your work</a> or <a href="/user">complete your author email addresses</a>. If projects were recently added, they may still be importing.
+                {% endif %}
             </div>
         </div>
     </div>
