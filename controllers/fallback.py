@@ -19,6 +19,11 @@ class Controller(object):
         self.session_data = models.sessions.Sessions(session_id, max_age)
 
         self.user = self.session('user') or {}
+        self.settings = {}
+        if self.user:
+            model = models.settings.Settings()
+            settings = model.select(user=self.user['id'])
+            self.settings = {entry['key']: entry['value'] for entry in settings}
 
     def config(self):
         import container
@@ -38,6 +43,7 @@ class Controller(object):
         args.update({
             'template': self.template,
             'user': self.user,
+            'settings': self.settings,
             'repos': repos,
             'imported_repos': projects,
         })
