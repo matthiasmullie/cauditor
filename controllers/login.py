@@ -1,4 +1,5 @@
 from controllers import fallback
+import models
 
 
 class Controller(fallback.Controller):
@@ -16,6 +17,7 @@ class Controller(fallback.Controller):
             token = self.get_auth_token(self.code)
             self.import_from_github(token)
             self.session('github_token', token)
+            self.store_email(self.session('user'))
         except Exception:
             return super(Controller, self).headers()
 
@@ -104,3 +106,22 @@ class Controller(fallback.Controller):
             raise Exception("Missing scopes: %s" % scopes.glue(","))
 
         return token
+
+    def store_email(self, user):
+        # figure out if any email address has already been stored
+        model = models.settings.Settings()
+        try:
+            settings = model.select(user=user['id'], key="emails")
+            store = settings[0]["value"] == ""
+        except Exception:
+            # trying to access [0] will have fail if it didn't exist
+            store = True
+
+        # store user email if it doesn't already exist
+        if store:
+            model = models.settings.Settings()
+            model.store({
+                'user': user['id'],
+                'key': 'emails',
+                'value': user['email'],
+            })
