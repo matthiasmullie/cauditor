@@ -16,9 +16,6 @@ class Controller(fallback.Controller):
 
         model = models.settings.Settings()
 
-        print("Content-Type: text/html")
-        print()
-
         try:
             form = cgi.FieldStorage()
             for key in form:
