@@ -145,7 +145,7 @@
         });
         $('#emails')
             .on('beforeItemAdd', function(event) {
-                var items = $(this).tagsinput('items');
+                var items = $(this).tagsinput('items').slice(0);
                 items.push(event.item);
 
                 $.ajax({
@@ -157,7 +157,7 @@
                 });
             })
             .on('beforeItemRemove', function(event) {
-                var items = $(this).tagsinput('items'),
+                var items = $(this).tagsinput('items').slice(0),
                     i = items.indexOf(event.item);
                 items.splice(i, 1);
 
