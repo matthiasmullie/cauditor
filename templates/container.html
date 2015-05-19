@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="//cdn.foundation5.zurb.com/foundation.js"></script>
 </head>
 <body data-template="{{ template }}">
@@ -38,8 +39,8 @@
                                 <img src="{{ user.avatar }}" /> {{ user.name }}
                             </a>
                             <ul class="dropdown">
-                                <li><a href="/user">Repos</a></li>
                                 <li><a href="/insight">Insight</a></li>
+                                <li><a href="/user">Settings/repos</a></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
                         </li>

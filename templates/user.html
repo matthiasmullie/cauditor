@@ -8,8 +8,33 @@
         </div>
     </div>
 {% else %}
+    <script src="/assets/js/vendor/bootstrap-tagsinput.min.js"></script>
+
+
     {% set project_names = imported_repos|map(attribute='name')|list %}
     {% set vendor = '' %}
+
+    <div class="row">
+        <h2><strong>Details</strong></h2>
+        <form>
+            <div class="row collapse postfix-radius">
+                <div class="small-4 medium-3 large-2 columns">
+                    <span class="prefix">Git author emails</span>
+                </div>
+                <div class="small-8 medium-9 large-10 columns">
+                    <input type="text" id="emails" name="emails" placeholder="name@example.com" value="{{ settings.emails }}" />
+                </div>
+            </div>
+        </form>
+        <p class="medium-offset-3 large-offset-2 small-12 medium-9 large-10 columns">
+            <small>
+                List the email addresses you've committed code with (<code>git config user.email</code>) to locate
+                your commits and <a href="/insight">get insights</a>.
+            </small>
+        </p>
+
+        <hr />
+    </div>
 
     <div class="row">
         <h2><strong>Repositories</strong></h2>
@@ -59,6 +84,7 @@
     </div>
 
     <script>
+        // link/unlink projects
         $(document).on('change', '.switch input', function(e) {
             e.preventDefault();
 
@@ -89,6 +115,8 @@
             });
         });
 
+
+        // refresh list of repos
         $.ajax({
             url: '/api/repos',
             method: 'GET'
@@ -107,6 +135,39 @@
                 // @todo: ideally, I would re-render in-page, not refresh
                 location.reload();
             }
-        })
+        });
+
+
+        // email address multi-input field
+        $('#emails').tagsinput({
+            tagClass: 'label secondary',
+            trimValue: true
+        });
+        $('#emails')
+            .on('beforeItemAdd', function(event) {
+                var items = $(this).tagsinput('items');
+                items.push(event.item);
+
+                $.ajax({
+                    url: '/api/settings',
+                    method: 'POST',
+                    data: { 'emails': items.join() }
+                }).fail(function() {
+                    event.cancel;
+                });
+            })
+            .on('beforeItemRemove', function(event) {
+                var items = $(this).tagsinput('items'),
+                    i = items.indexOf(event.item);
+                items.splice(i, 1);
+
+                $.ajax({
+                    url: '/api/settings',
+                    method: 'POST',
+                    data: { 'emails': items.join() }
+                }).fail(function() {
+                    event.cancel;
+                });
+            });
     </script>
 {% endif %}

@@ -8,7 +8,7 @@ class Controller(fallback.Controller):
     def __init__(self):
         super(Controller, self).__init__()
 
-        self.commits = self.load_commits(self.user) if self.user else {}
+        self.commits = self.load_commits() if self.settings else {}
 
     def args(self):
         args = super(Controller, self).args()
@@ -19,8 +19,7 @@ class Controller(fallback.Controller):
         })
         return args
 
-    def load_commits(self, user):
+    def load_commits(self):
         model = models.commits.Commits()
-        # @todo get these emails from DB, somewhere; let users submit their emails...
-        emails = user['email']
+        emails = self.settings['emails'].split(',')
         return model.select(author=emails, options=["ORDER BY author_date DESC", "LIMIT 5000"])

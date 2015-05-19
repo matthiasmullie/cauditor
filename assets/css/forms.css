@@ -1,0 +1,24 @@
+/*
+Some hacking for multi-input plugin, which was built around Bootstrap
+http://timschlechter.github.io/bootstrap-tagsinput/examples/
+*/
+.bootstrap-tagsinput {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 0 0.5rem;
+    line-height: calc(2.3125rem - 2px); /* Same as .prefix, minus 2px border */
+}
+
+.bootstrap-tagsinput input {
+    background: none !important;
+    border: none;
+    box-shadow: none;
+    display: inline;
+    margin: 0;
+    height: inherit;
+}
+
+span[data-role="remove"]::after {
+    content: '×';
+    padding-left: 0.75rem;
+}
