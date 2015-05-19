@@ -56,3 +56,26 @@ pre {
     -moz-opacity: 0.5;
     -webkit-opacity: 0.5;
 }
+
+/* Temporary beta label */
+body::before {
+    content: "BETA";
+    font-family: Lato, Helvetica, arial, sans-serif;
+    font-weight: 100;
+    font-size: 25px;
+    line-height: 35px;
+    text-align: center;
+
+    color: red;
+    background: #FFF;
+    border: 1px solid #DDD;
+    box-shadow: 1px 1px 3px #DDD;
+
+    z-index: 999;
+    position: fixed;
+    width: 250px;
+    top: 15px;
+    left: -85px;
+
+    transform: rotate(-45deg);
+}
