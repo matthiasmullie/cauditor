@@ -1,5 +1,9 @@
-<div class="container">
-    Login failed!
-
-    @todo: present link to try again...
+<div class="row">
+    <div class="small-12 columns">
+        <div data-alert class="alert-box alert">
+            <i class="fa fa-exclamation-circle"></i>
+            Login failed!
+            <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Try again?</a>
+        </div>
+    </div>
 </div>
