@@ -62,10 +62,10 @@ class DbManager(object):
         cursor = self.connection.cursor()
         result = cursor.execute(
             "INSERT INTO %s " % self.table +
-            "(" + ", ".join(keys) + ") " +  # (key, key2)
+            "(" + ", ".join(keys) + ") " +  # (`key`, `key2`)
             "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(values)) + ") " +  # (%s, %s), (%s, %s)
             "ON DUPLICATE KEY UPDATE " +
-            ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in keys]),  # "key1 = VALUES(key1), key2 = VALUES(key2)"
+            ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
             params
         )
         cursor.close()
@@ -133,9 +133,9 @@ class Select(object):
         :param kwargs: All of the WHERE-conditions
         :return: self
         """
-        # build `WHERE key IN (%s) AND key2 IN (%s, %s)` clause
+        # build `WHERE `key` IN (%s) AND `key2` IN (%s, %s)` clause
         kwargs = {key: value if isinstance(value, list) else [value] for key, value in kwargs.items()}
-        where = [key + " IN (" + ", ".join((["%s"] * len(values))) + ")" for key, values in kwargs.items()]
+        where = ["`" + key + "` IN (" + ", ".join((["%s"] * len(values))) + ")" for key, values in kwargs.items()]
 
         self.__where = "WHERE " + " AND ".join(where) if where else ""
         self.__params = [param for params in kwargs.values() for param in params]
@@ -169,7 +169,7 @@ class Select(object):
         cursor = self.connection.cursor()
         result = cursor.execute(
             "UPDATE %s " % self.table +
-            "SET " + ", ".join([key + " = %s" for key in values.keys()]) + " " +  # "SET key1 = %s, key2 = %s"
+            "SET " + ", ".join(["`" + key + "` = %s" for key in values.keys()]) + " " +  # "SET `key1` = %s, `key2` = %s"
             self.__where,
             list(values.values()) + self.__params
         )
