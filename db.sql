@@ -30,6 +30,13 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `touched` (`touched`)
 ) DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `settings` (
+  `user` int(10) NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` blob DEFAULT NULL,
+  PRIMARY KEY (`user`,`key`)
+) DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `jobs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job` blob NOT NULL,

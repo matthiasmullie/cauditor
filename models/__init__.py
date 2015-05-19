@@ -1,1 +1,1 @@
-from models import model, projects, commits, sessions, jobs
+from models import model, projects, commits, sessions, settings, jobs
