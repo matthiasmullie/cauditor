@@ -1,8 +1,8 @@
-.top-bar .title-area .name a {
+a.navbar-brand {
     position: relative;
     text-indent: -9999px;
 
-    width: 5rem;
+    width: 75px;
     padding: 0;
 }
 
@@ -10,21 +10,21 @@
  * Need ::before to hack around the fact that a background image
  * can't be bigger than the node it's on
  */
-.title-area .name a::after {
+a.navbar-brand::after {
     content: "";
-    width: 5rem;
-    height: 5rem;
+    width: 75px;
+    height: 75px;
 
     /* Line up nicely, so bottom corners align with nav bottom */
     position: absolute;
-    top: -0.5rem;
+    top: -8px;
     left: 0;
 
     background: url(http://www.mullie.eu/public/assets/images/logo.png) no-repeat;
-    background-size: 4.5rem;
+    background-size: 75px;
 }
 
-.title-area .name a:not(:hover) {
+a.navbar-brand:not(:hover) {
     -webkit-filter: grayscale(100%);
     -moz-filter: grayscale(100%);
     -ms-filter: grayscale(100%);

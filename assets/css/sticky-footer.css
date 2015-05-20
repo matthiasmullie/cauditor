@@ -5,11 +5,12 @@ html, body {
 .content {
     min-height: 100%;
 
-    /* preserve some space below header and around other edges */
-    padding: 1.5rem 1rem;
+    /* Preserve navbar space */
+    padding-top: 70px;
+    padding-bottom: 15px;
 
-    /* footer height + margin */
-    margin-bottom: -3rem;
+    /* Footer height + margin */
+    margin-bottom: -50px;
 }
 
 /*
@@ -23,5 +24,5 @@ body[data-template="chart.html"] .content {
 }
 
 .footer, .push {
-    height: 3rem;
+    height: 50px;
 }

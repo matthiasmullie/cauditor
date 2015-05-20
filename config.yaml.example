@@ -39,7 +39,7 @@ charts:
         code: "hi"
         name: "Halstead Intelligent Content"
         description: |
-            <p>Halstead intelligent content represents the algorithm complexity in a mostly language-agnostic way by counting the amount of operators (+, =, &&, &hellip; and reserved words) and operands (variables, function names, &hellip;)</p>
+            <p>Halstead intelligent content represents the algorithm complexity in a mostly language-agnostic way by counting the amount of operators (<code>+</code>, <code>=</code>, <code>&&</code>, &hellip; and reserved words) and operands (variables, function names, &hellip;)</p>
             <pre>
             n1 = amount of unique operators
             n2 = amount of unique operand

@@ -2,5 +2,11 @@
     display: inline-block;
     min-height: 400px;
     height: 100%;
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+}
+
+.row .chart {
+    margin: 0;
     width: 100%;
 }

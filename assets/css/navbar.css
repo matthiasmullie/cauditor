@@ -1,21 +1,35 @@
-/* Change navbar height */
-.top-bar,
-.top-bar-section li:not(.has-form) a:not(.button) {
-    height: 3rem;
-    line-height: 3rem;
+/* Change font size */
+nav,
+nav .dropdown-menu {
+    font-size: 13px;
 }
-.top-bar-section .has-dropdown > a:after {
-    top: 1.5rem;
+
+/* Default inverse text color isn't bright enough (esp. when also .dimmed) */
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+/* Dropdown arrow should have some space */
+nav i:last-child {
+    padding-left: 5px;
+}
+
+/* Padding & font-size shouldn't dictate navbar height */
+nav a {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 50px !important;
+    line-height: 50px !important;
 }
 
 /* User avatar should be full nav height */
 nav .avatar img {
-    height: 100%;
-    padding-right: 15px;
+    height: inherit;
+    padding-right: 10px;
     vertical-align: top;
 }
 
 /* Background color for active links was some blue-ish, which doesn't go with the logo */
-.top-bar-section li.active:not(.has-form) a:not(.button) {
-    background: #fc7e3f;
+.dropdown-menu > .active > a {
+    background: #fc7e3f !important;
 }

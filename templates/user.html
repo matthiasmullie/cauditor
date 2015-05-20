@@ -1,173 +1,176 @@
-{% if not user %}
-    <div class="row">
-        <div class="small-12 columns">
-            <div data-alert class="alert-box alert">
-                <i class="fa fa-exclamation-circle"></i>
-                You are not currently logged in. Please <a class="alert-link" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">authenticate via GitHub</a>.
+<div class="container">
+    {% if not user %}
+        <div class="row">
+            <div class="col-xs-12 columns">
+                <div data-alert class="alert-box alert">
+                    <i class="fa fa-exclamation-circle"></i>
+                    You are not currently logged in. Please <a class="alert-link" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">authenticate via GitHub</a>.
+                </div>
             </div>
         </div>
-    </div>
-{% else %}
-    <script src="/assets/js/vendor/bootstrap-tagsinput.min.js"></script>
+    {% else %}
+        <script src="/assets/js/vendor/bootstrap-tagsinput.min.js"></script>
+        <script src="/assets/js/vendor/bootstrap-switch.min.js"></script>
+        <link rel="stylesheet" href="/assets/css/vendor/bootstrap-tagsinput.css">
+        <link rel="stylesheet" href="/assets/css/vendor/bootstrap-switch.min.css">
 
 
-    {% set project_names = imported_repos|map(attribute='name')|list %}
-    {% set vendor = '' %}
+        {% set project_names = imported_repos|map(attribute='name')|list %}
+        {% set vendor = '' %}
 
-    <div class="row">
-        <h2><strong>Details</strong></h2>
-        <form>
-            <div class="row collapse postfix-radius">
-                <div class="small-4 medium-3 large-2 columns">
-                    <span class="prefix">Git author emails</span>
+        <div class="row">
+            <h2><strong>Details</strong></h2>
+
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="emails" class="col-sm-2">Git author email(s)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="emails" name="emails" placeholder="name@example.com" value="{{ settings.emails }}" />
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <small>
+                            List the email addresses you've committed code with (<code>git config user.email</code>) to locate
+                            your commits and <a href="/insight">get insights</a>.
+                        </small>
+                    </div>
                 </div>
-                <div class="small-8 medium-9 large-10 columns">
-                    <input type="text" id="emails" name="emails" placeholder="name@example.com" value="{{ settings.emails }}" />
-                </div>
-            </div>
-        </form>
-        <p class="medium-offset-3 large-offset-2 small-12 medium-9 large-10 columns">
-            <small>
-                List the email addresses you've committed code with (<code>git config user.email</code>) to locate
-                your commits and <a href="/insight">get insights</a>.
-            </small>
-        </p>
+            </form>
 
-        <hr />
-    </div>
+            <hr />
+        </div>
 
-    <div class="row">
-        <h2><strong>Repositories</strong></h2>
-        <table style="width: 100%">
-            {#
-                We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
-                but they seem to be in the correct order already and I don't really want vendors to be
-                ordered alphabetically (I want username vendor first, then organizations)
-            #}
-            {% for repo in repos %}
-                {% if vendor != repo.name.split('/')[0] %}
-                    {% set vendor = repo.name.split('/')[0] %}
-                    <thead>
-                        <tr>
-                            <td colspan="5">{{ vendor }}</td>
+        <div class="row">
+            <h2><strong>Repositories</strong></h2>
+            <table class="table table-striped table-hover table-condensed">
+                {#
+                    We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
+                    but they seem to be in the correct order already and I don't really want vendors to be
+                    ordered alphabetically (I want username vendor first, then organizations)
+                #}
+                {% for repo in repos %}
+                    {% if vendor != repo.name.split('/')[0] %}
+                        {% if vendor != '' %}</tbody>{% endif %}
+
+                        {% set vendor = repo.name.split('/')[0] %}
+                        <thead>
+                            <tr>
+                                <th colspan="5">{{ vendor }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    {% endif %}
+                        <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
+                            <td class="col-xs-1 switch">
+                                <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
+                                <label for="import-{{ repo.id }}"></label>
+                            </td>
+                            <td class="col-xs-6">
+                                {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
+                                    <span class="title">{{ repo.name.split('/')[1] }}</span>
+                                {% if repo.name in project_names %}</a>{% endif %}
+                                {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
+                                {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
+                                <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
+                            </td>
+                            <td class="col-xs-1">
+                                <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
+                            </td>
+                            <td class="col-xs-1 text-center">
+                                <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
+                            </td>
+                            <td class="col-xs-1 text-center">
+                                <i class="fa fa-star"></i> {{ repo.stargazers_count }}
+                            </td>
                         </tr>
-                    </thead>
-                {% endif %}
-
-                <tbody>
-                    <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                        <td class="small-1 switch">
-                            <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
-                            <label for="import-{{ repo.id }}"></label>
-                        </td>
-                        <td class="small-6">
-                            {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
-                                <span class="title">{{ repo.name.split('/')[1] }}</span>
-                            {% if repo.name in project_names %}</a>{% endif %}
-                            {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
-                            {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
-                            <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
-                        </td>
-                        <td class="small-1">
-                            <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
-                        </td>
-                        <td class="small-1 text-center">
-                            <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
-                        </td>
-                        <td class="small-1 text-center">
-                            <i class="fa fa-star"></i> {{ repo.stargazers_count }}
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
-            {% endfor %}
-        </table>
-    </div>
+            </table>
+        </div>
 
-    <script>
-        // link/unlink projects
-        $(document).on('change', '.switch input', function(e) {
-            e.preventDefault();
+        <script>
+            // link/unlink projects
+            $('.switch input')
+                .bootstrapSwitch({ size: 'mini' })
+                .on('switchChange.bootstrapSwitch', function(e, state) {
+                    $.ajax({
+                        url: '/api/link',
+                        method: 'POST',
+                        data: {
+                            repo: $(this).data('repo'),
+                            action: state ? 'link' : 'unlink'
+                        }
+                    })
+                    .done(function(data) {
+                        var $checkbox = $(e.target),
+                            $title = $checkbox.closest('.repo').find('.title');
 
+                        if (state) {
+                            // we just linked the repo
+                            $title.wrap('<a href="/'+ data.name +'"></a>');
+                        } else {
+                            // we just unlinked the repo
+                            $title.unwrap('<a href="/'+ data.name +'"></a>');
+                        }
+                    })
+                    .fail(function() {
+                        // @todo better error handling; this is piss-poor!
+                        alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
+                    });
+                });
+
+
+            // refresh list of repos
             $.ajax({
-                url: '/api/link',
-                method: 'POST',
-                data: {
-                    repo: $(this).data('repo'),
-                    action: $(this).prop('checked') ? 'link' : 'unlink'
-                }
+                url: '/api/repos',
+                method: 'GET'
             })
             .done(function(data) {
-                var $checkbox = $(e.target),
-                    $title = $checkbox.closest('.repo').find('.title'),
-                    action = $checkbox.prop('checked') ? 'link' : 'unlink'
+                var existing = [],
+                    current = data.map(function(repo) {
+                        return repo.name;
+                    });
 
-                if (action === 'link') {
-                    // we just linked the repo
-                    $title.wrap('<a href="/'+ data.name +'"></a>');
-                } else if (action === 'unlink') {
-                    // we just unlinked the repo
-                    $title.unwrap('<a href="/'+ data.name +'"></a>');
+                $('.repo').each(function() {
+                    existing.push($(this).data('repo'));
+                });
+
+                if (existing.sort().toString() !== current.sort().toString()) {
+                    // @todo: ideally, I would re-render in-page, not refresh
+                    location.reload();
                 }
-            })
-            .fail(function() {
-                // @todo better error handling; this is piss-poor!
-                alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
-            });
-        });
-
-
-        // refresh list of repos
-        $.ajax({
-            url: '/api/repos',
-            method: 'GET'
-        })
-        .done(function(data) {
-            var existing = [],
-                current = data.map(function(repo) {
-                    return repo.name;
-                });
-
-            $('.repo').each(function() {
-                existing.push($(this).data('repo'));
             });
 
-            if (existing.sort().toString() !== current.sort().toString()) {
-                // @todo: ideally, I would re-render in-page, not refresh
-                location.reload();
-            }
-        });
 
-
-        // email address multi-input field
-        $('#emails').tagsinput({
-            tagClass: 'label secondary',
-            trimValue: true
-        });
-        $('#emails')
-            .on('beforeItemAdd', function(event) {
-                var items = $(this).tagsinput('items').slice(0);
-                items.push(event.item);
-
-                $.ajax({
-                    url: '/api/settings',
-                    method: 'POST',
-                    data: { 'emails': items.join() }
-                }).fail(function() {
-                    event.cancel;
-                });
-            })
-            .on('beforeItemRemove', function(event) {
-                var items = $(this).tagsinput('items').slice(0),
-                    i = items.indexOf(event.item);
-                items.splice(i, 1);
-
-                $.ajax({
-                    url: '/api/settings',
-                    method: 'POST',
-                    data: { 'emails': items.join() }
-                }).fail(function() {
-                    event.cancel;
-                });
+            // email address multi-input field
+            $('#emails').tagsinput({
+                trimValue: true
             });
-    </script>
-{% endif %}
+            $('#emails')
+                .on('beforeItemAdd', function(event) {
+                    var items = $(this).tagsinput('items').slice(0);
+                    items.push(event.item);
+
+                    $.ajax({
+                        url: '/api/settings',
+                        method: 'POST',
+                        data: { 'emails': items.join() }
+                    }).fail(function() {
+                        event.cancel;
+                    });
+                })
+                .on('beforeItemRemove', function(event) {
+                    var items = $(this).tagsinput('items').slice(0),
+                        i = items.indexOf(event.item);
+                    items.splice(i, 1);
+
+                    $.ajax({
+                        url: '/api/settings',
+                        method: 'POST',
+                        data: { 'emails': items.join() }
+                    }).fail(function() {
+                        event.cancel;
+                    });
+                });
+        </script>
+    {% endif %}
+</div>

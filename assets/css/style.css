@@ -1,54 +1,13 @@
 @import "sticky-footer.css";
+@import "font.css";
+@import "navbar.css";
 @import "logo.css";
 @import "chart.css";
-@import "navbar.css";
-@import "font.css";
-@import "forms.css";
 
 html, body {
     padding: 0;
     margin: 0;
     background-color: #f8f8f8;
-}
-
-pre, code {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    background: #FCFCFC;
-    border: 1px solid #dfdfdf;
-}
-
-pre {
-    font-size: 13px;
-
-    padding: 0.3rem 0.5rem;
-    margin-bottom: 0.75rem;
-
-    /* https://longren.io/wrapping-text-inside-pre-tags/ */
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-}
-
-/* Make the site wider; 1000max is still so tiny... */
-@media only screen and (min-width: 40.0625em) {
-    .contain-to-grid .top-bar,
-    .row {
-        max-width: 75rem; /* ~1200px */
-    }
-}
-
-.alert-box > :last-child:not(.close) {
-    margin-bottom: 0;
-}
-.alert-box > :first-child:not(.close) {
-    margin-top: 0;
-}
-.alert-box a:not(.close) {
-    color: inherit;
-    font-weight: bold;
-    text-decoration: underline;
 }
 
 .dimmed {
@@ -71,11 +30,33 @@ body::before {
     border: 1px solid #DDD;
     box-shadow: 1px 1px 3px #DDD;
 
-    z-index: 999;
+    z-index: 9999;
     position: fixed;
     width: 250px;
     top: 15px;
     left: -85px;
 
     transform: rotate(-45deg);
+}
+
+/* Strip of logos */
+.logo-strip {
+    background-color: #EEE;
+}
+.logo-strip a {
+    /* There are 6 logos in here - distribute them evenly */
+    /* The -6 is for what I guess is rounding issues, because they seem to total >100% */
+    width: calc(100% / 6 - 6px);
+    margin: 0;
+}
+.logo-strip img {
+    padding: 15px 20px;
+    width: inherit;
+}
+.logo-strip img:not(:hover) {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+.logo-strip img:hover {
+    background: #DFDFDF;
 }
