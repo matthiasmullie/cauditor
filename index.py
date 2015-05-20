@@ -5,8 +5,6 @@ import os
 import controllers
 
 uri = os.environ["REQUEST_URI"]
-#uri = "/wikimedia/mediawiki-extensions-Flow"  # @todo: cli testing
-
 controller = controllers.route(uri)
 
 # headers
