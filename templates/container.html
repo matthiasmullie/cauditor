@@ -102,8 +102,8 @@
                                 <img src="{{ user.avatar }}" /> {{ user.name }} <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/insight">Insight</a></li>
-                                <li><a href="/user">Settings/repos</a></li>
+                                <li {% if controller == "controllers.insight" %}class="active"{% endif %}><a href="/insight">Insight</a></li>
+                                <li {% if controller == "controllers.user" %}class="active"{% endif %}><a href="/user">Settings/repos</a></li>
                                 <li><a href="/logout">Sign out</a></li>
                             </ul>
                         </li>
