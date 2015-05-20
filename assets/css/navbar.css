@@ -4,11 +4,6 @@ nav .dropdown-menu {
     font-size: 13px;
 }
 
-/* Default inverse text color isn't bright enough (esp. when also .dimmed) */
-.navbar-inverse .navbar-nav > li > a {
-    color: #fff;
-}
-
 /* Dropdown arrow should have some space */
 nav i:last-child {
     padding-left: 5px;
@@ -27,9 +22,4 @@ nav .avatar img {
     height: inherit;
     padding-right: 10px;
     vertical-align: top;
-}
-
-/* Background color for active links was some blue-ish, which doesn't go with the logo */
-.dropdown-menu > .active > a {
-    background: #fc7e3f !important;
 }

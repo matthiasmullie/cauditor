@@ -12,6 +12,9 @@ QualityControl.Visualization.Lineplot.Abstract = function(data) {
     this.config = {
         type: 'line',
         id: 'stub',
+        color: function() {
+            return '#fc7e3f';
+        },
         x: 'date',
         y: 'score',
         aggs: { 'score': 'mean' },

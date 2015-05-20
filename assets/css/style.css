@@ -3,11 +3,11 @@
 @import "navbar.css";
 @import "logo.css";
 @import "chart.css";
+@import "colors.css";
 
 html, body {
     padding: 0;
     margin: 0;
-    background-color: #F8F8F8;
 }
 
 /* I'm not too big on those rounded corners... */
@@ -44,10 +44,7 @@ body::before {
     transform: rotate(-45deg);
 }
 
-/* Strip of logos */
-.logo-strip {
-    background-color: #FFF;
-}
+/* Strip of logos, charts */
 .logo-strip a {
     /* There are 6 logos in here - distribute them evenly */
     /* The -6 is for what I guess is rounding issues, because they seem to total >100% */
@@ -55,21 +52,13 @@ body::before {
     margin: 0;
 }
 .logo-strip img {
-    padding: 15px 20px;
+    padding: 20px 40px;
     width: inherit;
 }
 .logo-strip img:not(:hover) {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
 }
-.logo-strip img:hover {
-    background: #F3F3F3;
-}
-
-/* Strips of charts */
 .chart-row {
     padding: 20px 0 30px;
-}
-.chart-row:nth-of-type(odd) {
-    background-color: #FFF;
 }

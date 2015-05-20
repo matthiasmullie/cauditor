@@ -1,0 +1,38 @@
+html, body {
+    background-color: #f9f9f9;
+    color: #555;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary,
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover,
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover,
+.progress-bar,
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover,
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover,
+.panel-primary, .panel-primary > .panel-heading,
+.label-primary,
+.btn-primary {
+    background-color: #fc7e3f !important;
+    border-color: #fc7e3f !important;
+}
+
+a {
+    color: #000;
+}
+a:hover {
+    color: #fc7e3f;
+}
+
+/* Default inverse text color isn't bright enough (esp. when also .dimmed) */
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+.logo-strip,
+.chart-row:nth-of-type(odd),
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+.logo-strip img:hover {
+    background: #f3f3f3;
+}

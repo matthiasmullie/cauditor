@@ -30,3 +30,7 @@ h3 {
 strong {
     font-weight: 900;
 }
+
+a, a:hover {
+    text-decoration: none;
+}
