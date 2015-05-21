@@ -46,7 +46,7 @@ class Controller(object):
             'user': self.user,
             'settings': self.settings,
             'repos': repos,
-            'imported_repos': projects,
+            'imported_repos': [i for i in projects],
         })
         return args
 

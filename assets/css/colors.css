@@ -1,4 +1,4 @@
-html, body {
+body {
     background-color: #f9f9f9;
     color: #555;
 }
@@ -31,7 +31,7 @@ a:hover {
 .logo-strip,
 .chart-row:nth-of-type(odd),
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #fff;
+    background-color: #fff !important;
 }
 .logo-strip img:hover {
     background: #f3f3f3;
