@@ -73,7 +73,7 @@
                                 <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
                             </td>
                             <td class="col-xs-1">
-                                <i class="fa fa-code"></i> {% if repo.language %}{{ repo.language }}{% else %}&hellip;{% endif %}
+                                <i class="fa fa-code"></i> {% if repo.language %}<span class="code-language">{{ repo.language }}</span>{% else %}&hellip;{% endif %}
                             </td>
                             <td class="col-xs-1 text-center">
                                 <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
@@ -92,6 +92,18 @@
             $('.switch input')
                 .bootstrapSwitch({ size: 'mini' })
                 .on('switchChange.bootstrapSwitch', function(e, state) {
+                    var language = $(this).closest('.repo').find('.code-language').text();
+
+                    // ask confirmation when trying to link a non-PHP project
+                    if (
+                        state &&
+                        language !== 'PHP' &&
+                        !confirm("Uh-oh! GitHub doesn't seem to think this is a PHP project. Unfortunately, that's all we can currently generate metrics for. Are you sure you want to continue analyzing PHP code in this repo?")
+                    ) {
+                        $(this).bootstrapSwitch('state', false, true);
+                        return false;
+                    }
+
                     $.ajax({
                         url: '/api/link',
                         method: 'POST',
