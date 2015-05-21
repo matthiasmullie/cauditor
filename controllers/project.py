@@ -34,4 +34,5 @@ class Controller(fallback.Controller):
 
     def load_commits(self, project):
         model = models.commits.Commits()
-        return model.select(project=project, options=["ORDER BY commit_date DESC", "LIMIT 15"])
+        commits = model.select(project=project, options=["ORDER BY commit_date DESC", "LIMIT 15"])
+        return [commit for commit in commits]
