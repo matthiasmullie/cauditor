@@ -64,3 +64,8 @@ body::before {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);
 }
+
+/* Make linked repos stand out more (may not be obvious it's a link) */
+a .title {
+    font-weight: bold;
+}

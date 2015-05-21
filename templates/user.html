@@ -50,7 +50,10 @@
                         <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
                             <td class="col-xs-1 switch">
                                 <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
-                                <label for="import-{{ repo.id }}"></label>
+
+                                {% if repo.name in project_names %}
+                                    <a class="btn btn-primary btn-xs" href="/{{ repo.name }}" role="button"><i class="fa fa-line-chart"></i></a>
+                                {% endif %}
                             </td>
                             <td class="col-xs-6">
                                 {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
@@ -124,9 +127,11 @@
                         if (state) {
                             // we just linked the repo
                             $title.wrap('<a href="/'+ data.name +'"></a>');
+                            $checkbox.closest('.switch').append('<a class="btn btn-primary btn-xs" href="/'+ data.name +'" role="button"><i class="fa fa-line-chart"></i></a>');
                         } else {
                             // we just unlinked the repo
                             $title.unwrap('<a href="/'+ data.name +'"></a>');
+                            $checkbox.closest('.switch').find('.btn').remove();
                         }
                     })
                     .fail(function() {
