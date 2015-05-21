@@ -44,7 +44,20 @@
                                 </ul>
                             </li>
                         {% endif %}
+                    {% elif imported_repos %}
+                        <li class="dropdown">
+                            <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> Select repository <i class="fa fa-angle-down"></i></a>
 
+                            {# show list of user's own, imported repos #}
+                            <ul class="dropdown-menu" role="menu">
+                                {% for repo in imported_repos %}
+                                    <li><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+
+                    {% if project %}
                         <li {% if commit %}class="dropdown"{% endif %}>
                             {% if not commit %}
                                 <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code"></i> HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %} <i class="fa fa-angle-down"></i></a>
