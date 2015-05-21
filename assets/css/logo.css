@@ -20,7 +20,7 @@ a.navbar-brand::after {
     top: -8px;
     left: 0;
 
-    background: url(http://www.mullie.eu/public/assets/images/logo.png) no-repeat;
+    background: url(../img/logo.png) no-repeat;
     background-size: 75px;
 }
 
