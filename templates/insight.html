@@ -65,12 +65,12 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 columns">
-            <div data-alert class="alert-box alert">
+            <div class="alert alert-danger" role="alert">
                 <i class="fa fa-exclamation-circle"></i>
                 {% if not settings.emails %}
-                    Couldn't find any commits for {{ user.name }}. Please <a href="/user">fill out your git author email addresses</a> to locate your commits.
+                    Couldn't find any commits for {{ user.name }}. Please <a href="/user#details" class="alert-link">fill out your git author email addresses</a> to locate your commits.
                 {% else %}
-                    Couldn't find any commits for {{ settings.emails }}. <a href="/user">Add some of your work</a> or <a href="/user">complete your author email addresses</a>. If projects were recently added, they may still be importing.
+                    Couldn't find any commits for {{ settings.emails }}. <a href="/user#repos" class="alert-link">Add some of your work</a> or <a href="/user#details" class="alert-link">complete your author email addresses</a>. If projects were recently added, they may still be importing.
                 {% endif %}
             </div>
         </div>

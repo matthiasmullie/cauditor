@@ -2,9 +2,9 @@
     {% if not user %}
         <div class="row">
             <div class="col-xs-12 columns">
-                <div data-alert class="alert-box alert">
+                <div class="alert alert-danger" role="alert">
                     <i class="fa fa-exclamation-circle"></i>
-                    You are not currently logged in. Please <a class="alert-link" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">authenticate via GitHub</a>.
+                    You are not currently logged in. Please <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="alert-link">authenticate via GitHub</a>.
                 </div>
             </div>
         </div>
