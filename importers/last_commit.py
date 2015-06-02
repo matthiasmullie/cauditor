@@ -4,7 +4,7 @@ import container
 import models
 
 
-class Importer(object):
+class Importer(models.jobs.Job):
     list_commits_command = "git log --pretty=format:'%H\t%ae\t%ad\t%ce\t%cd' --reverse --date=local -2"
     includes_skip = True  # skips first item returned by list_commits_command, because it's "previous" to compare with
 
@@ -30,7 +30,7 @@ class Importer(object):
 
             # analyze previous revision: this makes it possible to calculate
             # differences between commits. We could rely on the data from when we
-            # previously analyzed that commit, but it analyzer software changes,
+            # previously analyzed that commit, but if analyzer software changes,
             # that would be unreliable
             previous = {}
             if self.includes_skip:
@@ -68,7 +68,6 @@ class Importer(object):
 
         output = subprocess.check_output(
             "cd {path} ".format(path=path) +  # cd into repo
-            "&& git checkout master -q " +  # make sure we're on master (without output)
             "&& git pull -q " +  # make sure we're up-to-date (without output)
             "&& " + cmd, shell=True).decode("utf-8")
 
