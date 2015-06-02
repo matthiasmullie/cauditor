@@ -54,7 +54,7 @@ class Controller(fallback.Controller):
             # create importer jobs
             jobs = models.jobs.Jobs()
             jobs.add(importers.last_commit.Importer(project['name']))
-            jobs.add(importers.from_first_commit.Importer(project['name']))
+            jobs.add(importers.to_first_commit.Importer(project['name']))
         else:  # unlink
             results = model.select(name=repo.full_name)
             project = next(results)
