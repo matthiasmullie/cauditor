@@ -51,13 +51,13 @@ body::before {
 
 /* Strip of logos, charts */
 .logo-strip a {
-    /* There are 6 logos in here - distribute them evenly */
-    /* The -6 is for what I guess is rounding issues, because they seem to total >100% */
-    width: calc(100% / 6 - 6px);
+    /* There are 8 logos in here - distribute them evenly */
+    /* The -8 is for what I guess is rounding issues, because they seem to total >100% */
+    width: calc(100% / 8 - 8px);
     margin: 0;
 }
 .logo-strip img {
-    padding: 20px 40px;
+    padding: 20px 20px;
     width: inherit;
 }
 .logo-strip img:not(:hover) {
