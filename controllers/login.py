@@ -40,8 +40,6 @@ class Controller(fallback.Controller):
 
         # delete existing repos & re-save all of them
         repos = [self.get_repo(repo) for repo in user.get_repos()]
-        for org in user.get_orgs():
-            repos.extend([self.get_repo(repo) for repo in org.get_repos()])
 
         # I only want to store this as session data - there's no point in storing it
         # in a proper `user` table since:
