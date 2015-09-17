@@ -5,7 +5,7 @@ class Importer(last_commit.Importer):
     list_commits_command = "git log --pretty=format:'%H\t%ae\t%ad\t%ce\t%cd' --date=local {hash}"
 
     def __init__(self, project):
-        super(Importer, self).__init__()
+        super(Importer, self).__init__(project)
 
         # override commits: we want first imported commit, not last one
         try:
