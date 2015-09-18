@@ -1,6 +1,6 @@
 <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
 <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
-<script src="/assets/js/QualityControl.js"></script>
+<script src="/assets/js/Caudit.js"></script>
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
@@ -42,9 +42,9 @@
         data.push(commit);
     {% endfor %}
 
-    data = new QualityControl.Data(data);
-    visualization = new QualityControl.Visualization.Lineplot.Abstract(data);
-    chart = new QualityControl(visualization);
+    data = new Caudit.Data(data);
+    visualization = new Caudit.Visualization.Lineplot.Abstract(data);
+    chart = new Caudit(visualization);
 
     data = visualization.data;
 

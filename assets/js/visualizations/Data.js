@@ -1,6 +1,6 @@
-// ../QualityControl.js must be loaded before this file
+// ../Caudit.js must be loaded before this file
 
-QualityControl.Data = function(data) {
+Caudit.Data = function(data) {
     this.data = data;
     this.filters = {};
 };
@@ -9,7 +9,7 @@ QualityControl.Data = function(data) {
  * @param {function} callback
  * @return {object}
  */
-QualityControl.Data.prototype.filter = function(callback) {
+Caudit.Data.prototype.filter = function(callback) {
     // results of the callback will be stored in this.filters to avoid having
     // to re-filter the data if we've already done so
     var id = callback.toString();

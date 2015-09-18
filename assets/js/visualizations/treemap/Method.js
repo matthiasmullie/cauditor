@@ -1,9 +1,9 @@
 // visualizations/treemap/Abstract.js must be loaded before this file
 
-QualityControl.Visualization.Treemap.Method = function() {
-    QualityControl.Visualization.Treemap.Abstract.apply(this, arguments);
+Caudit.Visualization.Treemap.Method = function() {
+    Caudit.Visualization.Treemap.Abstract.apply(this, arguments);
 };
-QualityControl.Visualization.Treemap.Method.prototype = Object.create(QualityControl.Visualization.Treemap.Abstract.prototype);
+Caudit.Visualization.Treemap.Method.prototype = Object.create(Caudit.Visualization.Treemap.Abstract.prototype);
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
@@ -11,7 +11,7 @@ QualityControl.Visualization.Treemap.Method.prototype = Object.create(QualityCon
  * @param {object} data
  * @return {object}
  */
-QualityControl.Visualization.Treemap.Method.prototype.filter = function(data) {
+Caudit.Visualization.Treemap.Method.prototype.filter = function(data) {
     var fqcn = [];
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
@@ -37,4 +37,4 @@ QualityControl.Visualization.Treemap.Method.prototype.filter = function(data) {
     });
 };
 
-QualityControl.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];
+Caudit.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];

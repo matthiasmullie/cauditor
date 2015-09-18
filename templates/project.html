@@ -1,6 +1,6 @@
 <script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
 <script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
-<script src="/assets/js/QualityControl.js"></script>
+<script src="/assets/js/Caudit.js"></script>
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
@@ -78,13 +78,13 @@
 
 <script>
     d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
-        var data = new QualityControl.Data(data),
+        var data = new Caudit.Data(data),
             tooltip = {},
             visualization, chart;
 
         {% for class, charts in charts|groupby('class') %}
             visualization = new {{ class }}(data);
-            chart = new QualityControl(visualization);
+            chart = new Caudit(visualization);
 
             {% for chart in charts %}
                 tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});

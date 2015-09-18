@@ -1,9 +1,9 @@
 // vendor/d3.min.js & vendor/d3plus.min.js must be loaded before this file
 
 /**
- * @param {QualityControl.Visualization.Abstract} visualization
+ * @param {Caudit.Visualization.Abstract} visualization
  */
-var QualityControl = function(visualization) {
+var Caudit = function(visualization) {
     this.visualization = visualization;
 };
 
@@ -13,7 +13,7 @@ var QualityControl = function(visualization) {
  * @param {string} selector
  * @param {array} args Arguments to pass to to visualization.visualization
  */
-QualityControl.prototype.draw = function(selector, args) {
+Caudit.prototype.draw = function(selector, args) {
     this.visualization.visualization.apply(this.visualization, args)
         .container(selector)
         .draw();

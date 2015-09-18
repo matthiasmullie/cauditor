@@ -2,21 +2,17 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 columns text-center">
-                <h1><strong>Quality</strong>control</h1>
+                <h1><strong>caudit</strong></h1>
                 <h2><strong>Feeling lost?</strong> Get your code back on track!</h2>
             </div>
         </div>
 
         <div class="row">
-            {% if not user %}
-                <div class="col-xs-5 columns text-right">
-                    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Sign in with <i class="fa fa-github"></i></a>
-                </div>
-                <div class="col-xs-7 columns text-left">
-                    Start analyzing your PHP projects. It's <strong>free</strong>!
-                </div>
-            {% else %}
-                <div class="col-xs-12 columns text-center">
+            <div class="col-xs-12 columns text-center">
+                {% if not user %}
+                    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" style="margin-right: 20px;">Sign in with <i class="fa fa-github"></i></a>
+                    Audit your PHP code. It's <strong>free</strong>!
+                {% else %}
                     {% set random_repo = imported_repos|random %}
                     {% set messages = [
                         'Want to analyze <strong><a href="/user#repos">another repo</a></strong>?',
@@ -26,8 +22,8 @@
                         "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
                     ] %}
                     Welcome back, {{ user.name }}! {{ messages|random }}
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -57,7 +53,7 @@
             <p>
                 Figure out complexity hotspots in the blink of an eye.
                 Find classes in dire need of attention before you experience their effect first-hand.
-                Don't let technical debt bite you in the ass.
+                Don't let technical debt bite you.
             </p>
             <p>
                 <strong>Keep your finger on the pulse.</strong>

@@ -17,4 +17,4 @@ def github(token):
     import github
 
     config = load_config()
-    return github.Github(login_or_token=token, client_id=config["github"]["id"], client_secret=config["github"]["secret"], timeout=1, user_agent="quality-control.io", per_page=999)
+    return github.Github(login_or_token=token, client_id=config["github"]["id"], client_secret=config["github"]["secret"], timeout=1, user_agent="caudit.org", per_page=999)

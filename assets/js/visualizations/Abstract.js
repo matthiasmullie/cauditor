@@ -1,11 +1,11 @@
-// ../QualityControl.js must be loaded before this file
+// ../Caudit.js must be loaded before this file
 
-QualityControl.Visualization = QualityControl.Visualization || {};
+Caudit.Visualization = Caudit.Visualization || {};
 
 /**
- * @param {QualityControl.Data} data
+ * @param {Caudit.Data} data
  */
-QualityControl.Visualization.Abstract = function(data) {
+Caudit.Visualization.Abstract = function(data) {
     this.data = data.filter(this.filter);
 };
 
@@ -15,7 +15,7 @@ QualityControl.Visualization.Abstract = function(data) {
  * @param {object} data
  * @return {object}
  */
-QualityControl.Visualization.Abstract.prototype.filter = function(data) {
+Caudit.Visualization.Abstract.prototype.filter = function(data) {
     return data;
 };
 
@@ -24,6 +24,6 @@ QualityControl.Visualization.Abstract.prototype.filter = function(data) {
  *
  * @return {d3plus.viz}
  */
-QualityControl.Visualization.Abstract.prototype.visualization = function() {
+Caudit.Visualization.Abstract.prototype.visualization = function() {
     return d3plus.viz();
 };

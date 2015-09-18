@@ -1,12 +1,12 @@
 // visualizations/Abstract.js must be loaded before this file
 
-QualityControl.Visualization.Treemap = QualityControl.Visualization.Treemap || {};
+Caudit.Visualization.Treemap = Caudit.Visualization.Treemap || {};
 
 /**
- * @param {QualityControl.Data} data
+ * @param {Caudit.Data} data
  */
-QualityControl.Visualization.Treemap.Abstract = function(data) {
-    QualityControl.Visualization.Abstract.apply(this, arguments);
+Caudit.Visualization.Treemap.Abstract = function(data) {
+    Caudit.Visualization.Abstract.apply(this, arguments);
     this.config = {
         type: 'tree_map',
         data: this.data,
@@ -28,7 +28,7 @@ QualityControl.Visualization.Treemap.Abstract = function(data) {
         zoom: false
     };
 };
-QualityControl.Visualization.Treemap.Abstract.prototype = Object.create(QualityControl.Visualization.Abstract.prototype);
+Caudit.Visualization.Treemap.Abstract.prototype = Object.create(Caudit.Visualization.Abstract.prototype);
 
 /**
  * d3plus visualization.
@@ -38,7 +38,7 @@ QualityControl.Visualization.Treemap.Abstract.prototype = Object.create(QualityC
  * @param {object} tooltip Object in { columnname: text } format
  * @return {d3plus.viz}
  */
-QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function(value, range, tooltip) {
+Caudit.Visualization.Treemap.Abstract.prototype.visualization = function(value, range, tooltip) {
     tooltip = tooltip || this.tooltip;
 
     return d3plus.viz()
@@ -79,18 +79,18 @@ QualityControl.Visualization.Treemap.Abstract.prototype.visualization = function
  *
  * @type {string[]}
  */
-QualityControl.Visualization.Treemap.Abstract.prototype.id = ['name'];
+Caudit.Visualization.Treemap.Abstract.prototype.id = ['name'];
 
 /**
  * Column to base blocks' size on (d3plus.viz().size())
  *
  * @type {string[]}
  */
-QualityControl.Visualization.Treemap.Abstract.prototype.size = 'loc';
+Caudit.Visualization.Treemap.Abstract.prototype.size = 'loc';
 
 /**
  * Array of columns to include in tooltip
  *
  * @type {Object} Object in { columnname: text } format
  */
-QualityControl.Visualization.Treemap.Abstract.prototype.tooltip = { 'loc': 'Lines of code' };
+Caudit.Visualization.Treemap.Abstract.prototype.tooltip = { 'loc': 'Lines of code' };
