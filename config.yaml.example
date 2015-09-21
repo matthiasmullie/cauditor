@@ -1,3 +1,10 @@
+site:
+    title: caudit
+    description: TODO
+    domain: www.caudit.org
+    url: http://www.caudit.org
+    twitter: caudit_org
+
 mysql:
     user:
     pass:
