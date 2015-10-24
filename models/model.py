@@ -44,7 +44,7 @@ class DbManager(object):
         :param values: dict in {'key': "value", 'key2': "value2"} format, or list[dict]
         :return: int amount of rows inserted/updated
         """
-        # values can come in dict form, of as parameterized kwargs
+        # values can come in dict form, or as parameterized kwargs
         values = values if values is not None else kwargs
 
         # values can also be a list of dicts (for multiple inserts) - make all of it a list now
@@ -163,7 +163,7 @@ class Select(object):
         :param values: dict in {'key': "value", 'key2': "value2"} format, or list[dict]
         :return: int amount of rows updated
         """
-        # values can come in dict form, of as parameterized kwargs
+        # values can come in dict form, or as parameterized kwargs
         values = values if values is not None else kwargs
 
         cursor = self.connection.cursor()

@@ -9,18 +9,22 @@ CREATE TABLE IF NOT EXISTS `projects` (
 
 CREATE TABLE IF NOT EXISTS `commits` (
   `project` varchar(255) NOT NULL, -- vendor/project
+  `commit_id` int(11) NOT NULL, -- FK, with commit_details.id
+  PRIMARY KEY (`project`,`commit_id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `commit_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `hash` binary(40) NOT NULL, -- commit sha
   `author` varchar(255) NOT NULL, -- author email
   `author_date` datetime NOT NULL, -- date authored
   `committer` varchar(255) NOT NULL, -- committer email
   `commit_date` datetime NOT NULL, -- date of commit
-  `metrics` blob DEFAULT NULL, -- metrics for this specific commit
-  PRIMARY KEY (`project`,`hash`),
-  -- @todo below UNIQUE will fail to insert commits in forks - fix this DB to allow that some day (but not store stats more than once)
-  UNIQUE KEY `idx_unique` (`project`,`hash`,`author`), -- ensure commits only get in once (don't care about same commit in forks)
-  KEY `idx_project` (`project`,`commit_date`), -- fetching last x commits per project
+  `metrics` blob, -- metrics for this specific commit
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_unique` (`commit_date``,`hash`,`author`), -- assumes there are no hash collisions per user/date
   KEY `idx_author` (`author`,`author_date`) -- fetching last x commits per author
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` varchar(32) NOT NULL, -- session id
@@ -42,4 +46,4 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `job` blob NOT NULL,
   `type` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
