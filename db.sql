@@ -9,8 +9,9 @@ CREATE TABLE IF NOT EXISTS `projects` (
 
 CREATE TABLE IF NOT EXISTS `commits` (
   `project` varchar(255) NOT NULL, -- vendor/project
+  `branch` varchar(255) NOT NULL,
   `commit_id` int(11) NOT NULL, -- FK, with commit_details.id
-  PRIMARY KEY (`project`,`commit_id`)
+  PRIMARY KEY (`project`,`branch`,`commit_id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `commit_details` (

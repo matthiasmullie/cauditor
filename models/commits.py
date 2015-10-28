@@ -34,8 +34,8 @@ class Commits(model.DbManager):
 
         for commit_details in values:
             # restructure: data is going to 2 tables
-            commit = {'project': commit_details['project']}
-            del commit_details['project']
+            commit = {'project': commit_details['project'], 'branch': commit_details['branch']}
+            del commit_details['project'], commit_details['branch']
 
             # gather list of keys & params for insert & update into `commit_details`
             commit_details_keys = sorted(commit_details)

@@ -18,6 +18,7 @@ class Importer(last_commit.Importer):
         try:
             self.cleanup()
             self.clone(self.project['git'], self.path)
+            branch = self.branch(self.path)
             commits = self.list_commits(self.path)
 
             previous = {}
@@ -40,7 +41,7 @@ class Importer(last_commit.Importer):
                 except Exception:
                     previous = {}
 
-                self.listeners(self.project, commit, current, previous)
+                self.listeners(self.project, branch, commit, current, previous)
         except Exception:
             # nothing, just want to make sure cleanup() is also run after failure
             pass

@@ -4,7 +4,7 @@ import container
 
 
 # @todo: should also support submitting data elsewhere (ftp?)
-def execute(project, commit, data, previous):
+def execute(project, branch, commit, data, previous):
     config = container.load_config()
 
     # create path to store data file at

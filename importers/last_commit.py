@@ -26,6 +26,7 @@ class Importer(models.jobs.Job):
         try:
             self.cleanup()
             self.clone(self.project['git'], self.path)
+            branch = self.branch(self.path)
             commits = self.list_commits(self.path)
 
             # analyze previous revision: this makes it possible to calculate
@@ -41,7 +42,7 @@ class Importer(models.jobs.Job):
             for commit in commits:
                 self.checkout(self.path, commit)
                 data = self.analyze(self.project, self.path)
-                self.listeners(self.project, commit, data, previous)
+                self.listeners(self.project, branch, commit, data, previous)
 
                 # moving on to next commit soon, mark this one as previous
                 previous = data
@@ -61,6 +62,12 @@ class Importer(models.jobs.Job):
     def clone(self, repo, path):
         cmd = "git clone {repo} {path}".format(repo=repo, path=path)
         subprocess.call(cmd, shell=True)
+
+    def branch(self, path):
+        cmd = "git rev-parse --abbrev-ref HEAD"
+        return subprocess.check_output(
+            "cd {path} ".format(path=path) +  # cd into repo
+            "&& " + cmd, shell=True).decode("utf-8")[:-1]
 
     def list_commits(self, path):
         # parse hash of most recent commit into command
@@ -92,6 +99,6 @@ class Importer(models.jobs.Job):
         # @todo: should return the result, but what about multiple languages?
         return analyzers.execute(project, path)
 
-    def listeners(self, project, commit, data, previous):
+    def listeners(self, project, branch, commit, data, previous):
         import listeners
-        listeners.execute(project, commit, data, previous)
+        listeners.execute(project, branch, commit, data, previous)

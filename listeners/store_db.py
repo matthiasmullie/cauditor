@@ -1,4 +1,4 @@
-def execute(project, commit, data, previous):
+def execute(project, branch, commit, data, previous):
     avg = averages(data)
     old_avg = averages(previous) if previous else {metric: 0 for metric, value in avg.items()}  # previous can be empty
 
@@ -6,13 +6,14 @@ def execute(project, commit, data, previous):
     # averages between commits can be negative, when overall value of a metric was reduced
     diff = {metric: value - old_avg[metric] for metric, value in avg.items()}
 
-    store(project, commit, diff)
+    store(project, branch, commit, diff)
 
-def store(project, commit, metrics):
+def store(project, branch, commit, metrics):
     import json
     import models
 
     commit.update({'project': project['name']})
+    commit.update({'branch': branch})
     commit.update({'metrics': json.dumps(metrics)})
 
     commits = models.commits.Commits()
