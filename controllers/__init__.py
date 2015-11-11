@@ -11,10 +11,10 @@ routes = {
     "^/logout$": logout,  # matches /logout
     "^/user$": user,  # matches /user
     "^/insight$": insight,  # matches /insight
-    "^/api/link": link,  # matches /api/link
+    "^/api/link$": link,  # matches /api/link
     "^/api/settings$": settings,  # matches /api/settings
     "^/api/repos$": repos,  # matches /api/repos
-    "^/api/webhook": webhook,  # matches /api/webhook
+    "^/api/webhook$": webhook,  # matches /api/webhook
 }
 
 
