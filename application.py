@@ -8,7 +8,7 @@ import controllers
 try:
     import io
     import yaml
-    stream = io.open('environment.yaml', 'r')
+    stream = io.open('environment.yaml', 'r', encoding='utf-8')
     environ = yaml.load(stream)
     for i in environ:
         os.environ[i] = str(environ[i])

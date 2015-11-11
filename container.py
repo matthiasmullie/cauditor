@@ -12,7 +12,7 @@ def load_config():
     yaml.add_implicit_resolver('tag', pattern)
     yaml.add_constructor('tag', pathex_constructor)
 
-    stream = io.open('config.yaml', 'r')
+    stream = io.open('config.yaml', 'r', encoding='utf-8')
     return yaml.load(stream)
 
 
