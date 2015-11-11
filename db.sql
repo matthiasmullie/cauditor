@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
   `commit_date` datetime NOT NULL, -- date of commit
   `metrics` blob, -- metrics for this specific commit
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_unique` (`commit_date``,`hash`,`author`), -- assumes there are no hash collisions per user/date
+  UNIQUE KEY `idx_unique` (`commit_date`,`hash`,`author`), -- assumes there are no hash collisions per user/date
   KEY `idx_author` (`author`,`author_date`) -- fetching last x commits per author
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
