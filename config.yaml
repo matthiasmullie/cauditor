@@ -6,17 +6,17 @@ site:
     twitter: caudit_org
 
 mysql:
-    user:
-    pass:
-    db:
-    host:
+    user: $RDS_USERNAME
+    pass: $RDS_PASSWORD
+    db: $RDS_DB_NAME
+    host: $RDS_HOSTNAME
+    port: $RDS_PORT
 
 github:
-    # https://github.com/settings/applications/181928
-    id:
-    secret:
+    id: $GITHUB_ID
+    secret: $GITHUB_SECRET
     # https://developer.github.com/v3/oauth/#scopes
-    scopes: user:email,repo,write:repo_hook
+    scopes: repo,user:email,write:repo_hook
 
 charts:
     -
@@ -103,6 +103,6 @@ session:
     max_age: 2592000
 
 analyzers:
-    repo_path: /tmp/repos/
-    pdepend_path: /tmp/pdepend/
-    data_path: data/
+    repo_path: /tmp/repos
+    pdepend_path: /tmp/pdepend
+    data_path: data

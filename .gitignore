@@ -4,7 +4,8 @@ __pycache__/
 /.idea
 .*.swp
 .DS_Store
-config.yaml
+environment.yaml
+
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

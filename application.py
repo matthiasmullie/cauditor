@@ -4,6 +4,18 @@
 import os
 import controllers
 
+# for easy config: let's parse environment.yaml into os.environ
+try:
+    import io
+    import yaml
+    stream = io.open('environment.yaml', 'r')
+    environ = yaml.load(stream)
+    for i in environ:
+        os.environ[i] = str(environ[i])
+except FileNotFoundError:
+    # let's just assume config exists in env already
+    pass
+
 uri = os.environ["REQUEST_URI"]
 controller = controllers.route(uri)
 
