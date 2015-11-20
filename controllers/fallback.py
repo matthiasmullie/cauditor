@@ -11,6 +11,7 @@ class Controller(object):
         self.cookie_data = http.cookies.SimpleCookie()
         self.cookie_data.load(os.environ.get("HTTP_COOKIE", ""))
         self.cookie_set = http.cookies.SimpleCookie()
+        self.status = "200 OK"
 
         # init session (but don't load session data yet)
         import models
@@ -54,9 +55,10 @@ class Controller(object):
         # all controllers extend from this one, so I'm going to special-case
         # the 404 header
         if self.__module__ == "controllers.fallback":
-            return ["Status: 404 Not Found", "Content-Type: text/html; charset=UTF-8"]
+            self.status = "404 Not Found"
+            return [('Content-Type', "text/html; charset=UTF-8")]
 
-        return ["Content-Type: text/html; charset=UTF-8"]
+        return [('Content-Type', "text/html; charset=UTF-8")]
 
     def render(self, template):
         from jinja2 import Environment, FileSystemLoader

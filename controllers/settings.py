@@ -12,7 +12,7 @@ class Controller(fallback.Controller):
     def headers(self):
         import cgi
 
-        headers = ["Content-Type: application/json; charset=UTF-8"]
+        headers = [('Content-Type', "application/json; charset=UTF-8")]
 
         model = models.settings.Settings()
 
@@ -25,7 +25,7 @@ class Controller(fallback.Controller):
                     'value': form[key].value,
                 })
         except Exception:
-            headers.append("Status: 401 Unauthorized")
+            self.status = "401 Unauthorized"
 
         return headers
 

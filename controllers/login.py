@@ -23,7 +23,7 @@ class Controller(fallback.Controller):
 
         # success! redirect
         self.fail = False
-        return ["Location: %s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"])]
+        return [('Location', "%s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]))]
 
     def render(self, template):
         if self.fail:

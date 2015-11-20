@@ -11,21 +11,21 @@ class Controller(fallback.Controller):
     def headers(self):
         import cgi
 
-        headers = ["Content-Type: application/json; charset=UTF-8"]
+        headers = [('Content-Type', "application/json; charset=UTF-8")]
 
         form = cgi.FieldStorage()
         if "repo" not in form:
-            headers.append("Status: 400 Bad Request")
+            self.status = "400 Bad Request"
             return headers
 
         if "action" not in form or form["action"].value not in ["link", "unlink"]:
-            headers.append("Status: 400 Bad Request")
+            self.status = "400 Bad Request"
             return headers
 
         try:
             self.project = self.process(form["repo"].value, form["action"].value)
         except Exception:
-            headers.append("Status: 401 Unauthorized")
+            self.status = "401 Unauthorized"
             return headers
 
         return headers

@@ -11,14 +11,14 @@ class Controller(login.Controller):
         super(Controller, self).__init__('bogus')
 
     def headers(self):
-        headers = ["Content-Type: application/json; charset=UTF-8"]
+        headers = [('Content-Type', "application/json; charset=UTF-8")]
 
         try:
             token = self.session('github_token')
             self.import_from_github(token)
             self.update_changed_repos()
         except Exception:
-            headers.append("Status: 401 Unauthorized")
+            self.status = "401 Unauthorized"
             return headers
 
         return headers
