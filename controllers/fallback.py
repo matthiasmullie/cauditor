@@ -11,7 +11,10 @@ class Controller(object):
         self.cookie_data = http.cookies.SimpleCookie()
         self.cookie_data.load(os.environ.get("HTTP_COOKIE", ""))
         self.cookie_set = http.cookies.SimpleCookie()
-        self.status = "200 OK"
+
+        # all controllers extend from this one, so I'm going to special-case
+        # the 404 header
+        self.status = "404 Not Found" if self.__module__ == "controllers.fallback" else "200 OK"
 
         # init session (but don't load session data yet)
         import models
@@ -52,12 +55,6 @@ class Controller(object):
         return args
 
     def headers(self):
-        # all controllers extend from this one, so I'm going to special-case
-        # the 404 header
-        if self.__module__ == "controllers.fallback":
-            self.status = "404 Not Found"
-            return [('Content-Type', "text/html; charset=UTF-8")]
-
         return [('Content-Type', "text/html; charset=UTF-8")]
 
     def render(self, template):
