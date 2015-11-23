@@ -4,7 +4,7 @@ So, I don't really know any Python but I wanted to give it a go for this project
 
 That said, let's quickly go over it all:
 
-## index.py
+## application.py
 
 Web request entrypoint.
 
