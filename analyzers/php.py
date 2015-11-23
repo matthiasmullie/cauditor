@@ -1,5 +1,6 @@
 import subprocess
 import container
+import os
 
 
 def analyze(project, path):
@@ -8,7 +9,7 @@ def analyze(project, path):
     """
     # create path to store pdepend xml at
     config = container.load_config()
-    pdepend_path = "{path}/{name}".format(path=config['analyzers']['pdepend_path'], name=project['name'])
+    pdepend_path = config['data']['pdepend_path'].format(pwd=os.getcwd(), project=project['name'])
     subprocess.call("mkdir -p {path}".format(path=pdepend_path), shell=True)
 
     # run pdepend

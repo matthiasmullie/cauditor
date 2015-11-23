@@ -77,7 +77,7 @@
 {% endfor %}
 
 <script>
-    d3.json('/{{ analyzers.data_path }}/{{ project.name }}/{{ commit.hash }}.json', function(data) {
+    d3.json('{{ data.json_path|replace('{pwd}', "")|replace('{project}', project.name)|replace('{hash}', commit.hash) }}', function(data) {
         var data = new Caudit.Data(data),
             tooltip = {},
             visualization, chart;

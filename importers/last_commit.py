@@ -2,6 +2,7 @@ import subprocess
 import datetime
 import container
 import models
+import os
 
 
 class Importer(models.jobs.Job):
@@ -20,7 +21,7 @@ class Importer(models.jobs.Job):
             self.commit = None
 
         config = container.load_config()
-        self.path = "{path}/{name}".format(path=config['analyzers']['repo_path'], name=project)
+        self.path = config['data']['repo_path'].format(pwd=os.getcwd(), project=project)
 
     def execute(self):
         try:

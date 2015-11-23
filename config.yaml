@@ -102,7 +102,7 @@ session:
     # 30 days (30 * 24 * 60 * 60 seconds)
     max_age: 2592000
 
-analyzers:
-    repo_path: /tmp/repos
-    pdepend_path: /tmp/pdepend
-    data_path: data
+data:
+    repo_path: /tmp/repos/{project}
+    pdepend_path: /tmp/pdepend/{project}
+    json_path: "{pwd}/data/{project}/{hash}.json"
