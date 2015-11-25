@@ -24,32 +24,28 @@ class Importer(models.jobs.Job):
         self.path = config['data']['repo_path'].format(pwd=os.getcwd(), project=project)
 
     def execute(self):
-        try:
-            self.cleanup()
-            self.clone(self.project['git'], self.path)
-            branch = self.branch(self.path)
-            commits = self.list_commits(self.path)
+        self.cleanup()
+        self.clone(self.project['git'], self.path)
+        branch = self.branch(self.path)
+        commits = self.list_commits(self.path)
 
-            # analyze previous revision: this makes it possible to calculate
-            # differences between commits. We could rely on the data from when we
-            # previously analyzed that commit, but if analyzer software changes,
-            # that would be unreliable
-            previous = {}
-            if self.includes_skip:
-                self.checkout(self.path, commits.pop(0))
-                previous = self.analyze(self.project, self.path)
+        # analyze previous revision: this makes it possible to calculate
+        # differences between commits. We could rely on the data from when we
+        # previously analyzed that commit, but if analyzer software changes,
+        # that would be unreliable
+        previous = {}
+        if self.includes_skip:
+            self.checkout(self.path, commits.pop(0))
+            previous = self.analyze(self.project, self.path)
 
-            # analyze the commits we really want to analyze, sending the results to listeners
-            for commit in commits:
-                self.checkout(self.path, commit)
-                data = self.analyze(self.project, self.path)
-                self.listeners(self.project, branch, commit, data, previous)
+        # analyze the commits we really want to analyze, sending the results to listeners
+        for commit in commits:
+            self.checkout(self.path, commit)
+            data = self.analyze(self.project, self.path)
+            self.listeners(self.project, branch, commit, data, previous)
 
-                # moving on to next commit soon, mark this one as previous
-                previous = data
-        except Exception:
-            # nothing, just want to make sure cleanup() is also run after failure
-            pass
+            # moving on to next commit soon, mark this one as previous
+            previous = data
 
         self.cleanup()
 
@@ -58,11 +54,11 @@ class Importer(models.jobs.Job):
         # Instead of storing repos, we'll delete them after analyzing them and
         # re-clone of we want to analyze new commits.
         # https://aws.amazon.com/blogs/aws/aws-lowers-its-pricing-again-free-inbound-data-transfer-and-lower-outbound-data-transfer-for-all-ser/
-        subprocess.call("rm -rf {path}".format(path=self.path), shell=True)
+        subprocess.check_call("rm -rf {path}".format(path=self.path), shell=True)
 
     def clone(self, repo, path):
         cmd = "git clone {repo} {path}".format(repo=repo, path=path)
-        subprocess.call(cmd, shell=True)
+        subprocess.check_call(cmd, shell=True)
 
     def branch(self, path):
         cmd = "git rev-parse --abbrev-ref HEAD"
@@ -91,7 +87,7 @@ class Importer(models.jobs.Job):
     def checkout(self, path, commit):
         cmd = "git checkout {hash}".format(hash=commit['hash'])  # checkout this specific commit
         cmd += " && git checkout -- *"
-        subprocess.call(
+        subprocess.check_call(
             "cd {path} ".format(path=path) +  # cd into repo
             "&& " + cmd, shell=True)
 

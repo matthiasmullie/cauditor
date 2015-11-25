@@ -10,12 +10,12 @@ def analyze(project, path):
     # create path to store pdepend xml at
     config = container.load_config()
     pdepend_path = config['data']['pdepend_path'].format(pwd=os.getcwd(), project=project['name'])
-    subprocess.call("mkdir -p {path}".format(path=pdepend_path), shell=True)
+    subprocess.check_call("mkdir -p {path}".format(path=pdepend_path), shell=True)
 
     # run pdepend
     xml_path = "{pdepend_path}/pdepend.xml".format(pdepend_path=pdepend_path)
     cmd = "vendor/bin/pdepend --summary-xml={xml_path} {repo_path}".format(xml_path=xml_path, repo_path=path)
-    subprocess.call(cmd, shell=True)
+    subprocess.check_call(cmd, shell=True)
 
     # @todo allow folders/files to be excluded?
 
@@ -23,7 +23,7 @@ def analyze(project, path):
     data = convert(xml_path)
 
     # remove leftover files (pdepend xml) created in the process of analyzing #
-    subprocess.call("rm -rf {path}".format(path=pdepend_path), shell=True)
+    subprocess.check_call("rm -rf {path}".format(path=pdepend_path), shell=True)
 
     return data
 
