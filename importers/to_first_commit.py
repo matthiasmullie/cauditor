@@ -15,35 +15,31 @@ class Importer(last_commit.Importer):
             self.commit = None
 
     def execute(self):
-        try:
-            self.cleanup()
-            self.clone(self.project['git'], self.path)
-            branch = self.branch(self.path)
-            commits = self.list_commits(self.path)
+        self.cleanup()
+        self.clone(self.project['git'], self.path)
+        branch = self.branch(self.path)
+        commits = self.list_commits(self.path)
 
-            previous = {}
-            for i, commit in enumerate(commits):
-                # we're going chronological, but DESC
-                # this means the first commit will be the more recent, and
-                # we need to fetch the second to compare metrics with after
-                # we've done that, we'll analyze the second and get the
-                # third to compare metrics with, but since we've already
-                # analyzed that second commit, we can just re-use that one
-                if previous:
-                    current = previous
-                else:
-                    self.checkout(self.path, commit)
-                    current = self.analyze(self.project, self.path)
+        previous = {}
+        for i, commit in enumerate(commits):
+            # we're going chronological, but DESC
+            # this means the first commit will be the more recent, and
+            # we need to fetch the second to compare metrics with after
+            # we've done that, we'll analyze the second and get the
+            # third to compare metrics with, but since we've already
+            # analyzed that second commit, we can just re-use that one
+            if previous:
+                current = previous
+            else:
+                self.checkout(self.path, commit)
+                current = self.analyze(self.project, self.path)
 
-                try:
-                    self.checkout(self.path, commits[i+1])
-                    previous = self.analyze(self.project, self.path)
-                except Exception:
-                    previous = {}
+            try:
+                self.checkout(self.path, commits[i+1])
+                previous = self.analyze(self.project, self.path)
+            except Exception:
+                previous = {}
 
-                self.listeners(self.project, branch, commit, current, previous)
-        except Exception:
-            # nothing, just want to make sure cleanup() is also run after failure
-            pass
+            self.listeners(self.project, branch, commit, current, previous)
 
         self.cleanup()
