@@ -1,6 +1,6 @@
 site:
     title: caudit
-    description: TODO
+    description: Figure out complexity hotspots in the blink of an eye.
     domain: www.caudit.org
     url: http://www.caudit.org
     twitter: caudit_org
@@ -11,6 +11,11 @@ mysql:
     db: $RDS_DB_NAME
     host: $RDS_HOSTNAME
     port: $RDS_PORT
+
+s3:
+    bucket: $S3_BUCKET
+    access_key: $S3_ACCESS_KEY
+    secret_key: $S3_SECRET_KEY
 
 github:
     id: $GITHUB_ID
@@ -103,6 +108,6 @@ session:
     max_age: 2592000
 
 data:
-    repo_path: /tmp/repos/{project}
-    pdepend_path: /tmp/pdepend/{project}
-    json_path: "{pwd}/data/{project}/{hash}.json"
+    repo_path: "{pwd}/tmp/repos/{project}"
+    pdepend_path: "{pwd}/tmp/pdepend/{project}"
+    json_path: "{pwd}/data/{project}/{hash}.json"  # @todo: will have to change when using S3
