@@ -121,5 +121,5 @@ class Controller(fallback.Controller):
             model.store({
                 'user': user['id'],
                 'key': 'emails',
-                'value': user['email'],
+                'value': user['email'] if user['email'] else '',
             })

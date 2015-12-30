@@ -22,4 +22,4 @@ class Controller(fallback.Controller):
     def load_commits(self):
         model = models.commits.Commits()
         emails = self.settings['emails'].split(',')
-        return model.select(author=emails, options=["ORDER BY author_date DESC", "LIMIT 5000"])
+        return model.select(author=emails, options=["ORDER BY author_date DESC", "LIMIT 5000"]) if emails else {}
