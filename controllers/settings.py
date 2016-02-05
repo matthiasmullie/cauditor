@@ -29,7 +29,7 @@ class Controller(fallback.Controller):
 
         return headers
 
-    def render(self, template):
+    def render(self, template="container.html"):
         import json
 
         model = models.settings.Settings()

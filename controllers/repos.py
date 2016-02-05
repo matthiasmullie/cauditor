@@ -23,7 +23,7 @@ class Controller(login.Controller):
 
         return headers
 
-    def render(self, template):
+    def render(self, template="container.html"):
         import json
         return json.dumps(self.session('repos'))
 

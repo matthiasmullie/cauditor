@@ -25,7 +25,7 @@ class Controller(fallback.Controller):
         self.fail = False
         return [('Location', "%s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]))]
 
-    def render(self, template):
+    def render(self, template="container.html"):
         if self.fail:
             return super(Controller, self).render(template)
         else:

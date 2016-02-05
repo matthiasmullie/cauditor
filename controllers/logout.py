@@ -16,6 +16,6 @@ class Controller(fallback.Controller):
         # redirect to homepage
         return [('Location', "%s://%s/" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]))]
 
-    def render(self, template):
+    def render(self, template="container.html"):
         # don't render anything; we'll only be sending redirect headers
         return ""

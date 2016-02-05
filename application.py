@@ -16,7 +16,7 @@ def application(environ, start_response):
 
     headers = controller.headers()
     cookies = [("Set-Cookie", morsel.OutputString()) for morsel in controller.cookie_set.values()]
-    body = controller.render("container.html").encode('utf-8')
+    body = controller.render().encode('utf-8')
 
     start_response(controller.status, headers + cookies + [('Content-Length', str(len(body)))])
     return [body]

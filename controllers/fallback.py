@@ -57,7 +57,7 @@ class Controller(object):
     def headers(self):
         return [('Content-Type', "text/html; charset=UTF-8")]
 
-    def render(self, template):
+    def render(self, template="container.html"):
         from jinja2 import Environment, FileSystemLoader
         env = Environment(loader=FileSystemLoader("templates"))
         template = env.get_template(template)
