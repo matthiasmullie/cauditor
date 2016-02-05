@@ -1,3 +1,6 @@
+# this project is on AWS so rewrites & env vars are different,
+# but this is the equivalent for running it locally, with Apache ;)
+
 RewriteEngine On
 RewriteBase /
 
