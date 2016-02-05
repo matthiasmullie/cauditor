@@ -9,7 +9,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def application(environ, start_response):
-    import controllers
+    from cauditor import controllers
 
     uri = environ["REQUEST_URI"]
     controller = controllers.route(uri)
