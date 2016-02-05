@@ -1,4 +1,4 @@
-# caudit.org
+# cauditor.org
 
 So, I don't really know any Python but I wanted to give it a go for this project. It will be bad!
 
@@ -78,13 +78,13 @@ Whatever CSS is needed...
 
 Charts will be drawn using [d3.js](http://d3js.org/) and [d3plus.js](http://d3plus.org/), which are in data/js/vendor/*
 
-assets/js/Caudit.js is an easy entrypoint to draw the charts.
-`Caudit` takes the path to a visualization in the constructor.
+assets/js/Cauditor.js is an easy entrypoint to draw the charts.
+`Cauditor` takes the path to a visualization in the constructor.
 `.draw` takes a selector (element to draw the chart to) and a visualization object.
 
 All of the chart types have their own constructors:
 assets/js/visualizations/Abstract.js is the abstract class that all vizualizations should inherit from.
-They'll take a Caudit.Data object in the constructor.
+They'll take a Cauditor.Data object in the constructor.
 
 Currently, the only chart type is a treemap, so all charts are in data/js/visualizations/treemap/*, where
 Abstract.js defines the shared treemap-type code among all these type of charts.

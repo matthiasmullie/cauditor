@@ -1,13 +1,13 @@
 // visualizations/Abstract.js must be loaded before this file
 
-Caudit.Visualization.Lineplot = Caudit.Visualization.Lineplot || {};
+Cauditor.Visualization.Lineplot = Cauditor.Visualization.Lineplot || {};
 
 /**
- * @param {Caudit.Data} data
+ * @param {Cauditor.Data} data
  */
-Caudit.Visualization.Lineplot.Abstract = function(data) {
+Cauditor.Visualization.Lineplot.Abstract = function(data) {
     this.bounds = [];
-    Caudit.Visualization.Abstract.apply(this, arguments);
+    Cauditor.Visualization.Abstract.apply(this, arguments);
 
     this.config = {
         type: 'line',
@@ -26,7 +26,7 @@ Caudit.Visualization.Lineplot.Abstract = function(data) {
         }
     };
 };
-Caudit.Visualization.Lineplot.Abstract.prototype = Object.create(Caudit.Visualization.Abstract.prototype);
+Cauditor.Visualization.Lineplot.Abstract.prototype = Object.create(Cauditor.Visualization.Abstract.prototype);
 
 /**
  * d3plus visualization.
@@ -34,7 +34,7 @@ Caudit.Visualization.Lineplot.Abstract.prototype = Object.create(Caudit.Visualiz
  * @param {string|callback} value Name of the metric column
  * @return {d3plus.viz}
  */
-Caudit.Visualization.Lineplot.Abstract.prototype.visualization = function(value) {
+Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(value) {
     return d3plus.viz()
         .data(this.data[value])
         .config(this.config);
@@ -46,7 +46,7 @@ Caudit.Visualization.Lineplot.Abstract.prototype.visualization = function(value)
  * @param {object} data
  * @return {object}
  */
-Caudit.Visualization.Abstract.prototype.filter = function(data) {
+Cauditor.Visualization.Abstract.prototype.filter = function(data) {
     var total = data.length,
         outliers = Math.round(data.length * 0.05),
         result = [];

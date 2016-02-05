@@ -1,11 +1,11 @@
-// ../Caudit.js must be loaded before this file
+// ../Cauditor.js must be loaded before this file
 
-Caudit.Visualization = Caudit.Visualization || {};
+Cauditor.Visualization = Cauditor.Visualization || {};
 
 /**
- * @param {Caudit.Data} data
+ * @param {Cauditor.Data} data
  */
-Caudit.Visualization.Abstract = function(data) {
+Cauditor.Visualization.Abstract = function(data) {
     this.data = data.filter(this.filter);
 };
 
@@ -15,7 +15,7 @@ Caudit.Visualization.Abstract = function(data) {
  * @param {object} data
  * @return {object}
  */
-Caudit.Visualization.Abstract.prototype.filter = function(data) {
+Cauditor.Visualization.Abstract.prototype.filter = function(data) {
     return data;
 };
 
@@ -24,6 +24,6 @@ Caudit.Visualization.Abstract.prototype.filter = function(data) {
  *
  * @return {d3plus.viz}
  */
-Caudit.Visualization.Abstract.prototype.visualization = function() {
+Cauditor.Visualization.Abstract.prototype.visualization = function() {
     return d3plus.viz();
 };

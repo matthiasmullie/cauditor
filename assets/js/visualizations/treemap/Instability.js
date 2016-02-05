@@ -1,9 +1,9 @@
 // visualizations/treemap/Class.js must be loaded before this file
 
-Caudit.Visualization.Treemap.Instability = function() {
-    Caudit.Visualization.Treemap.Class.apply(this, arguments);
+Cauditor.Visualization.Treemap.Instability = function() {
+    Cauditor.Visualization.Treemap.Class.apply(this, arguments);
 };
-Caudit.Visualization.Treemap.Instability.prototype = Object.create(Caudit.Visualization.Treemap.Class.prototype);
+Cauditor.Visualization.Treemap.Instability.prototype = Object.create(Cauditor.Visualization.Treemap.Class.prototype);
 
 /**
  * d3plus visualization.
@@ -13,7 +13,7 @@ Caudit.Visualization.Treemap.Instability.prototype = Object.create(Caudit.Visual
  * @param {object} tooltip Object in { columnname: text } format
  * @return {d3plus.viz}
  */
-Caudit.Visualization.Treemap.Instability.prototype.visualization = function(value, range, tooltip) {
+Cauditor.Visualization.Treemap.Instability.prototype.visualization = function(value, range, tooltip) {
     /*
      * Overriding value.
      * Due to how instability is calculated (ce / (ce + ca)) it's pretty
@@ -29,5 +29,5 @@ Caudit.Visualization.Treemap.Instability.prototype.visualization = function(valu
     var value = function(d) {
         return d.ce / (d.ce + d.ca + 3);
     };
-    return Caudit.Visualization.Treemap.Class.prototype.visualization.call(this, value, range, tooltip);
+    return Cauditor.Visualization.Treemap.Class.prototype.visualization.call(this, value, range, tooltip);
 };

@@ -1,9 +1,9 @@
 // visualizations/treemap/Abstract.js must be loaded before this file
 
-Caudit.Visualization.Treemap.Class = function() {
-    Caudit.Visualization.Treemap.Abstract.apply(this, arguments);
+Cauditor.Visualization.Treemap.Class = function() {
+    Cauditor.Visualization.Treemap.Abstract.apply(this, arguments);
 };
-Caudit.Visualization.Treemap.Class.prototype = Object.create(Caudit.Visualization.Treemap.Abstract.prototype);
+Cauditor.Visualization.Treemap.Class.prototype = Object.create(Cauditor.Visualization.Treemap.Abstract.prototype);
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
@@ -11,7 +11,7 @@ Caudit.Visualization.Treemap.Class.prototype = Object.create(Caudit.Visualizatio
  * @param {object} data
  * @return {object}
  */
-Caudit.Visualization.Treemap.Class.prototype.filter = function(data) {
+Cauditor.Visualization.Treemap.Class.prototype.filter = function(data) {
     var fqcn = [];
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // CA metric is only on class-level (also project-wide sum, which is excluded by the d.name check)
@@ -36,4 +36,4 @@ Caudit.Visualization.Treemap.Class.prototype.filter = function(data) {
     });
 };
 
-Caudit.Visualization.Treemap.Class.prototype.id = ['package', 'name'];
+Cauditor.Visualization.Treemap.Class.prototype.id = ['package', 'name'];

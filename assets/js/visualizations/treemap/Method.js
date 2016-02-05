@@ -1,9 +1,9 @@
 // visualizations/treemap/Abstract.js must be loaded before this file
 
-Caudit.Visualization.Treemap.Method = function() {
-    Caudit.Visualization.Treemap.Abstract.apply(this, arguments);
+Cauditor.Visualization.Treemap.Method = function() {
+    Cauditor.Visualization.Treemap.Abstract.apply(this, arguments);
 };
-Caudit.Visualization.Treemap.Method.prototype = Object.create(Caudit.Visualization.Treemap.Abstract.prototype);
+Cauditor.Visualization.Treemap.Method.prototype = Object.create(Cauditor.Visualization.Treemap.Abstract.prototype);
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
@@ -11,7 +11,7 @@ Caudit.Visualization.Treemap.Method.prototype = Object.create(Caudit.Visualizati
  * @param {object} data
  * @return {object}
  */
-Caudit.Visualization.Treemap.Method.prototype.filter = function(data) {
+Cauditor.Visualization.Treemap.Method.prototype.filter = function(data) {
     var fqcn = [];
     return d3.layout.treemap().nodes(data).filter(function(d) {
         // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
@@ -37,4 +37,4 @@ Caudit.Visualization.Treemap.Method.prototype.filter = function(data) {
     });
 };
 
-Caudit.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];
+Cauditor.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];

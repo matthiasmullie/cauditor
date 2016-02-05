@@ -1,12 +1,12 @@
 // visualizations/Abstract.js must be loaded before this file
 
-Caudit.Visualization.Treemap = Caudit.Visualization.Treemap || {};
+Cauditor.Visualization.Treemap = Cauditor.Visualization.Treemap || {};
 
 /**
- * @param {Caudit.Data} data
+ * @param {Cauditor.Data} data
  */
-Caudit.Visualization.Treemap.Abstract = function(data) {
-    Caudit.Visualization.Abstract.apply(this, arguments);
+Cauditor.Visualization.Treemap.Abstract = function(data) {
+    Cauditor.Visualization.Abstract.apply(this, arguments);
     this.config = {
         type: 'tree_map',
         data: this.data,
@@ -28,7 +28,7 @@ Caudit.Visualization.Treemap.Abstract = function(data) {
         zoom: false
     };
 };
-Caudit.Visualization.Treemap.Abstract.prototype = Object.create(Caudit.Visualization.Abstract.prototype);
+Cauditor.Visualization.Treemap.Abstract.prototype = Object.create(Cauditor.Visualization.Abstract.prototype);
 
 /**
  * d3plus visualization.
@@ -38,7 +38,7 @@ Caudit.Visualization.Treemap.Abstract.prototype = Object.create(Caudit.Visualiza
  * @param {object} tooltip Object in { columnname: text } format
  * @return {d3plus.viz}
  */
-Caudit.Visualization.Treemap.Abstract.prototype.visualization = function(value, range, tooltip) {
+Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(value, range, tooltip) {
     tooltip = tooltip || this.tooltip;
 
     return d3plus.viz()
@@ -79,18 +79,18 @@ Caudit.Visualization.Treemap.Abstract.prototype.visualization = function(value, 
  *
  * @type {string[]}
  */
-Caudit.Visualization.Treemap.Abstract.prototype.id = ['name'];
+Cauditor.Visualization.Treemap.Abstract.prototype.id = ['name'];
 
 /**
  * Column to base blocks' size on (d3plus.viz().size())
  *
  * @type {string[]}
  */
-Caudit.Visualization.Treemap.Abstract.prototype.size = 'loc';
+Cauditor.Visualization.Treemap.Abstract.prototype.size = 'loc';
 
 /**
  * Array of columns to include in tooltip
  *
  * @type {Object} Object in { columnname: text } format
  */
-Caudit.Visualization.Treemap.Abstract.prototype.tooltip = { 'loc': 'Lines of code' };
+Cauditor.Visualization.Treemap.Abstract.prototype.tooltip = { 'loc': 'Lines of code' };

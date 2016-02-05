@@ -45,4 +45,4 @@ def github(token):
     import github
 
     config = load_config()['github']
-    return github.Github(login_or_token=token, client_id=config['id'], client_secret=config['secret'], timeout=1, user_agent='caudit.org', per_page=999)
+    return github.Github(login_or_token=token, client_id=config['id'], client_secret=config['secret'], timeout=1, user_agent='cauditor.org', per_page=999)

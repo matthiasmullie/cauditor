@@ -3,7 +3,7 @@
 import sys
 import os
 
-# add current director to ensure these modules can be imported
+# add current directory to ensure these modules can be imported
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
