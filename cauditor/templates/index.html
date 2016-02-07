@@ -1,0 +1,102 @@
+<div class="hero hero-{{ [1, 2, 3, 4, 5]|random }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 columns text-center">
+                <h1><strong>{{ site.title }}</strong></h1>
+                <h2><strong>Feeling lost?</strong> Get your code back on track!</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 columns text-center">
+                {% if not user %}
+                    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" style="margin-right: 20px;">Sign in with <i class="fa fa-github"></i></a>
+                    Audit your PHP code. It's <strong>free</strong>!
+                {% else %}
+                    {% set random_repo = imported_repos|random %}
+                    {% set messages = [
+                        'Want to analyze <strong><a href="/user#repos">another repo</a></strong>?',
+                        'How have <strong><a href="/insight">you been doing</a></strong> lately?',
+                        "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                        "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                        "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                    ] %}
+                    Welcome back, {{ user.name }}! {{ messages|random }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="logo-strip">
+    <div class="container">
+        <div class="row" style="padding: 0;">
+            <a href="/WordPress/WordPress"><img src="/assets/img/wordpress.png" /></a>
+            <a href="/symfony/symfony"><img src="/assets/img/symfony.png" /></a>
+            <a href="/wikimedia/mediawiki"><img src="/assets/img/mediawiki.png" /></a>
+            <a href="/drupal/drupal"><img src="/assets/img/drupal.png" /></a>
+            <a href="/laravel/laravel"><img src="/assets/img/laravel.png" /></a>
+            <a href="/phpbb/phpbb"><img src="/assets/img/phpbb.png" /></a>
+            <a href="/forkcms/forkcms"><img src="/assets/img/forkcms.png" /></a>
+            <a href="/magento/magento2"><img src="/assets/img/magento.png" /></a>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding: 100px 0;">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-5 columns">
+            <img src="/assets/img/project.png" style="width: 100%;" />
+        </div>
+        <div class="col-xs-12 col-sm-offset-0 col-sm-6 col-md-offset-1 columns">
+            <h2><strong>Project</strong> metrics</h2>
+            <p>
+                Figure out complexity hotspots in the blink of an eye.
+                Find classes in dire need of attention before you experience their effect first-hand.
+                Don't let technical debt bite you.
+            </p>
+            <p>
+                <strong>Keep your finger on the pulse.</strong>
+            </p>
+            <p>
+                These metrics are generated from your PHP code:
+            </p>
+            <ul>
+                <li>Maintainability index</li>
+                <li>Cyclomatic complexity</li>
+                <li>Halstead intelligent content</li>
+                <li>Instability</li>
+                <li>Afferent coupling</li>
+                <li>Efferent coupling</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" style="padding-top: 75px;">
+        <div class="col-xs-12 col-sm-6 columns">
+            <h2><strong>Personal</strong> metrics</h2>
+            <p>
+                Do you cause technical debt or clean it up?
+                How much technical debt do you cause or clean up?
+            </p>
+            <p>
+                <strong>Do you usually leave the project better than you found it?</strong>
+                Find out your progress with with these per-commit metric averages.
+            </p>
+            <p class="text-center" style="padding: 20px 0;">
+                {% if not user %}
+                    <a class="btn btn-primary btn-lg" role="button" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}">Sign in with <i class="fa fa-github"></i></a>
+                {% else %}
+                    <a class="btn btn-primary btn-lg" role="button" href="/insight">Your metrics</a>
+                {% endif %}
+            </p>
+            <p>
+                These figures should be interpreted in the context of those commits.
+                High complexity can mean you've done a terrible job.
+                Or that you've just tackled the nastiest problem.
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-offset-0 col-sm-6 col-md-offset-1 col-md-5 columns">
+            <img src="/assets/img/personal.png" style="width: 100%;" />
+        </div>
+    </div>
+</div>

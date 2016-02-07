@@ -1,0 +1,25 @@
+/* Change font size */
+nav,
+nav .dropdown-menu {
+    font-size: 13px;
+}
+
+/* Dropdown arrow should have some space */
+nav i:last-child {
+    padding-left: 5px;
+}
+
+/* Padding & font-size shouldn't dictate navbar height */
+nav a {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 50px !important;
+    line-height: 50px !important;
+}
+
+/* User avatar should be full nav height */
+nav .avatar img {
+    height: inherit;
+    padding-right: 10px;
+    vertical-align: top;
+}

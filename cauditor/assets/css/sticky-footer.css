@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+}
+
+.content {
+    min-height: 100%;
+
+    /* Preserve navbar space */
+    padding-top: 70px;
+
+    /* Footer height + margin */
+    margin-bottom: -50px;
+}
+
+/*
+ * On chart pages, I don't want the sticky footer to be visible.
+ * I'd rather have the chart be slightly bigger and the footer be
+ * just below the fold.
+ */
+body[data-template="chart.html"] .content {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.footer, .push {
+    height: 50px;
+}
