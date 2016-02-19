@@ -1,4 +1,4 @@
-from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook
+from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook, submit
 import re
 
 
@@ -15,6 +15,7 @@ routes = {
     "^/api/settings$": settings,  # matches /api/settings
     "^/api/repos$": repos,  # matches /api/repos
     "^/api/webhook$": webhook,  # matches /api/webhook
+    "^/api/submit$": submit,  # matches /api/submit
 }
 
 
