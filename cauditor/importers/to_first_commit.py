@@ -10,7 +10,7 @@ class Importer(last_commit.Importer):
         # override commits: we want first imported commit, not last one
         try:
             commits = models.commits.Commits()
-            self.commit = commits.select(project=project, options=["ORDER BY commit_date ASC", "LIMIT 1"])[0]
+            self.commit = commits.select(project=project, options=["ORDER BY timestamp ASC", "LIMIT 1"])[0]
         except Exception:
             self.commit = None
 

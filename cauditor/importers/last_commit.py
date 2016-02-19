@@ -15,7 +15,7 @@ class Importer(models.jobs.Job):
         # figure out last imported commit in this project (if any)
         try:
             commits = models.commits.Commits()
-            self.commit = commits.select(project=project, options=["ORDER BY commit_date DESC", "LIMIT 1"])[0]
+            self.commit = commits.select(project=project, options=["ORDER BY timestamp DESC", "LIMIT 1"])[0]
         except Exception:
             self.commit = None
 
@@ -77,10 +77,9 @@ class Importer(models.jobs.Job):
         commits = [line.split("\t") for line in output.split("\n")]
         return [{
             'hash': commit[0],
+            # @todo previous
             'author': commit[1],
-            'author_date': datetime.datetime.strptime(commit[2], "%a %b %d %H:%M:%S %Y"),
-            'committer': commit[3],
-            'commit_date': datetime.datetime.strptime(commit[4], "%a %b %d %H:%M:%S %Y"),
+            'timestamp': datetime.datetime.strptime(commit[4], "%a %b %d %H:%M:%S %Y"),
         } for commit in commits]
 
     def checkout(self, path, commit):

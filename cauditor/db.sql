@@ -17,14 +17,12 @@ CREATE TABLE IF NOT EXISTS `commits` (
 CREATE TABLE IF NOT EXISTS `commit_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hash` binary(40) NOT NULL, -- commit sha
+  `previous` binary(40) DEFAULT NULL, -- previous commit sha
   `author` varchar(255) NOT NULL, -- author email
-  `author_date` datetime NOT NULL, -- date authored
-  `committer` varchar(255) NOT NULL, -- committer email
-  `commit_date` datetime NOT NULL, -- date of commit
-  `metrics` blob, -- metrics for this specific commit
+  `timestamp` datetime NOT NULL, -- commit date
+  `metrics` blob NOT NULL, -- project-wide metrics as of this commit
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_unique` (`commit_date`,`hash`,`author`), -- assumes there are no hash collisions per user/date
-  KEY `idx_author` (`author`,`author_date`) -- fetching last x commits per author
+  UNIQUE KEY `idx_unique` (`author`,`timestamp`,`hash`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `sessions` (

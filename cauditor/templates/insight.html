@@ -38,7 +38,7 @@
         total, average;
 
     {% for commit in commits %}
-        commit = $.extend({}, {{ commit.metrics }}, { date: '{{ commit.author_date.strftime('%Y-%m') }}' });
+        commit = $.extend({}, {{ commit.metrics }}, { date: '{{ commit.timestamp.strftime('%Y-%m') }}' });
         data.push(commit);
     {% endfor %}
 

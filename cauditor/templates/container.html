@@ -87,20 +87,20 @@
                             <a href="#" class="{% if not commit %}dimmed{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="fa fa-code"></i>
                                 {% if not commit %}
-                                    HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}
+                                    HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}
                                 {% else %}
-                                    {{ commit.hash|truncate(7, True, "") }} {% if commit.commit_date %}({{ commit.commit_date.strftime('%Y-%m-%d') }}){% endif %}
+                                    {{ commit.hash|truncate(7, True, "") }} {% if commit.timestamp %}({{ commit.timestamp.strftime('%Y-%m-%d') }}){% endif %}
                                 {% endif %}
                                 <i class="fa fa-angle-down"></i>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}><a href="/{{ project.name }}">HEAD {% if commits[0].commit_date %}({{ commits[0].commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+                                <li {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}><a href="/{{ project.name }}">HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
 
                                 {% for c in commits %}
                                     {# skip first commit, we're already showing it as HEAD #}
                                     {% if not loop.first %}
-                                        <li {% if commit and commit.hash == c.hash %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.hash }}">{{ c.hash|truncate(7, True, "") }} {% if c.commit_date %}({{ c.commit_date.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+                                        <li {% if commit and commit.hash == c.hash %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.hash }}">{{ c.hash|truncate(7, True, "") }} {% if c.timestamp %}({{ c.timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
