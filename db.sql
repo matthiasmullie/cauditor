@@ -20,7 +20,19 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
   `previous` binary(40) DEFAULT NULL, -- previous commit sha
   `author` varchar(255) NOT NULL, -- author email
   `timestamp` datetime NOT NULL, -- commit date
-  `metrics` blob NOT NULL, -- project-wide metrics as of this commit
+  -- project-wide metrics as of this commit
+  `loc` int(11) NOT NULL,
+  `noc` int(11) NOT NULL,
+  `nom` int(11) NOT NULL,
+  `ca` int(11) NOT NULL,
+  `ce` int(11) NOT NULL,
+  `i` decimal(11, 2) NOT NULL,
+  `dit` int(11) NOT NULL,
+  `ccn` int(11) NOT NULL,
+  `npath` int(11) NOT NULL,
+  `he` decimal(11, 2) NOT NULL,
+  `hi` decimal(11, 2) NOT NULL,
+  `mi` decimal(11, 2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique` (`author`,`timestamp`,`hash`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
