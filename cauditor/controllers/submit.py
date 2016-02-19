@@ -26,6 +26,7 @@ class Controller(fallback.Controller):
             if not self.commit_exists(form):
                 self.store_project(form)
                 self.store_commit(form)
+                # @todo upload that file...!
         except Exception as exception:
             self.status = "401 Unauthorized"
             self.exception = exception
@@ -75,17 +76,17 @@ class Controller(fallback.Controller):
             'timestamp': dateutil.parser.parse(form['timestamp'].value),
 
             # metrics
-            'loc': metrics['loc'],
-            'noc': metrics['noc'],
-            'nom': metrics['nom'],
-            'ca': metrics['ca'],
-            'ce': metrics['ce'],
-            'i': metrics['i'],
-            'dit': metrics['dit'],
-            'ccn': metrics['ccn'],
-            'npath': metrics['npath'],
-            'he': metrics['he'],
-            'hi': metrics['hi'],
-            'mi': metrics['mi'],
+            'loc': metrics['loc'] if 'loc' in metrics else 0,
+            'noc': metrics['noc'] if 'noc' in metrics else 0,
+            'nom': metrics['nom'] if 'nom' in metrics else 0,
+            'ca': metrics['ca'] if 'ca' in metrics else 0,
+            'ce': metrics['ce'] if 'ce' in metrics else 0,
+            'i': metrics['i'] if 'i' in metrics else 0,
+            'dit': metrics['dit'] if 'dit' in metrics else 0,
+            'ccn': metrics['ccn'] if 'ccn' in metrics else 0,
+            'npath': metrics['npath'] if 'npath' in metrics else 0,
+            'he': metrics['he'] if 'he' in metrics else 0,
+            'hi': metrics['hi'] if 'hi' in metrics else 0,
+            'mi': metrics['mi'] if 'mi' in metrics else 0,
         }
         commits.store(commit)
