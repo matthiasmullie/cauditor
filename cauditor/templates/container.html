@@ -54,32 +54,26 @@
 
             <div class="collapse navbar-collapse" id="top-bar">
                 <ul class="nav navbar-nav">
-                    {% if project %}
-                        {% if not imported_repos %}
-                            <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
-                        {% else %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> {{ project.name }} <i class="fa fa-angle-down"></i></a>
-
-                                {# show list of user's own, imported repos #}
-                                <ul class="dropdown-menu" role="menu">
-                                    {% for repo in imported_repos %}
-                                        <li {% if repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
-                    {% elif imported_repos %}
+                    {% if user %}
                         <li class="dropdown">
-                            <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i> Select repository <i class="fa fa-angle-down"></i></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i>
+                                {% if project %}{{ project.name }}{% else %}Select Repository{% endif %}
+                            <i class="fa fa-angle-down"></i></a>
 
-                            {# show list of user's own, imported repos #}
                             <ul class="dropdown-menu" role="menu">
-                                {% for repo in imported_repos %}
-                                    <li><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
-                                {% endfor %}
+                                {# show list of user's own, imported repos #}
+                                {% if imported_repos %}
+                                    {% for repo in imported_repos %}
+                                        <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+
+                                {# show link to add more repos #}
+                                <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
                             </ul>
                         </li>
+                    {% elif project %}
+                        <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
                     {% endif %}
 
                     {% if project and commits[0] %}
