@@ -4,7 +4,7 @@ import os.path
 from cauditor import container
 
 
-def execute(project, branch, commit, data, previous):
+def execute(project, commit, metrics):
     config = container.load_config()
 
     s3 = boto3.resource(
@@ -13,8 +13,8 @@ def execute(project, branch, commit, data, previous):
         aws_secret_access_key=config['s3']['secret_key'],
     )
 
-    path = config['data']['json_path'].format(pwd='', project=project['name'], hash=commit['hash'])
+    path = config['data']['path'].format(pwd='', project=project['name'], hash=commit['hash'])
     path = os.path.basename(path)
 
     file = s3.Object(config['s3']['bucket'], path)
-    file.put(Body=json.dumps(data), ACL='public-read')
+    file.put(Body=json.dumps(metrics), ACL='public-read')

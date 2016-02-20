@@ -1,14 +1,15 @@
-from cauditor.listeners import store_db, store_aws, store_filesystem
+from cauditor.listeners import db, aws, filesystem
 from cauditor import container
 
 
-def execute(project, branch, commit, data, previous):
-    # @todo this is really poor!
+def execute(project, commit, metrics):
+    if db.commit_exists(commit):
+        return
 
     config = container.load_config()
-    if config['s3']['bucket'] != "None":
-        store_aws.execute(project, branch, commit, data, previous)
+    if config['s3']['bucket'] == "":
+        filesystem.execute(project, commit, metrics)
     else:
-        store_filesystem.execute(project, branch, commit, data, previous)
+        aws.execute(project, commit, metrics)
 
-    store_db.execute(project, branch, commit, data, previous)
+    db.execute(project, commit, metrics)

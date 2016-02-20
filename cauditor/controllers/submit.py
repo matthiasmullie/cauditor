@@ -1,5 +1,5 @@
 from cauditor.controllers import fallback
-from cauditor import models
+from cauditor import listeners
 import dateutil.parser
 import json
 
@@ -23,10 +23,11 @@ class Controller(fallback.Controller):
                 self.status = "401 Unauthorized"
                 raise Exception("Only github.com repositories are currently supported.")
 
-            if not self.commit_exists(form):
-                self.store_project(form)
-                self.store_commit(form)
-                # @todo upload that file...!
+            project = self.get_project(form)
+            commit = self.get_commit(form)
+            metrics = self.get_metrics(form)
+
+            listeners.execute(project, commit, metrics)
         except Exception as exception:
             self.status = "401 Unauthorized"
             self.exception = exception
@@ -41,52 +42,21 @@ class Controller(fallback.Controller):
 
         return json.dumps({})
 
-    def commit_exists(self, form):
-        project = form['slug'].value
-        branch = form['branch'].value
-        commit = form['commit'].value
-
-        commits = models.commits.Commits()
-        result = commits.select(project=project, branch=branch, hash=commit)
-
-        try:
-            result[0]
-            return True
-        except Exception:
-            return False
-
-    def store_project(self, form):
-        projects = models.projects.Projects()
-        project = {
+    def get_project(self, form):
+        return {
             'name': form['slug'].value,
             'git': form['repo'].value,
         }
-        projects.store(project)
 
-    def store_commit(self, form):
-        metrics = json.loads(form['json'].value)
-
-        commits = models.commits.Commits()
-        commit = {
+    def get_commit(self, form):
+        return {
             'project': form['slug'].value,
             'branch': form['branch'].value or 'pr-'+form['pull-request'].value,
             'hash': form['commit'].value,
             'previous': form['previous-commit'].value,
             'author': form['author-email'].value,
             'timestamp': dateutil.parser.parse(form['timestamp'].value),
-
-            # metrics
-            'loc': metrics['loc'] if 'loc' in metrics else 0,
-            'noc': metrics['noc'] if 'noc' in metrics else 0,
-            'nom': metrics['nom'] if 'nom' in metrics else 0,
-            'ca': metrics['ca'] if 'ca' in metrics else 0,
-            'ce': metrics['ce'] if 'ce' in metrics else 0,
-            'i': metrics['i'] if 'i' in metrics else 0,
-            'dit': metrics['dit'] if 'dit' in metrics else 0,
-            'ccn': metrics['ccn'] if 'ccn' in metrics else 0,
-            'npath': metrics['npath'] if 'npath' in metrics else 0,
-            'he': metrics['he'] if 'he' in metrics else 0,
-            'hi': metrics['hi'] if 'hi' in metrics else 0,
-            'mi': metrics['mi'] if 'mi' in metrics else 0,
         }
-        commits.store(commit)
+
+    def get_metrics(self, form):
+        return json.loads(form['json'].value)

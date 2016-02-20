@@ -109,6 +109,7 @@ session:
     max_age: 2592000
 
 data:
+    # json path
+    path: "{pwd}/data/{project}/{hash}.json"  # @todo: will have to change when using S3
     repo_path: /tmp/repos/{project}
     pdepend_path: /tmp/pdepend/{project}
-    json_path: "{pwd}/data/{project}/{hash}.json"  # @todo: will have to change when using S3
