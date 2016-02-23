@@ -1,31 +1,36 @@
 from cauditor.controllers import fallback
+from cauditor.models import projects
 from cauditor import listeners
 import dateutil.parser
 import json
+import sys
 
 
 class Controller(fallback.Controller):
     template = ""
     exception = ""
 
-    def __init__(self):
+    def __init__(self, project, commit, branch=None):
         super(Controller, self).__init__()
 
-    def headers(self):
-        import cgi
+        self.project = project
+        self.branch = branch
+        self.commit = commit
 
+        self.data = json.load(sys.stdin)
+
+    def headers(self):
         headers = [('Content-Type', "application/json; charset=UTF-8")]
 
         try:
-            form = cgi.FieldStorage(keep_blank_values=True)
-
-            if form['repo'].value.find('github.com') < 0:
+            if self.data['repo'].find('github.com') < 0:
                 self.status = "401 Unauthorized"
+                # only GitHub is supported because of potential vendor/repo collisions
                 raise Exception("Only github.com repositories are currently supported.")
 
-            project = self.get_project(form)
-            commit = self.get_commit(form)
-            metrics = self.get_metrics(form)
+            project = self.get_project()
+            commit = self.get_commit()
+            metrics = self.get_metrics()
 
             listeners.execute(project, commit, metrics)
         except Exception as exception:
@@ -42,21 +47,28 @@ class Controller(fallback.Controller):
 
         return json.dumps({})
 
-    def get_project(self, form):
+    def get_project(self):
+        # first check if project by that name already exists: repo url may be
+        # different than the one we have in DB (ssh/https, for example)
+        model = projects.Projects()
+        project = model.select(name=self.project)
+        try:
+            return project[0]
+        except Exception:
+            return {
+                'name': self.project,
+                'git': self.data['repo'],
+            }
+
+    def get_commit(self):
         return {
-            'name': form['slug'].value,
-            'git': form['repo'].value,
+            'project': self.project,
+            'branch': self.branch or 'pr-'+self.data['pull-request'],
+            'hash': self.commit,
+            'previous': self.data['previous-commit'],
+            'author': self.data['author-email'],
+            'timestamp': dateutil.parser.parse(self.data['timestamp']),
         }
 
-    def get_commit(self, form):
-        return {
-            'project': form['slug'].value,
-            'branch': form['branch'].value or 'pr-'+form['pull-request'].value,
-            'hash': form['commit'].value,
-            'previous': form['previous-commit'].value,
-            'author': form['author-email'].value,
-            'timestamp': dateutil.parser.parse(form['timestamp'].value),
-        }
-
-    def get_metrics(self, form):
-        return json.loads(form['json'].value)
+    def get_metrics(self):
+        return json.loads(self.data['json'].value)
