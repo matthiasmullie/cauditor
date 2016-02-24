@@ -1,4 +1,4 @@
-from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook, submit
+from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook, submit, commits
 import re
 
 
@@ -16,6 +16,7 @@ routes = {
     "^/api/repos$": repos,  # matches /api/repos
     "^/api/webhook$": webhook,  # matches /api/webhook
     "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})": submit,  # matches /api/v1/vendor/repo/branch/commit
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)": commits,  # matches /api/v1/vendor/repo/branch
 }
 
 
