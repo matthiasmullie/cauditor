@@ -64,7 +64,7 @@ class Controller(fallback.Controller):
             'project': self.project,
             'branch': self.branch or 'pr-'+self.data['pull-request'],
             'hash': self.commit,
-            'previous': self.data['previous-commit'],
+            'previous': self.data['previous-commit'] or None,
             'author': self.data['author-email'],
             'timestamp': dateutil.parser.parse(self.data['timestamp']),
         }
