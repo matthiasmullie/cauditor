@@ -30,9 +30,8 @@ class Controller(fallback.Controller):
 
             project = self.get_project()
             commit = self.get_commit()
-            metrics = self.get_metrics()
 
-            listeners.execute(project, commit, metrics)
+            listeners.execute(project, commit, self.data['metrics'])
         except Exception as exception:
             self.status = "401 Unauthorized"
             self.exception = exception
@@ -69,6 +68,3 @@ class Controller(fallback.Controller):
             'author': self.data['author-email'],
             'timestamp': dateutil.parser.parse(self.data['timestamp']),
         }
-
-    def get_metrics(self):
-        return json.loads(self.data['json'].value)
