@@ -19,6 +19,33 @@
     </div>
 </div>
 
+{% if missing > 0.25 %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 columns">
+            <div class="alert alert-danger" role="alert">
+                <i class="fa fa-exclamation-circle"></i>
+                A good amount of your commits are missing from our database. They'll get imported eventually...
+                <strong>Or you can kick it off on your own machine right away!</strong>
+
+                <ol>
+                    <li>
+                        First install the cauditor analyzer:<br>
+                        <code>composer global require cauditor/analyzer</code>
+                    </li>
+                    <li>
+                        Then let it analyze your projects:<br>
+                        {% for project in missing_projects %}
+                            <code>cauditor --all --repo={{ project.git }} --path=/tmp/{{ project.name }}</code><br>
+                        {% endfor %}
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% for chart in charts %}
 <div class="chart-row">
     <div class="container">
@@ -38,7 +65,7 @@
         total, average;
 
     {% for commit in commits %}
-        commit = $.extend({}, {{ commit.metrics }}, { date: '{{ commit.timestamp.strftime('%Y-%m') }}' });
+        commit = $.extend({}, {{ commit.diff }}, { date: '{{ commit.timestamp.strftime('%Y-%m') }}' });
         data.push(commit);
     {% endfor %}
 
