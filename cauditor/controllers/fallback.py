@@ -50,7 +50,7 @@ class Controller(object):
             'user': self.user,
             'settings': self.settings,
             'repos': repos,
-            'imported_repos': [i for i in projects],
+            'imported_repos': [i for i in projects if i['github_id'] is not None],
         })
         return args
 
