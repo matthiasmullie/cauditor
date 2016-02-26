@@ -12,7 +12,7 @@ def application(environ, start_response):
     from cauditor import container
     from cauditor import controllers
 
-    container.environ = environ
+    container.environ.update(dict(environ))
 
     uri = environ["REQUEST_URI"]
     controller = controllers.route(uri)

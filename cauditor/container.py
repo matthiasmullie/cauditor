@@ -1,4 +1,7 @@
-environ = {}
+import os
+
+
+environ = dict(os.environ)
 
 
 def load_config():
