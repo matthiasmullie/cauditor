@@ -27,8 +27,7 @@ html, body {
 }
 
 /* Temporary beta label */
-body::before {
-    content: "BETA";
+#beta {
     font-family: Lato, Helvetica, arial, sans-serif;
     font-weight: 100;
     font-size: 25px;
