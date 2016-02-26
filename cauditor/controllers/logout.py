@@ -12,6 +12,7 @@ class Controller(fallback.Controller):
 
     def headers(self):
         # redirect to homepage
+        self.status = "302 Found"
         return [('Location', "%s/" % self.config()['site']['host'])]
 
     def render(self, template="container.html"):
