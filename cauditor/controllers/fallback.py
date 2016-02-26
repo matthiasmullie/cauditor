@@ -1,6 +1,4 @@
 from cauditor import models
-from jinja2 import Environment, FileSystemLoader
-import os
 
 
 class Controller(object):
@@ -60,6 +58,8 @@ class Controller(object):
         return [('Content-Type', "text/html; charset=UTF-8")]
 
     def render(self, template="container.html"):
+        from jinja2 import Environment, FileSystemLoader
+        import os
         path = os.path.dirname(os.path.abspath(__file__)) + "/../templates/"
         env = Environment(loader=FileSystemLoader(path))
         template = env.get_template(template)
