@@ -11,8 +11,6 @@ class Controller(fallback.Controller):
         self.code = code
 
     def headers(self):
-        import os
-
         try:
             token = self.get_auth_token(self.code)
             self.import_from_github(token)
@@ -23,7 +21,7 @@ class Controller(fallback.Controller):
 
         # success! redirect
         self.fail = False
-        return [('Location', "%s://%s/user" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]))]
+        return [('Location', "%s/user" % self.config()['site']['host'])]
 
     def render(self, template="container.html"):
         if self.fail:
