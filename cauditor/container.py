@@ -1,13 +1,16 @@
+environ = {}
+
+
 def load_config():
     import io
-    import os
     import re
+    import os
     import yaml
 
     # parse environment variables into config.yaml, in $VARIABLE format
     # @see http://stackoverflow.com/questions/26712003/pyyaml-parsing-of-the-environment-variable-in-the-yaml-configuration-file
     def pathex_constructor(loader, node):
-        return os.environ[node.value[1:]]
+        return environ[node.value[1:]]
     pattern = re.compile(r'\$([0-9a-z_]+)', re.IGNORECASE)
     yaml.add_implicit_resolver('tag', pattern)
     yaml.add_constructor('tag', pathex_constructor)

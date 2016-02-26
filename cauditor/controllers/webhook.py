@@ -1,7 +1,7 @@
 from cauditor.controllers import fallback
+from cauditor import container
 from cauditor import models
 from cauditor import importers
-import os
 import sys
 import json
 
@@ -15,7 +15,7 @@ class Controller(fallback.Controller):
     def __init__(self):
         super(Controller, self).__init__()
 
-        length = int(os.environ['CONTENT_LENGTH'])
+        length = int(container.environ['CONTENT_LENGTH'])
         data = sys.stdin.read(length)
         payload = json.loads(data)
 

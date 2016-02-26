@@ -11,10 +11,8 @@ class Controller(fallback.Controller):
         self.cookie('session_id', self.session_data.id, -1)
 
     def headers(self):
-        import os
-
         # redirect to homepage
-        return [('Location', "%s://%s/" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]))]
+        return [('Location', "%s/" % self.config()['site']['host'])]
 
     def render(self, template="container.html"):
         # don't render anything; we'll only be sending redirect headers

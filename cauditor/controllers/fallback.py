@@ -1,4 +1,8 @@
+from cauditor import container
 from cauditor import models
+from jinja2 import Environment, FileSystemLoader
+import http.cookies
+import os
 
 
 class Controller(object):
@@ -6,10 +10,8 @@ class Controller(object):
 
     def __init__(self):
         # init cookies
-        import http.cookies
-        import os
         self.cookie_data = http.cookies.SimpleCookie()
-        self.cookie_data.load(os.environ.get("HTTP_COOKIE", ""))
+        self.cookie_data.load(container.environ.get("HTTP_COOKIE", ""))
         self.cookie_set = http.cookies.SimpleCookie()
 
         # all controllers extend from this one, so I'm going to special-case
@@ -17,7 +19,6 @@ class Controller(object):
         self.status = "404 Not Found" if self.__module__ == "controllers.fallback" else "200 OK"
 
         # init session (but don't load session data yet)
-        from cauditor import models
         session_id = self.cookie('session_id')
         max_age = self.config()['session']['max_age']
         self.session_data = models.sessions.Sessions(session_id, max_age)
@@ -30,7 +31,6 @@ class Controller(object):
             self.settings = {entry['key']: entry['value'] for entry in settings}
 
     def config(self):
-        from cauditor import container
         return container.load_config()
 
     def args(self):
@@ -58,8 +58,6 @@ class Controller(object):
         return [('Content-Type', "text/html; charset=UTF-8")]
 
     def render(self, template="container.html"):
-        from jinja2 import Environment, FileSystemLoader
-        import os
         path = os.path.dirname(os.path.abspath(__file__)) + "/../templates/"
         env = Environment(loader=FileSystemLoader(path))
         template = env.get_template(template)

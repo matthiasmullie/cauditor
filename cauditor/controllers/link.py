@@ -72,11 +72,9 @@ class Controller(fallback.Controller):
         return github.get_repo(name)
 
     def create_hook(self, repo):
-        import os
-
         # https://developer.github.com/v3/repos/hooks/#create-a-hook
         return repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
-            'url': "%s://%s/api/webhook" % (os.environ["REQUEST_SCHEME"], os.environ["HTTP_HOST"]),
+            'url': "%s/api/webhook" % self.config()['site']['host'],
             'content_type': "json",
         })
 
