@@ -12,7 +12,7 @@
                 {% if not user %}
                     <a class="btn btn-primary btn-lg" role="button" href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" style="margin-right: 20px;">Sign in with <i class="fa fa-github"></i></a>
                     Audit your PHP code. It's <strong>free</strong>!
-                {% else %}
+                {% elif imported_repos %}
                     {% set random_repo = imported_repos|random %}
                     {% set messages = [
                         'Want to analyze <strong><a href="/user#repos">another repo</a></strong>?',
@@ -22,6 +22,8 @@
                         "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
                     ] %}
                     Welcome back, {{ user.name }}! {{ messages|random }}
+                {% else %}
+                    Welcome back, {{ user.name }}! How about we analyze <strong><a href="/user#repos">one of your repos</a></strong>?
                 {% endif %}
             </div>
         </div>
