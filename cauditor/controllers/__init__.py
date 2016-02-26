@@ -41,4 +41,4 @@ def route(uri):
             # controller failed to init - try next!
             pass
 
-    raise Exception("No available route")
+    raise Exception("No available route for uri: " + uri)
