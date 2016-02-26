@@ -16,7 +16,7 @@ class Controller(fallback.Controller):
         count = len(commits)
 
         self.commits = [commit for commit in commits if commit['previous'] is None or commit['previous'] in prev_commits]
-        self.missing = 1 - (len(self.commits) / count)
+        self.missing = 1 - (len(self.commits) / (count or 1))
 
         missing_projects = set([commit['project'] for commit in commits if commit['previous'] is not None and commit['previous'] not in prev_commits])
         self.missing_projects = [project for project in self.load_projects(missing_projects)]
@@ -50,10 +50,16 @@ class Controller(fallback.Controller):
         return model.select(author=emails, options=["ORDER BY timestamp DESC", "LIMIT 5000"]) if emails else {}
 
     def load_prev_commits(self, commits):
+        if len(commits) == 0:
+            return []
+
         model = models.commits.Commits()
         hashes = [commit['previous'] for commit in commits]
         return model.select(hash=hashes)
 
     def load_projects(self, projects):
+        if len(projects) == 0:
+            return []
+
         model = models.projects.Projects()
         return model.select(name=projects)
