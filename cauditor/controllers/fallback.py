@@ -16,7 +16,7 @@ class Controller(object):
 
         # all controllers extend from this one, so I'm going to special-case
         # the 404 header
-        self.status = "404 Not Found" if self.__module__ == "controllers.fallback" else "200 OK"
+        self.status = "404 Not Found" if self.__module__ == "cauditor.controllers.fallback" else "200 OK"
 
         # init session (but don't load session data yet)
         session_id = self.cookie('session_id')
