@@ -2,7 +2,7 @@ site:
     title: cauditor
     description: Figure out complexity hotspots in the blink of an eye.
     domain: www.cauditor.org
-    host: https://www.cauditor.org
+    host: http://www.cauditor.org
     path: $REQUEST_URI
     twitter: cauditor_org
     assets: cauditor/assets
