@@ -83,6 +83,10 @@ class Select(object):
         self.__params = []
         self.__options = ""
 
+    def __del__(self):
+        if self.cursor is not None:
+            self.cursor.close()
+
     def __iter__(self):
         """ Performs the SELECT query for the given where clause & options &
         retrieves the next item from the result list

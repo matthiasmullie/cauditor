@@ -33,7 +33,9 @@ class Sessions(model.DbManager):
         # already, store or extend expiration time
         self.extend() if self.data is None else self.write()
 
-        super(Sessions, self).__del__()
+        # type(self) is a hack:
+        # http://stackoverflow.com/questions/22972720/python-cant-invoke-parent-class-destructor-with-super
+        super(type(self), self).__del__()
 
     def get(self, key):
         """ Gets a value from session
