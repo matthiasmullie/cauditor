@@ -1,6 +1,7 @@
 from cauditor.controllers import fallback
 from cauditor.models import projects
 from cauditor import listeners
+from cauditor import container
 import dateutil.parser
 import json
 import sys
@@ -17,7 +18,20 @@ class Controller(fallback.Controller):
         self.branch = branch
         self.commit = commit
 
-        self.data = json.load(sys.stdin)
+        if 'wsgi.input' in container.environ:
+            try:
+                request_body_size = int(container.environ.get('CONTENT_LENGTH', 0))
+            except ValueError:
+                request_body_size = 0
+
+            data = container.environ['wsgi.input'].read(request_body_size)
+            print(data)
+            data = data.decode('utf-8')
+            print(data)
+        else:
+            data = input()
+
+        self.data = json.loads(data)
 
     def headers(self):
         headers = [('Content-Type', "application/json; charset=UTF-8")]
