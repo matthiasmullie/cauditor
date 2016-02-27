@@ -5,6 +5,8 @@ import json
 
 
 class Sessions(model.DbManager):
+    data = None
+
     """ (Ab)use model for session management """
     def __init__(self, session_id=None, max_age=None):
         super(Sessions, self).__init__()
@@ -23,7 +25,8 @@ class Sessions(model.DbManager):
 
         # don't load data just yet, wait until we actually need it
         # ... or initialize with empty dict, if there can't be any
-        self.data = {} if session_id is None else None
+        if session_id:
+            self.data = {}
 
     def __del__(self):
         # depending on whether or not we've loaded existing data
