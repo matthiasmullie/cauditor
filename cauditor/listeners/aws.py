@@ -14,8 +14,7 @@ def execute(project, commit, metrics):
         aws_secret_access_key=config['s3']['secret_key']
     )
 
-    path = config['data']['path'].format(pwd='', project=project['name'], hash=commit['hash'])
-    path = os.path.basename(path)
+    path = config['data']['filename'].format(project=project['name'], hash=commit['hash'])
 
     client.put_object(
         Body=json.dumps(metrics),

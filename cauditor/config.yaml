@@ -112,6 +112,7 @@ session:
 
 data:
     # json path
-    path: "{pwd}/data/{project}/{hash}.json"  # @todo: will have to change when using S3
+    filename: "{project}/{hash}.json"
+    path: $DATA_PATH
     repo_path: /tmp/repos/{project}
     pdepend_path: /tmp/pdepend/{project}
