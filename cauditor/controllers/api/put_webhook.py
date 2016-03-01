@@ -1,8 +1,4 @@
-from cauditor.controllers import fallback
-from cauditor import container
-from cauditor import models
-import sys
-import json
+from cauditor.controllers.api import fallback
 
 
 class Controller(fallback.Controller):
@@ -11,12 +7,10 @@ class Controller(fallback.Controller):
     # hook is triggered for these events:
     # https://developer.github.com/v3/activity/events/types/#pushevent
     # https://developer.github.com/v3/activity/events/types/#pullrequestevent
-    def __init__(self):
+    def __init__(self, project):
         super(Controller, self).__init__()
 
-        length = int(container.environ['CONTENT_LENGTH'])
-        data = sys.stdin.read(length)
-        payload = json.loads(data)
+        payload = self.get_input()
 
         # can't examine X-Github-Event header...
         # pull_request doesn't have the 'ref' we're checking for, so that's how we can ignore that

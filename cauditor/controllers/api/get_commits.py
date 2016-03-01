@@ -1,4 +1,4 @@
-from cauditor.controllers import fallback
+from cauditor.controllers.api import fallback
 from cauditor.models import commits
 
 

@@ -1,9 +1,7 @@
-from cauditor.controllers import fallback
+from cauditor.controllers.api import fallback
 from cauditor.models import projects
 from cauditor import listeners
-from cauditor import container
 import dateutil.parser
-import json
 
 
 class Controller(fallback.Controller):
@@ -16,25 +14,9 @@ class Controller(fallback.Controller):
         self.project = project
         self.branch = branch
         self.commit = commit
-
-        if 'wsgi.input' in container.environ:
-            try:
-                request_body_size = int(container.environ.get('CONTENT_LENGTH', 0))
-            except ValueError:
-                request_body_size = 0
-
-            data = container.environ['wsgi.input'].read(request_body_size)
-            print(data)
-            data = data.decode('utf-8')
-            print(data)
-        else:
-            data = input()
-
-        self.data = json.loads(data)
+        self.data = self.get_input()
 
     def headers(self):
-        headers = [('Content-Type', "application/json; charset=UTF-8")]
-
         try:
             if self.data['repo'].find('github.com') < 0:
                 self.status = "401 Unauthorized"
@@ -49,7 +31,7 @@ class Controller(fallback.Controller):
             self.status = "401 Unauthorized"
             self.exception = exception
 
-        return headers
+        return super(Controller, self).headers()
 
     def render(self, template="container.html"):
         import json

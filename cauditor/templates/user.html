@@ -132,12 +132,12 @@
                     }
 
                     $.ajax({
-                        url: '/api/link',
-                        method: 'POST',
-                        data: {
+                        url: '/api/user/link/' + $(this).data('repo'),
+                        method: 'PUT',
+                        data: JSON.stringify({
                             repo: $(this).data('repo'),
                             action: state ? 'link' : 'unlink'
-                        }
+                        })
                     })
                     .done(function(data) {
                         var $checkbox = $(e.target),
@@ -164,7 +164,7 @@
 
             // refresh list of repos
             $.ajax({
-                url: '/api/repos',
+                url: '/api/user/repos',
                 method: 'GET'
             })
             .done(function(data) {
@@ -195,9 +195,9 @@
                     items.push(event.item);
 
                     $.ajax({
-                        url: '/api/settings',
-                        method: 'POST',
-                        data: { 'emails': items.join() }
+                        url: '/api/user/settings',
+                        method: 'PUT',
+                        data: JSON.stringify({ 'emails': items.join() })
                     }).fail(function() {
                         event.cancel;
                     });
@@ -208,9 +208,9 @@
                     items.splice(i, 1);
 
                     $.ajax({
-                        url: '/api/settings',
-                        method: 'POST',
-                        data: { 'emails': items.join() }
+                        url: '/api/user/settings',
+                        method: 'PUT',
+                        data: JSON.stringify({ 'emails': items.join() })
                     }).fail(function() {
                         event.cancel;
                     });

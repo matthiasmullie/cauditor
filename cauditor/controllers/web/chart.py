@@ -1,4 +1,4 @@
-from cauditor.controllers import project
+from cauditor.controllers.web import project
 
 
 class Controller(project.Controller):

@@ -1,34 +1,32 @@
-from cauditor.controllers import fallback
+from cauditor.controllers.api import fallback
 
 
 class Controller(fallback.Controller):
     template = ""
 
-    def __init__(self):
+    def __init__(self, project):
         super(Controller, self).__init__()
+
         self.project = {}
 
     def headers(self):
-        import cgi
+        data = self.get_input()
 
-        headers = [('Content-Type', "application/json; charset=UTF-8")]
-
-        form = cgi.FieldStorage()
-        if "repo" not in form:
+        if "repo" not in data:
             self.status = "400 Bad Request"
-            return headers
+            return super(Controller, self).headers()
 
-        if "action" not in form or form["action"].value not in ["link", "unlink"]:
+        if "action" not in data or data["action"] not in ["link", "unlink"]:
             self.status = "400 Bad Request"
-            return headers
+            return super(Controller, self).headers()
 
         try:
-            self.project = self.process(form["repo"].value, form["action"].value)
+            self.project = self.process(data["repo"], data["action"])
         except Exception:
             self.status = "401 Unauthorized"
-            return headers
+            return super(Controller, self).headers()
 
-        return headers
+        return super(Controller, self).headers()
 
     def render(self, template="container.html"):
         import json
@@ -71,7 +69,7 @@ class Controller(fallback.Controller):
     def create_hook(self, repo):
         # https://developer.github.com/v3/repos/hooks/#create-a-hook
         return repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
-            'url': "%s/api/webhook" % self.config()['site']['host'],
+            'url': "%s/api/v1/webhook/%s" % (self.config()['site']['host'], repo.full_name),
             'content_type': "json",
         })
 

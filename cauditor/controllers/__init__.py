@@ -1,11 +1,11 @@
-from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook
-from cauditor.controllers.api import submit, list_commits
+from cauditor.controllers.web import fallback as web_fallback, index, project, chart, login, logout, user, insight
+from cauditor.controllers.api import fallback as api_fallback, get_repos, put_settings, put_project, put_webhook, put_metrics, get_commits
 import re
 
 
 routes = {
     # web
-    "": fallback,  # matches anything; 404 is fallback for every request
+    "": web_fallback,  # matches anything; 404 is fallback for every request
     "^/$": index,  # matches /
     "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": project,  # matches /vendor/repo and /vendor/repo/commit
     "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>[a-z]+)$": chart,  # matches /vendor/repo/chart and /vendor/repo/commit/chart
@@ -14,15 +14,14 @@ routes = {
     "^/user$": user,  # matches /user
     "^/insight$": insight,  # matches /insight
 
-    # @todo: move to below
-    "^/api/link$": link,  # matches /api/link
-    "^/api/settings$": settings,  # matches /api/settings
-    "^/api/repos$": repos,  # matches /api/repos
-    "^/api/webhook$": webhook,  # matches /api/webhook
-
     # api
-    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": submit,  # matches /api/v1/vendor/repo/branch/commit
-    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": list_commits,  # matches /api/v1/vendor/repo/branch
+    "^/api": api_fallback,  # matches /api*; 404 fallback for every request in /api
+    "^/api/user/repos$": get_repos,  # matches /api/user/repos
+    "^/api/user/settings$": put_settings,  # matches /api/user/settings
+    "^/api/user/link/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": put_project,  # matches /api/link/vendor/repo
+    "^/api/v1/webhook/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": put_webhook,  # matches /api/v1/webhook/vendor/repo
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": put_metrics,  # matches /api/v1/vendor/repo/branch/commit
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": get_commits,  # matches /api/v1/vendor/repo/branch
 }
 
 

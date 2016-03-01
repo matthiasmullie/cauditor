@@ -1,4 +1,4 @@
-from cauditor.controllers import fallback
+from cauditor.controllers.api import fallback
 from cauditor import models
 
 
@@ -10,24 +10,21 @@ class Controller(fallback.Controller):
         self.project = {}
 
     def headers(self):
-        import cgi
-
-        headers = [('Content-Type', "application/json; charset=UTF-8")]
+        data = self.get_input()
 
         model = models.settings.Settings()
 
         try:
-            form = cgi.FieldStorage(keep_blank_values=True)
-            for key in form:
+            for key in data:
                 model.store({
                     'user': self.user['id'],
                     'key': key,
-                    'value': form[key].value,
+                    'value': data[key],
                 })
         except Exception:
             self.status = "401 Unauthorized"
 
-        return headers
+        return super(Controller, self).headers()
 
     def render(self, template="container.html"):
         import json

@@ -1,4 +1,4 @@
-from cauditor.controllers import fallback
+from cauditor.controllers.web import fallback
 from cauditor import models
 
 

@@ -1,4 +1,4 @@
-from cauditor.controllers import login
+from cauditor.controllers.web import login
 
 
 class Controller(login.Controller):
