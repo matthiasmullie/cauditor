@@ -35,10 +35,11 @@ Session handler (sessions.py) is in here too (they use DB)
 
 ## listeners/*
 
-After analyzing commits, the result will be passed off to these files, who can then further process that data.
+Upon receiving metrics, the result will be passed off to these files, who can then further process that data.
 
-* `store_file.py` will store the result to a json file
-* `store_db.py` will record the commit in DB along with metric differences between commits
+* `filesystem.py` will store the metrics json file on disk
+* `aws.py` will store the metrics json file on S3
+* `db.py` will record the commit in DB
 
 ## templates/*
 
