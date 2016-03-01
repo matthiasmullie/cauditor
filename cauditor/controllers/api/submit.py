@@ -4,7 +4,6 @@ from cauditor import listeners
 from cauditor import container
 import dateutil.parser
 import json
-import sys
 
 
 class Controller(fallback.Controller):

@@ -1,8 +1,10 @@
-from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook, submit, commits
+from cauditor.controllers import fallback, index, project, chart, login, logout, user, insight, link, settings, repos, webhook
+from cauditor.controllers.api import submit, list_commits
 import re
 
 
 routes = {
+    # web
     "": fallback,  # matches anything; 404 is fallback for every request
     "^/$": index,  # matches /
     "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": project,  # matches /vendor/repo and /vendor/repo/commit
@@ -11,12 +13,16 @@ routes = {
     "^/logout$": logout,  # matches /logout
     "^/user$": user,  # matches /user
     "^/insight$": insight,  # matches /insight
+
+    # @todo: move to below
     "^/api/link$": link,  # matches /api/link
     "^/api/settings$": settings,  # matches /api/settings
     "^/api/repos$": repos,  # matches /api/repos
     "^/api/webhook$": webhook,  # matches /api/webhook
+
+    # api
     "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": submit,  # matches /api/v1/vendor/repo/branch/commit
-    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": commits,  # matches /api/v1/vendor/repo/branch
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": list_commits,  # matches /api/v1/vendor/repo/branch
 }
 
 
