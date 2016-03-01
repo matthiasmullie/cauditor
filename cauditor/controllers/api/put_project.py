@@ -27,6 +27,11 @@ class Controller(fallback.Controller):
             self.status = "401 Unauthorized"
             return super(Controller, self).headers()
 
+        if data["action"] == "link":
+            # create importer jobs
+            jobs.execute('php-import-one', self.project['name'], {'git': self.project['git']})
+            jobs.execute('php-import-all', self.project['name'], {'git': self.project['git']})
+
         return super(Controller, self).headers()
 
     def render(self, template="container.html"):
@@ -48,10 +53,6 @@ class Controller(fallback.Controller):
                 'github_hook': hook.id,
             }
             model.store(project)
-
-            # create importer jobs
-            jobs.execute('php-import-one', project['name'], {'git': project['git']})
-            jobs.execute('php-import-all', project['name'], {'git': project['git']})
         else:  # unlink
             results = model.select(name=repo.full_name)
             project = next(results)
