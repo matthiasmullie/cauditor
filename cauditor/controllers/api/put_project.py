@@ -1,4 +1,5 @@
 from cauditor.controllers.api import fallback
+from cauditor import jobs
 
 
 class Controller(fallback.Controller):
@@ -49,7 +50,8 @@ class Controller(fallback.Controller):
             model.store(project)
 
             # create importer jobs
-            # @todo fire job for project['name']
+            jobs.execute('php-import-one', project['name'], {'git': project['git']})
+            jobs.execute('php-import-all', project['name'], {'git': project['git']})
         else:  # unlink
             results = model.select(name=repo.full_name)
             project = next(results)

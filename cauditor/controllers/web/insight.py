@@ -1,4 +1,5 @@
 from cauditor.controllers.web import fallback
+from cauditor import jobs
 from cauditor import models
 
 
@@ -21,9 +22,10 @@ class Controller(fallback.Controller):
         missing_projects = set([commit['project'] for commit in commits if commit['previous'] is not None and commit['previous'] not in prev_commits])
         self.missing_projects = [project for project in self.load_projects(missing_projects)]
 
-        if self.missing > 10:
-            # @todo fire job for missing_projects
-            pass
+        # if we're missing a lot of data, queue a job to analyze those repos
+        if self.missing > 0.25:
+            for project in self.missing_projects:
+                jobs.execute('php-import-all', project['name'], {'git': project['git']})
 
         # calculate differences in metrics between current & previous commits
         charts = self.config()['charts']
