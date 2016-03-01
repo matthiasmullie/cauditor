@@ -29,8 +29,8 @@ class Controller(fallback.Controller):
 
         if data["action"] == "link":
             # create importer jobs
-            jobs.execute('php-import-one', self.project['name'], {'git': self.project['git']})
-            jobs.execute('php-import-all', self.project['name'], {'git': self.project['git']})
+            jobs.execute('php-import-one', self.project['name'], {'git': self.project['git']}, 0)
+            jobs.execute('php-import-all', self.project['name'], {'git': self.project['git']}, 300)
 
         return super(Controller, self).headers()
 

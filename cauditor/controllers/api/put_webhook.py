@@ -21,11 +21,12 @@ class Controller(fallback.Controller):
         branch = payload['ref'].replace("refs/heads/")
 
         # import these specific commits
+        # don't deliver message immediately; wait a couple of minutes and hope CI is running analyzer!
         jobs.execute('php-import-one', project['name'], {
             'git': payload['repository']['clone_url'],
             'branch': branch,
             'commits': ','.join([commit['id'] for commit in payload['commits']])
-        })
+        }, 300)
 
         # next (only if we're on default branch), check if the commit before this push is known already,
         # otherwise we should also queue up a full analyze
@@ -40,4 +41,4 @@ class Controller(fallback.Controller):
                 commit[0]
             except Exception:
                 # import all missing commits
-                jobs.execute('php-import-all', project['name'], {'git': payload['repository']['clone_url']})
+                jobs.execute('php-import-all', project['name'], {'git': payload['repository']['clone_url']}, 300)

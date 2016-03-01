@@ -2,7 +2,7 @@ import boto3
 from cauditor import container
 
 
-def execute(queue, message, attributes):
+def execute(queue, message, attributes, delay=0):
     config = container.load_config()
 
     sqs = boto3.resource(
@@ -15,5 +15,6 @@ def execute(queue, message, attributes):
     queue = sqs.get_queue_by_name(QueueName=queue)
     queue.send_message(
         MessageBody=message,
-        MessageAttributes={key: {'StringValue': value, 'DataType': 'String'} for key, value in attributes.items()}
+        MessageAttributes={key: {'StringValue': value, 'DataType': 'String'} for key, value in attributes.items()},
+        DelaySeconds=delay,
     )
