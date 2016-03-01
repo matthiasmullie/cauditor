@@ -25,7 +25,7 @@ class Sessions(model.DbManager):
 
         # don't load data just yet, wait until we actually need it
         # ... or initialize with empty dict, if there can't be any
-        if session_id:
+        if session_id is None:
             self.data = {}
 
     def __del__(self):
