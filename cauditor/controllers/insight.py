@@ -21,6 +21,10 @@ class Controller(fallback.Controller):
         missing_projects = set([commit['project'] for commit in commits if commit['previous'] is not None and commit['previous'] not in prev_commits])
         self.missing_projects = [project for project in self.load_projects(missing_projects)]
 
+        if self.missing > 10:
+            # @todo fire job for missing_projects
+            pass
+
         # calculate differences in metrics between current & previous commits
         charts = self.config()['charts']
         for commit in self.commits:

@@ -1,7 +1,6 @@
 from cauditor.controllers import fallback
 from cauditor import container
 from cauditor import models
-from cauditor import importers
 import sys
 import json
 
@@ -29,5 +28,4 @@ class Controller(fallback.Controller):
             return
 
         # create importer job
-        jobs = models.jobs.Jobs()
-        jobs.add(importers.since_last_commit.Importer(payload['repository']['full_name']))
+        # @todo: fire job for payload['repository']['full_name']

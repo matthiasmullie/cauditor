@@ -35,7 +35,7 @@ class Controller(fallback.Controller):
         return json.dumps(self.project)
 
     def process(self, repo, action):
-        from cauditor import models, importers
+        from cauditor import models
 
         model = models.projects.Projects()
         repo = self.get_repo(repo)
@@ -51,10 +51,7 @@ class Controller(fallback.Controller):
             model.store(project)
 
             # create importer jobs
-            # @todo change this - import will be different...
-            #jobs = models.jobs.Jobs()
-            #jobs.add(importers.last_commit.Importer(project['name']))
-            #jobs.add(importers.to_first_commit.Importer(project['name']))
+            # @todo fire job for project['name']
         else:  # unlink
             results = model.select(name=repo.full_name)
             project = next(results)

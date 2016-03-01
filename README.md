@@ -31,18 +31,7 @@ Extremely simple database-interaction handlers.
 
 Allows for simple select, upsert, update & delete.
 
-Session handler (sessions.py) & job queue (jobs.py) are in here too (they use DB)
-
-## importers/*
-
-Importers: clone the project, fetch all commits (since last imported commit), loop them & run analyzers (to generate our
-data) & listeners (post-processing, like storing data)
-
-## analyzers/*
-
-Classes to analyze code & generate the results we need for the graphs.
-
-There is currently only support for PHP.
+Session handler (sessions.py) is in here too (they use DB)
 
 ## listeners/*
 

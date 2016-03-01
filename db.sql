@@ -51,10 +51,3 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` blob DEFAULT NULL,
   PRIMARY KEY (`user`,`key`)
 ) DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `jobs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `job` blob NOT NULL,
-  `type` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

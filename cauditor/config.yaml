@@ -112,7 +112,5 @@ session:
 
 data:
     # json path
-    filename: "{project}/{hash}.json"
     path: $DATA_PATH
-    repo_path: /tmp/repos/{project}
-    pdepend_path: /tmp/pdepend/{project}
+    filename: "{project}/{hash}.json"
