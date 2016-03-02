@@ -7,7 +7,7 @@ def execute(queue, message, attributes, delay=0):
 
     sqs = boto3.resource(
         service_name='sqs',
-        region_name=config['s3']['region'],
+        region_name=config['sqs']['region'],
         aws_access_key_id=config['aws']['access_key'],
         aws_secret_access_key=config['aws']['secret_key']
     )

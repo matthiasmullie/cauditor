@@ -19,10 +19,11 @@ aws:
     secret_key: $AWS_SECRET_KEY
 
 s3:
+    region: $AWS_REGION
     bucket: $S3_BUCKET
-    region: $S3_REGION
 
 sqs:
+    region: $AWS_REGION
     queues:
         # processes 1 specific commit
         php-import-one: $SQS_IMPORT_ONE
