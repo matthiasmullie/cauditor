@@ -3,7 +3,7 @@ import boto3
 import json
 
 
-def execute(queue, message, attributes, delay=0):
+def execute(queue, message, delay=0):
     config = container.load_config()
 
     sqs = boto3.resource(
@@ -16,6 +16,5 @@ def execute(queue, message, attributes, delay=0):
     queue = sqs.get_queue_by_name(QueueName=queue)
     queue.send_message(
         MessageBody=json.dumps(message),
-        MessageAttributes={key: {'StringValue': value, 'DataType': 'String'} for key, value in attributes.items()},
         DelaySeconds=delay,
     )
