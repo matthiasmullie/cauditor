@@ -19,12 +19,12 @@ class Controller(fallback.Controller):
         self.commits = [commit for commit in commits if commit['previous'] is None or commit['previous'] in prev_commits]
         self.missing = 1 - (len(self.commits) / (count or 1))
 
-        missing_projects = set([commit['project'] for commit in commits if commit['previous'] is not None and commit['previous'] not in prev_commits])
-        self.missing_projects = [project for project in self.load_projects(missing_projects)]
-
         # if we're missing a lot of data, queue a job to analyze those repos
         if self.missing > 0.25:
-            for project in self.missing_projects:
+            missing_projects = set([commit['project'] for commit in commits if commit['previous'] is not None and commit['previous'] not in prev_commits])
+            missing_projects = [project for project in self.load_projects(missing_projects)]
+
+            for project in missing_projects:
                 jobs.execute('php-rest', {
                     'slug': project['name'],
                     'git': project['git'],
@@ -49,7 +49,6 @@ class Controller(fallback.Controller):
         args.update({
             'commits': self.commits,
             'missing': self.missing,
-            'missing_projects': self.missing_projects,
             'title': args['user']['name'] if args['user'] else ''
         })
         return args

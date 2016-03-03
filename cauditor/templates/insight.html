@@ -25,21 +25,7 @@
         <div class="col-xs-12 columns">
             <div class="alert alert-danger" role="alert">
                 <i class="fa fa-exclamation-circle"></i>
-                A good amount of your commits are missing from our database. They'll get imported eventually...
-                <strong>Or you can kick it off on your own machine right away!</strong>
-
-                <ol>
-                    <li>
-                        First install the cauditor analyzer:<br>
-                        <code>composer global require cauditor/analyzer</code>
-                    </li>
-                    <li>
-                        Then let it analyze your projects:<br>
-                        {% for project in missing_projects %}
-                            <code>cauditor --all --repo={{ project.git }} --path=/tmp/{{ project.name }}</code><br>
-                        {% endfor %}
-                    </li>
-                </ol>
+                A good amount of your commits are missing from our database. They've been scheduled to import, so check back later for more complete data!
             </div>
         </div>
     </div>
