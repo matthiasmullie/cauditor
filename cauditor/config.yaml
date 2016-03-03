@@ -25,10 +25,8 @@ s3:
 sqs:
     region: $AWS_REGION
     queues:
-        # processes 1 specific commit
-        php-import-one: $SQS_IMPORT_ONE
-        # processes missing/all commits (lower priority)
-        php-import-all: $SQS_IMPORT_ALL
+        php-priority: $SQS_PRIORITY
+        php-rest: $SQS_REST
 
 github:
     id: $GITHUB_ID

@@ -25,7 +25,11 @@ class Controller(fallback.Controller):
         # if we're missing a lot of data, queue a job to analyze those repos
         if self.missing > 0.25:
             for project in self.missing_projects:
-                jobs.execute('php-import-all', project['name'], {'git': project['git']}, 300)
+                jobs.execute('php-rest', {
+                    'slug': project['name'],
+                    'git': project['git'],
+                    'all': True,
+                }, 300)
 
         # calculate differences in metrics between current & previous commits
         charts = self.config()['charts']
