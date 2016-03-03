@@ -66,7 +66,7 @@ Cauditor.Visualization.Abstract.prototype.filter = function(data) {
 
     // remove commits with 0 on all metrics; likely non-code related
     // commits that shouldn't influence the results
-    for (i in data) {
+    for (i = 0; i < data.length; i++) {
         empty = true;
         for (metric in metrics) {
             if (data[i][metric] !== 0) {
@@ -76,7 +76,8 @@ Cauditor.Visualization.Abstract.prototype.filter = function(data) {
         }
 
         if (empty) {
-            delete data[i];
+            data.splice(i, 1);
+            i--;
         }
     }
 

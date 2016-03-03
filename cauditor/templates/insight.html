@@ -51,7 +51,7 @@
         total, average;
 
     {% for commit in commits %}
-        commit = $.extend({}, {{ commit.diff }}, { date: '{{ commit.timestamp.strftime('%Y-%m') }}' });
+        commit = $.extend({}, {{ commit.diff }}, {date: '{{ commit.timestamp.strftime('%Y-%m') }}'});
         data.push(commit);
     {% endfor %}
 
