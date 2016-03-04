@@ -12,34 +12,24 @@ Cauditor.Visualization.Treemap.Class.prototype = Object.create(Cauditor.Visualiz
  * @return {object}
  */
 Cauditor.Visualization.Treemap.Class.prototype.filter = function(data) {
-    var fqcn = [];
-    return d3.layout.treemap().nodes(data).filter(function(d) {
-        // CA metric is only on class-level (also project-wide sum, which is excluded by the d.name check)
-        if (d.ca === undefined || d.name === undefined) {
-            return false;
-        }
+    var relevant = [];
 
-        d.package = d.parent.name;
+    for (var i in data.children) {
+        // relay package name to children
+        data.children[i].package = data.name;
 
-        d.fqcn = d.name;
-        if (d.package !== '+global') {
-            d.fqcn = d.package + '\\' + d.fqcn;
-        }
+        filtered_children = this.filter(data.children[i]);
+        relevant = relevant.concat(filtered_children);
+    }
 
-        // skip duplicates
-        if (fqcn.indexOf(d.fqcn) >= 0) {
-            return false;
-        }
-        fqcn.push(d.fqcn);
+    // CA metric is only on class-level (also project-wide sum, which is excluded by the d.name check)
+    if (data.ca === undefined || data.name === undefined) {
+        return relevant;
+    }
 
-        /*
-         * no longer need a reference to parent, must now get rid of it so this data is json stringify-able
-         * @see http://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
-         */
-        delete d.parent;
-
-        return true;
-    });
+    data.fqcn = (data.package !== '+global' ? data.package + '\\' : '') + data.name;
+    relevant.push(data);
+    return relevant;
 };
 
 Cauditor.Visualization.Treemap.Class.prototype.id = ['package', 'name'];

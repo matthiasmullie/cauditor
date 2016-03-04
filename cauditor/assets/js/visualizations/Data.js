@@ -6,15 +6,15 @@ Cauditor.Data = function(data) {
 };
 
 /**
- * @param {function} callback
+ * @param {object} visualization
  * @return {object}
  */
-Cauditor.Data.prototype.filter = function(callback) {
+Cauditor.Data.prototype.filter = function(visualization) {
     // results of the callback will be stored in this.filters to avoid having
     // to re-filter the data if we've already done so
-    var id = callback.toString();
+    var id = visualization.filter.toString();
     if (!(id in this.filters)) {
-        this.filters[id] = callback(this.data);
+        this.filters[id] = visualization.filter(this.data);
     }
 
     return this.filters[id];

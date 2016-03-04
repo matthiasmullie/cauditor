@@ -12,35 +12,29 @@ Cauditor.Visualization.Treemap.Method.prototype = Object.create(Cauditor.Visuali
  * @return {object}
  */
 Cauditor.Visualization.Treemap.Method.prototype.filter = function(data) {
-    var fqcn = [];
-    return d3.layout.treemap().nodes(data).filter(function(d) {
-        // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
-        if (d.ccn === undefined || d.name === undefined) {
-            return false;
+    var relevant = [];
+
+    for (var i in data.children) {
+        // relay package & class name to children
+        if (data.package === undefined) {
+            data.children[i].package = data.name;
+        } else {
+            data.children[i].package = data.package;
+            data.children[i].class = data.name;
         }
 
-        d.package = d.parent.parent.name;
-        d.class = d.parent.name;
+        filtered_children = this.filter(data.children[i]);
+        relevant = relevant.concat(filtered_children);
+    }
 
-        d.fqcn = d.class + '::' + d.name;
-        if (d.package !== '+global') {
-            d.fqcn = d.package + '\\' + d.fqcn;
-        }
+    // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
+    if (data.ccn === undefined || data.name === undefined) {
+        return relevant;
+    }
 
-        // skip duplicates
-        if (fqcn.indexOf(d.fqcn) >= 0) {
-            return false;
-        }
-        fqcn.push(d.fqcn);
-
-        /*
-         * no longer need a reference to parent, must now get rid of it so this data is json stringify-able
-         * @see http://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
-         */
-        delete d.parent;
-
-        return true;
-    });
+    data.fqcn = (data.package !== '+global' ? data.package + '\\' : '') + data.class + data.name;
+    relevant.push(data);
+    return relevant;
 };
 
 Cauditor.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];

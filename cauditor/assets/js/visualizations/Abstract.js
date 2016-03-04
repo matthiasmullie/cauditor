@@ -6,7 +6,7 @@ Cauditor.Visualization = Cauditor.Visualization || {};
  * @param {Cauditor.Data} data
  */
 Cauditor.Visualization.Abstract = function(data) {
-    this.data = data.filter(this.filter);
+    this.data = data.filter(this);
 };
 
 /**
