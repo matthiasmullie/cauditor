@@ -104,7 +104,7 @@ class Model(model.DbManager):
         We should clear old (expired) sessions every now and then,
         but only once in many requests is more than enough
         """
-        if randint(0, 999) == 0:
+        if randint(0, 999) != 0:
             return
 
         with self.connection as cursor:
