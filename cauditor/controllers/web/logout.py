@@ -4,8 +4,8 @@ from cauditor.controllers.web import fallback
 class Controller(fallback.Controller):
     template = ""
 
-    def __init__(self):
-        super(Controller, self).__init__()
+    def __init__(self, container, route):
+        super(Controller, self).__init__(container, route)
 
         # expire session cookie
         self.cookie('session_id', self.session_data.id, -1)
@@ -13,7 +13,7 @@ class Controller(fallback.Controller):
     def headers(self):
         # redirect to homepage
         self.status = "302 Found"
-        return [('Location', "%s/" % self.config()['site']['host'])]
+        return [('Location', "%s/" % self.container.config['site']['host'])]
 
     def render(self, template="container.html"):
         # don't render anything; we'll only be sending redirect headers

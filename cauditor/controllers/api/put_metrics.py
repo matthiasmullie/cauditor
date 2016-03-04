@@ -1,5 +1,5 @@
 from cauditor.controllers.api import fallback
-from cauditor.models import projects
+from cauditor import models
 from cauditor import listeners
 import dateutil.parser
 import json
@@ -8,14 +8,6 @@ import json
 class Controller(fallback.Controller):
     template = ""
     exception = ""
-
-    def __init__(self, project, commit, branch=None):
-        super(Controller, self).__init__()
-
-        self.project = project
-        self.branch = branch
-        self.commit = commit
-        self.data = self.get_input()
 
     def headers(self):
         try:
@@ -27,7 +19,7 @@ class Controller(fallback.Controller):
             project = self.get_project()
             commit = self.get_commit()
 
-            listeners.execute(project, commit, self.data['metrics'])
+            listeners.execute(self.container, project, commit, self.data['metrics'])
         except Exception as exception:
             self.status = "401 Unauthorized"
             self.exception = exception
@@ -43,21 +35,21 @@ class Controller(fallback.Controller):
     def get_project(self):
         # first check if project by that name already exists: repo url may be
         # different than the one we have in DB (ssh/https, for example)
-        model = projects.Projects()
-        project = model.select(name=self.project)
+        model = models.projects.Model(self.container.mysql)
+        project = model.select(name=self.route['project'])
         try:
             return project[0]
         except Exception:
             return {
-                'name': self.project,
+                'name': self.route['project'],
                 'git': self.data['repo'],
             }
 
     def get_commit(self):
         return {
-            'project': self.project,
-            'branch': self.branch or 'pr-'+self.data['pull-request'],
-            'hash': self.commit,
+            'project': self.route['project'],
+            'branch': self.route['branch'] if 'branch' in self.route else 'pr-'+self.data['pull-request'],
+            'hash': self.route['commit'],
             'previous': self.data['previous-commit'] or None,
             'author': self.data['author-email'],
             'timestamp': dateutil.parser.parse(self.data['timestamp']),

@@ -1,5 +1,4 @@
-from cauditor import container
-from cauditor.models import projects as projects_model, sessions as sessions_model, settings as settings_model
+from cauditor import models
 from jinja2 import Environment, FileSystemLoader
 import http.cookies
 import os
@@ -7,40 +6,45 @@ import os
 
 class Controller(object):
     template = "404.html"
+    status = "200 OK"
+    route = {}
+    container = None
+    cookie_data = http.cookies.SimpleCookie()
+    cookie_set = http.cookies.SimpleCookie()
+    session_data = None
+    user = None
+    settings = None
 
-    def __init__(self):
-        # init cookies
-        self.cookie_data = http.cookies.SimpleCookie()
-        self.cookie_data.load(container.environ.get("HTTP_COOKIE", ""))
-        self.cookie_set = http.cookies.SimpleCookie()
+    def __init__(self, container, route):
+        self.container = container
+        self.route = route
 
         # all controllers extend from this one, so I'm going to special-case
         # the 404 header
-        self.status = "404 Not Found" if self.__module__ == "cauditor.controllers.fallback" else "200 OK"
+        self.status = "404 Not Found" if self.__module__ == "cauditor.controllers.web.fallback" else "200 OK"
+
+        self.cookie_data.load(self.container.environ.get("HTTP_COOKIE", ""))
 
         # init session (but don't load session data yet)
         session_id = self.cookie('session_id')
-        max_age = self.config()['session']['max_age']
-        self.session_data = sessions_model.Sessions(session_id, max_age)
+        max_age = self.container.config['session']['max_age']
+        self.session_data = models.sessions.Model(self.container.mysql, session_id, max_age)
 
         self.user = self.session('user') or {}
         self.settings = {}
         if self.user:
-            model = settings_model.Settings()
+            model = models.settings.Model(self.container.mysql)
             settings = model.select(user=self.user['id'])
             self.settings = {entry['key']: entry['value'] for entry in settings}
 
-    def config(self):
-        return container.load_config()
-
     def args(self):
-        args = self.config()
+        args = self.container.config
 
         repos = self.session('repos') or []
         projects = []
         if repos:
             # get all of this user's active projects
-            model = projects_model.Projects()
+            model = models.projects.Model(self.container.mysql)
             repo_names = [repo['name'] for repo in repos]
             projects = model.select(name=repo_names)
 
@@ -85,7 +89,7 @@ class Controller(object):
         if value is not None:
             self.session_data.set(key, value)
             # make sure session_id is stored!
-            max_age = self.config()['session']['max_age']
+            max_age = self.container.config['session']['max_age']
             self.cookie('session_id', self.session_data.id, max_age)
 
         return self.session_data.get(key)

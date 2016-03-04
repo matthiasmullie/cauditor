@@ -1,13 +1,13 @@
 from cauditor import models
 
 
-def execute(project, commit, metrics):
-    store_project(project)
-    store_commit(commit, metrics)
+def execute(connection, project, commit, metrics):
+    store_project(connection, project)
+    store_commit(connection, commit, metrics)
 
 
-def commit_exists(commit):
-    commits = models.commits.Commits()
+def commit_exists(connection, commit):
+    commits = models.commits.Model(connection)
     result = commits.select(project=commit['project'], branch=commit['branch'], hash=commit['hash'])
 
     try:
@@ -17,13 +17,13 @@ def commit_exists(commit):
         return False
 
 
-def store_project(project):
-    projects = models.projects.Projects()
+def store_project(connection, project):
+    projects = models.projects.Model(connection)
     projects.store(project)
 
 
-def store_commit(commit, metrics):
-    commits = models.commits.Commits()
+def store_commit(connection, commit, metrics):
+    commits = models.commits.Model(connection)
     commit.update({
         # metrics
         'loc': metrics['loc'] or 0 if 'loc' in metrics else 0,

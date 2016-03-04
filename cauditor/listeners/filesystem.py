@@ -1,12 +1,8 @@
-import subprocess
 import json
 import os.path
-from cauditor import container
 
 
-def execute(project, commit, metrics):
-    config = container.load_config()
-
+def execute(config, project, commit, metrics):
     # create path to store data file at
     path = config['data']['path'].format(pwd=os.getcwd())
     filename = config['data']['filename'].format(project=project['name'], hash=commit['hash'])

@@ -6,21 +6,15 @@ import json
 class Controller(fallback.Controller):
     template = ""
 
-    def __init__(self):
-        super(Controller, self).__init__()
-        self.project = {}
-
     def headers(self):
-        data = self.get_input()
-
-        model = models.settings.Settings()
+        model = models.settings.Model(self.container.mysql)
 
         try:
-            for key in data:
+            for key in self.data:
                 model.store({
                     'user': self.user['id'],
                     'key': key,
-                    'value': data[key],
+                    'value': self.data[key],
                 })
         except Exception:
             self.status = "401 Unauthorized"
@@ -28,7 +22,7 @@ class Controller(fallback.Controller):
         return super(Controller, self).headers()
 
     def render(self, template="container.html"):
-        model = models.settings.Settings()
+        model = models.settings.Model(self.container.mysql)
         settings = model.select(user=self.user['id'])
 
         return json.dumps([i for i in settings])

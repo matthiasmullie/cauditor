@@ -1,9 +1,9 @@
 from cauditor.models import model
 
 
-class Commits(model.DbManager):
-    def __init__(self):
-        super(Commits, self).__init__()
+class Model(model.DbManager):
+    def __init__(self, connection):
+        super(Model, self).__init__(connection)
 
         # yeah, this is an ugly hack :D
         self.table = 'commits INNER JOIN commit_details ON commit_id = id'

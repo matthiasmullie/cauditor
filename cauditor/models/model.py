@@ -1,12 +1,11 @@
-from cauditor import container
 import pymysql
 
 
 class DbManager(object):
     table = ""
 
-    def __init__(self):
-        self.connection = container.mysql()
+    def __init__(self, connection):
+        self.connection = connection
 
     def select(self, options="", **kwargs):
         """ Arguments will refer to columns to be selected. E.g.: select(name="vendor/project")

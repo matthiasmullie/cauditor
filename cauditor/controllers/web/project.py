@@ -1,16 +1,19 @@
 from cauditor.controllers.web import fallback
-from cauditor.models import commits as commits_model, projects as projects_model
+from cauditor import models
 
 
 class Controller(fallback.Controller):
     template = "project.html"
+    project = None
+    commit = None
+    commits = None
 
-    def __init__(self, project, commit=None):
-        super(Controller, self).__init__()
+    def __init__(self, container, route):
+        super(Controller, self).__init__(container, route)
 
-        self.project = self.load_project(project)
-        self.commit = self.load_commit(project, commit) if commit is not None else {}
-        self.commits = self.load_commits(project)
+        self.project = self.load_project(self.route['project'])
+        self.commit = self.load_commit(self.route['project'], self.route['commit']) if self.route['commit'] is not None else {}
+        self.commits = self.load_commits(self.route['project'])
 
     def args(self):
         args = super(Controller, self).args()
@@ -23,16 +26,16 @@ class Controller(fallback.Controller):
         return args
 
     def load_project(self, name):
-        model = projects_model.Projects()
+        model = models.projects.Model(self.container.mysql)
         data = model.select(name=name)
         return next(data)
 
     def load_commit(self, project, hash):
-        model = commits_model.Commits()
+        model = models.commits.Model(self.container.mysql)
         data = model.select(project=project, hash=hash)
         return next(data)
 
     def load_commits(self, project):
-        model = commits_model.Commits()
+        model = models.commits.Model(self.container.mysql)
         commits = model.select(project=project, options=["ORDER BY timestamp DESC", "LIMIT 15"])
         return [commit for commit in commits]

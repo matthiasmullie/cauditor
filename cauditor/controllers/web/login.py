@@ -1,6 +1,5 @@
 from cauditor.controllers.web import fallback
-from cauditor.models import settings
-from cauditor import container
+from cauditor import models
 from urllib import parse, request
 import json
 
@@ -9,13 +8,9 @@ class Controller(fallback.Controller):
     template = "login.html"
     fail = True
 
-    def __init__(self, code):
-        super(Controller, self).__init__()
-        self.code = code
-
     def headers(self):
         try:
-            token = self.get_auth_token(self.code)
+            token = self.get_auth_token(self.route['code'])
             self.import_from_github(token)
             self.session('github_token', token)
             self.store_email(self.session('user'))
@@ -25,7 +20,7 @@ class Controller(fallback.Controller):
         # success! redirect
         self.fail = False
         self.status = "302 Found"
-        return [('Location', "%s/user" % self.config()['site']['host'])]
+        return [('Location', "%s/user" % self.container.config['site']['host'])]
 
     def render(self, template="container.html"):
         if self.fail:
@@ -35,7 +30,7 @@ class Controller(fallback.Controller):
             return ""
 
     def import_from_github(self, token):
-        github = container.github(token)
+        github = self.container.github(token)
         user = github.get_user()
 
         # delete existing repos & re-save all of them
@@ -74,7 +69,7 @@ class Controller(fallback.Controller):
         }
 
     def get_auth_token(self, code):
-        config = self.config()
+        config = self.container.config
 
         url = "https://github.com/login/oauth/access_token"
         values = {
@@ -104,7 +99,7 @@ class Controller(fallback.Controller):
 
     def store_email(self, user):
         # figure out if any email address has already been stored
-        model = settings.Settings()
+        model = models.settings.Model(self.container.mysql)
         try:
             data = model.select(user=user['id'], key="emails")
             store = data[0]["value"] == ""
@@ -114,7 +109,7 @@ class Controller(fallback.Controller):
 
         # store user email if it doesn't already exist
         if store:
-            model = settings.Settings()
+            model = models.settings.Model(self.container.mysql)
             model.store({
                 'user': user['id'],
                 'key': 'emails',

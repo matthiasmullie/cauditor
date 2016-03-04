@@ -1,11 +1,8 @@
 import boto3
 import json
-from cauditor import container
 
 
-def execute(project, commit, metrics):
-    config = container.load_config()
-
+def execute(config, project, commit, metrics):
     client = boto3.client(
         service_name='s3',
         region_name=config['s3']['region'],

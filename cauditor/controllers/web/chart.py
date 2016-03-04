@@ -3,12 +3,12 @@ from cauditor.controllers.web import project
 
 class Controller(project.Controller):
     template = "chart.html"
+    chart = None
 
-    def __init__(self, chart, project, commit=None):
-        super(Controller, self).__init__(project, commit)
-        # project & commit will be loaded in parent constructor
+    def __init__(self, container, route):
+        super(Controller, self).__init__(container, route)
 
-        self.chart = self.load_chart(chart)
+        self.chart = self.load_chart(self.route['chart'])
 
     def args(self):
         args = super(Controller, self).args()

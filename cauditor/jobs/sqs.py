@@ -1,11 +1,8 @@
-from cauditor import container
 import boto3
 import json
 
 
-def execute(queue, message, delay=0):
-    config = container.load_config()
-
+def execute(config, queue, message, delay=0):
     sqs = boto3.resource(
         service_name='sqs',
         region_name=config['sqs']['region'],

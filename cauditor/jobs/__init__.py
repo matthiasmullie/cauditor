@@ -1,8 +1,6 @@
 from cauditor.jobs import sqs
-from cauditor import container
 
 
-def execute(queue, message, delay=0):
-    config = container.load_config()
-    if queue in config['sqs']['queues'] and config['sqs']['queues'][queue]:
-        sqs.execute(config['sqs']['queues'][queue], message, delay)
+def execute(container, queue, message, delay=0):
+    if queue in container.config['sqs']['queues'] and container.config['sqs']['queues'][queue]:
+        sqs.execute(container.config, container.config['sqs']['queues'][queue], message, delay)

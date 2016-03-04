@@ -1,15 +1,13 @@
-from cauditor.listeners import db, aws, filesystem
-from cauditor import container
+from cauditor.listeners import db, s3, filesystem
 
 
-def execute(project, commit, metrics):
-    if db.commit_exists(commit):
+def execute(container, project, commit, metrics):
+    if db.commit_exists(container.mysql, commit):
         return
 
-    config = container.load_config()
-    if config['s3']['bucket'] == "":
-        filesystem.execute(project, commit, metrics)
+    if container.config['s3']['bucket'] == "":
+        filesystem.execute(container.config, project, commit, metrics)
     else:
-        aws.execute(project, commit, metrics)
+        s3.execute(container.config, project, commit, metrics)
 
-    db.execute(project, commit, metrics)
+    db.execute(container.mysql, project, commit, metrics)

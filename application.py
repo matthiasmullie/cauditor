@@ -2,8 +2,8 @@
 
 import sys
 import os
-from cauditor import container
 from cauditor import controllers
+from cauditor.container import Container
 
 # add current directory to ensure these modules can be imported
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -11,10 +11,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def application(environ, start_response):
-    container.environ.update(dict(environ))
-
     uri = environ["REQUEST_URI"]
-    controller = controllers.route(uri)
+    container = Container(environ)
+    controller = controllers.route(uri, container)
 
     headers = controller.headers()
     cookies = [("Set-Cookie", morsel.OutputString()) for morsel in controller.cookie_set.values()]

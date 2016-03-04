@@ -1,13 +1,13 @@
 from cauditor.controllers.web import fallback
-from cauditor.models import commits as commits_model, projects as projects_model
+from cauditor import models
 from cauditor import jobs
 
 
 class Controller(fallback.Controller):
     template = "insight.html"
 
-    def __init__(self):
-        super(Controller, self).__init__()
+    def __init__(self, container, route):
+        super(Controller, self).__init__(container, route)
 
         # filter out commits for which we can't find a previous commit, which could be:
         # - part of a push where not all commits were tested individually
@@ -25,14 +25,14 @@ class Controller(fallback.Controller):
             missing_projects = [project for project in self.load_projects(missing_projects)]
 
             for project in missing_projects:
-                jobs.execute('php-rest', {
+                jobs.execute(self.container, 'php-rest', {
                     'slug': project['name'],
                     'git': project['git'],
                     'all': True,
                 }, 300)
 
         # calculate differences in metrics between current & previous commits
-        charts = self.config()['charts']
+        charts = self.container.config['charts']
         for commit in self.commits:
             metrics = {}
             for chart in charts:
@@ -54,7 +54,7 @@ class Controller(fallback.Controller):
         return args
 
     def load_commits(self):
-        model = commits_model.Commits()
+        model = models.commits.Model(self.container.mysql)
         emails = self.settings['emails'].split(',')
         return model.select(author=emails, options=["ORDER BY timestamp DESC", "LIMIT 5000"]) if emails else {}
 
@@ -62,7 +62,7 @@ class Controller(fallback.Controller):
         if len(commits) == 0:
             return []
 
-        model = commits_model.Commits()
+        model = models.commits.Model(self.container.mysql)
         hashes = [commit['previous'] for commit in commits]
         return model.select(hash=hashes)
 
@@ -70,5 +70,5 @@ class Controller(fallback.Controller):
         if len(projects) == 0:
             return []
 
-        model = projects_model.Projects()
+        model = models.projects.Model(self.container.mysql)
         return model.select(name=projects)

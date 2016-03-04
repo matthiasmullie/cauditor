@@ -5,12 +5,6 @@ import json
 class Controller(login.Controller):
     template = ""
 
-    def __init__(self):
-        # we don't have (and don't need) a login code to fetch the auth
-        # token, like parent does - we just want to re-use a couple of
-        # parent's methods
-        super(Controller, self).__init__('bogus')
-
     def headers(self):
         headers = [('Content-Type', "application/json; charset=UTF-8")]
 
@@ -32,7 +26,7 @@ class Controller(login.Controller):
         want to update the project info in our DB
         """
         from cauditor import models
-        model = models.projects.Projects()
+        model = models.projects.Model(self.container.mysql)
 
         # fetch user's repos (which were just refreshed)
         repos = self.session('repos')
@@ -52,7 +46,7 @@ class Controller(login.Controller):
         if len(changed) > 0:
             model.store(changed)
 
-        commits = models.commits.Commits()
+        commits = models.commits.Model(self.container.mysql)
         for repo in changed:
             select = commits.select(project=projects[repo['github_id']]['name'])
             select.update(project=repo['name'])

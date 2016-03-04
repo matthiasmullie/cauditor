@@ -4,12 +4,13 @@ from random import randint, getrandbits
 import json
 
 
-class Sessions(model.DbManager):
+class Model(model.DbManager):
     data = None
 
     """ (Ab)use model for session management """
-    def __init__(self, session_id=None, max_age=None):
-        super(Sessions, self).__init__()
+    def __init__(self, connection, session_id=None, max_age=None):
+        super(Model, self).__init__(connection)
+
         self.table = 'sessions'
 
         self.id = session_id or self.generate()
@@ -31,7 +32,8 @@ class Sessions(model.DbManager):
     def __del__(self):
         # depending on whether or not we've loaded existing data
         # already, store or extend expiration time
-        # @todo this calls something that depends on self.conncetion, but parent may have already been destroyed (taking connection with it)
+        # this is not __del__ because apparently, destruction order can be
+        # odd & connection can be
         self.extend() if self.data is None else self.write()
 
     def get(self, key):

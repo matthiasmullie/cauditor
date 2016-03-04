@@ -24,7 +24,7 @@ routes = {
 }
 
 
-def route(uri):
+def route(uri, container):
     matched_controllers = {}
     for regex, controller in routes.items():
         # figure out if controller can answer uri
@@ -38,15 +38,14 @@ def route(uri):
     matched_controllers = sorted(matched_controllers.items(), key=lambda controller: controller[1].end(0), reverse=True)
     exceptions = []
     for i in range(0, len(matched_controllers)):
-        try:
-            # init controller with named args as provided by the route regex
-            (controller, match) = matched_controllers[i]
-            controller = importlib.import_module(controller)
+        # init controller with named args as provided by the route regex
+        (module_name, match) = matched_controllers[i]
+        module = importlib.import_module(module_name)
 
-            return controller.Controller(**match.groupdict())
+        try:
+            return module.Controller(container, match.groupdict())
         except Exception as exception:
             exceptions.append(exception)
             # controller failed to init - try next!
-            pass
 
     raise Exception("No available route for uri: " + uri + '. ' + str(exceptions))

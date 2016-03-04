@@ -1,5 +1,4 @@
 from cauditor.controllers.api import fallback
-from cauditor import container
 from cauditor import models
 from cauditor import jobs
 import json
@@ -7,38 +6,32 @@ import json
 
 class Controller(fallback.Controller):
     template = ""
-
-    def __init__(self, project):
-        super(Controller, self).__init__()
-
-        self.project = {}
+    project = {}
 
     def headers(self):
-        data = self.get_input()
-
-        if "repo" not in data:
+        if "repo" not in self.data:
             self.status = "400 Bad Request"
             return super(Controller, self).headers()
 
-        if "action" not in data or data["action"] not in ["link", "unlink"]:
+        if "action" not in self.data or self.data["action"] not in ["link", "unlink"]:
             self.status = "400 Bad Request"
             return super(Controller, self).headers()
 
         try:
-            self.project = self.process(data["repo"], data["action"])
+            self.project = self.process(self.data["repo"], self.data["action"])
         except Exception:
             self.status = "401 Unauthorized"
             return super(Controller, self).headers()
 
-        if data["action"] == "link":
+        if self.data["action"] == "link":
             # create importer jobs
             # import last commit
-            jobs.execute('php-rest', {
+            jobs.execute(self.container, 'php-rest', {
                 'slug': self.project['name'],
                 'git': self.project['git'],
             }, 0)
             # import all missing commits
-            jobs.execute('php-rest', {
+            jobs.execute(self.container, 'php-rest', {
                 'slug': self.project['name'],
                 'git': self.project['git'],
                 'all': True,
@@ -50,7 +43,7 @@ class Controller(fallback.Controller):
         return json.dumps(self.project)
 
     def process(self, repo, action):
-        model = models.projects.Projects()
+        model = models.projects.Model(self.container.mysql)
         repo = self.get_repo(repo)
 
         if action == "link":
@@ -72,14 +65,14 @@ class Controller(fallback.Controller):
 
     def get_repo(self, name):
         token = self.session('github_token')
-        github = container.github(token)
+        github = self.container.github(token)
 
         return github.get_repo(name)
 
     def create_hook(self, repo):
         # https://developer.github.com/v3/repos/hooks/#create-a-hook
         return repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
-            'url': "%s/api/v1/webhook/%s" % (self.config()['site']['host'], repo.full_name),
+            'url': "%s/api/v1/webhook/%s" % (self.container.config['site']['host'], repo.full_name),
             'content_type': "json",
         })
 
