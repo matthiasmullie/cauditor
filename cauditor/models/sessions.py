@@ -31,11 +31,8 @@ class Sessions(model.DbManager):
     def __del__(self):
         # depending on whether or not we've loaded existing data
         # already, store or extend expiration time
+        # @todo this calls something that depends on self.conncetion, but parent may have already been destroyed (taking connection with it)
         self.extend() if self.data is None else self.write()
-
-        # type(self) is a hack:
-        # http://stackoverflow.com/questions/22972720/python-cant-invoke-parent-class-destructor-with-super
-        super(type(self), self).__del__()
 
     def get(self, key):
         """ Gets a value from session
@@ -90,13 +87,13 @@ class Sessions(model.DbManager):
 
     def extend(self):
         """ Set new date for session data, prolonging its expiration time """
-        cursor = self.connection.cursor()
-        cursor.execute(
-            "UPDATE %s " % self.table +
-            "SET touched = %s " +
-            "WHERE id = %s",
-            [self.timestamp(), self.id]
-        )
+        with self.connection as cursor:
+            cursor.execute(
+                "UPDATE %s " % self.table +
+                "SET touched = %s " +
+                "WHERE id = %s",
+                [self.timestamp(), self.id]
+            )
 
     def clear_old(self):
         """ Clear old session data
@@ -108,12 +105,12 @@ class Sessions(model.DbManager):
         if randint(0, 999) == 0:
             return
 
-        cursor = self.connection.cursor()
-        cursor.execute(
-            "DELETE FROM %s " % self.table +
-            "WHERE touched < %s",
-            [self.timestamp(seconds_ago=self.max_age)]
-        )
+        with self.connection as cursor:
+            cursor.execute(
+                "DELETE FROM %s " % self.table +
+                "WHERE touched < %s",
+                [self.timestamp(seconds_ago=self.max_age)]
+            )
 
     def timestamp(self, seconds_ago=0):
         """ Returns a timestamp of a certain amount of days ago

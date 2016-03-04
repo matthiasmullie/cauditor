@@ -6,10 +6,7 @@ class DbManager(object):
 
     def __init__(self):
         from cauditor import container
-        self.connection = container.mysql(autocommit=True)
-
-    def __del__(self):
-        self.connection.close()
+        self.connection = container.mysql()
 
     def select(self, options="", **kwargs):
         """ Arguments will refer to columns to be selected. E.g.: select(name="vendor/project")
@@ -59,16 +56,16 @@ class DbManager(object):
         # make sure column names can't be mistaken for reserved words
         keys = ["`" + key + "`" for key in keys]
 
-        cursor = self.connection.cursor()
-        result = cursor.execute(
-            "INSERT INTO %s " % self.table +
-            "(" + ", ".join(keys) + ") " +  # (`key`, `key2`)
-            "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(values)) + ") " +  # (%s, %s), (%s, %s)
-            "ON DUPLICATE KEY UPDATE " +
-            ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
-            params
-        )
-        cursor.close()
+        with self.connection as cursor:
+            result = cursor.execute(
+                "INSERT INTO %s " % self.table +
+                "(" + ", ".join(keys) + ") " +  # (`key`, `key2`)
+                "VALUES (" + "), (".join([", ".join(["%s"] * len(keys))] * len(values)) + ") " +  # (%s, %s), (%s, %s)
+                "ON DUPLICATE KEY UPDATE " +
+                ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
+                params
+            )
+
         return result
 
 
@@ -170,14 +167,14 @@ class Select(object):
         # values can come in dict form, or as parameterized kwargs
         values = values if values is not None else kwargs
 
-        cursor = self.connection.cursor()
-        result = cursor.execute(
-            "UPDATE %s " % self.table +
-            "SET " + ", ".join(["`" + key + "` = %s" for key in values.keys()]) + " " +  # "SET `key1` = %s, `key2` = %s"
-            self.__where,
-            list(values.values()) + self.__params
-        )
-        cursor.close()
+        with self.connection as cursor:
+            result = cursor.execute(
+                "UPDATE %s " % self.table +
+                "SET " + ", ".join(["`" + key + "` = %s" for key in values.keys()]) + " " +  # "SET `key1` = %s, `key2` = %s"
+                self.__where,
+                list(values.values()) + self.__params
+            )
+
         return result
 
     def delete(self):
@@ -185,13 +182,13 @@ class Select(object):
 
         :return: int amount of rows deleted
         """
-        cursor = self.connection.cursor()
-        result = cursor.execute(
-            "DELETE FROM %s " % self.table +
-            self.__where,
-            self.__params
-        )
-        cursor.close()
+        with self.connection as cursor:
+            result = cursor.execute(
+                "DELETE FROM %s " % self.table +
+                self.__where,
+                self.__params
+            )
+
         return result
 
     def bytes_to_string(self, result):

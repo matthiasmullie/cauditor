@@ -1,15 +1,14 @@
+import io
+import re
 import os
+import yaml
 
 
 environ = dict(os.environ)
+mysql_connection = None
 
 
 def load_config():
-    import io
-    import re
-    import os
-    import yaml
-
     # parse environment variables into config.yaml, in $VARIABLE format
     # @see http://stackoverflow.com/questions/26712003/pyyaml-parsing-of-the-environment-variable-in-the-yaml-configuration-file
     def pathex_constructor(loader, node):
@@ -23,11 +22,15 @@ def load_config():
     return yaml.load(stream)
 
 
-def mysql(**kwargs):
+def mysql():
     import pymysql
 
-    config = load_config()['mysql']
-    return pymysql.connect(host=config['host'], user=config['user'], passwd=config['pass'], db=config['db'], port=int(config['port']), charset='utf8', **kwargs)
+    global mysql_connection
+    if mysql_connection is None:
+        config = load_config()['mysql']
+        mysql_connection = pymysql.connect(host=config['host'], user=config['user'], passwd=config['pass'], db=config['db'], port=int(config['port']), charset='utf8', autocommit=True)
+
+    return mysql_connection
 
 
 def github(token):

@@ -2,6 +2,8 @@
 
 import sys
 import os
+from cauditor import container
+from cauditor import controllers
 
 # add current directory to ensure these modules can be imported
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -9,9 +11,6 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 def application(environ, start_response):
-    from cauditor import container
-    from cauditor import controllers
-
     container.environ.update(dict(environ))
 
     uri = environ["REQUEST_URI"]

@@ -29,50 +29,49 @@ class Commits(model.DbManager):
         # values can also be a list of dicts (for multiple inserts) - make all of it a list now
         values = values if isinstance(values, list) else [values]
 
-        cursor = self.connection.cursor()
-        row_count = 0
+        with self.connection as cursor:
+            row_count = 0
 
-        for commit_details in values:
-            # restructure: data is going to 2 tables
-            commit = {'project': commit_details['project'], 'branch': commit_details['branch']}
-            del commit_details['project'], commit_details['branch']
+            for commit_details in values:
+                # restructure: data is going to 2 tables
+                commit = {'project': commit_details['project'], 'branch': commit_details['branch']}
+                del commit_details['project'], commit_details['branch']
 
-            # gather list of keys & params for insert & update into `commit_details`
-            commit_details_keys = sorted(commit_details)
-            commit_details_params = [commit_details[key] for key in commit_details_keys]
+                # gather list of keys & params for insert & update into `commit_details`
+                commit_details_keys = sorted(commit_details)
+                commit_details_params = [commit_details[key] for key in commit_details_keys]
 
-            # make sure column names can't be mistaken for reserved words
-            commit_details_keys = ["`" + key + "`" for key in commit_details_keys]
+                # make sure column names can't be mistaken for reserved words
+                commit_details_keys = ["`" + key + "`" for key in commit_details_keys]
 
-            try:
-                cursor.execute(
-                    "INSERT INTO commit_details" +
-                    "(" + ", ".join(commit_details_keys) + ") " +  # (`key`, `key2`)
-                    "VALUES (" + ", ".join(["%s"] * len(commit_details_keys)) + ")" +  # (%s, %s), (%s, %s)
-                    "ON DUPLICATE KEY UPDATE " +
-                    ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in commit_details_keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
-                    commit_details_params
-                )
-                commit['commit_id'] = cursor.lastrowid
-            except Exception:
-                # already exists, fetch existing id
-                existing = self.select(**commit_details)[0]
-                commit['commit_id'] = existing['commit_id']
+                try:
+                    cursor.execute(
+                        "INSERT INTO commit_details" +
+                        "(" + ", ".join(commit_details_keys) + ") " +  # (`key`, `key2`)
+                        "VALUES (" + ", ".join(["%s"] * len(commit_details_keys)) + ")" +  # (%s, %s), (%s, %s)
+                        "ON DUPLICATE KEY UPDATE " +
+                        ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in commit_details_keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
+                        commit_details_params
+                    )
+                    commit['commit_id'] = cursor.lastrowid
+                except Exception:
+                    # already exists, fetch existing id
+                    existing = self.select(**commit_details)[0]
+                    commit['commit_id'] = existing['commit_id']
 
-            # gather list of keys & params for insert & update into `commits`
-            commit_keys = sorted(commit)
-            commit_params = [commit[key] for key in commit_keys]
+                # gather list of keys & params for insert & update into `commits`
+                commit_keys = sorted(commit)
+                commit_params = [commit[key] for key in commit_keys]
 
-            try:
-                row_count += cursor.execute(
-                    "INSERT INTO commits" +
-                    "(" + ", ".join(commit_keys) + ") " +  # (`key`, `key2`)
-                    "VALUES (" + ", ".join(["%s"] * len(commit_keys)) + ")",  # (%s, %s), (%s, %s)
-                    commit_params
-                )
-            except Exception:
-                # this was probably just an update...
-                pass
+                try:
+                    row_count += cursor.execute(
+                        "INSERT INTO commits" +
+                        "(" + ", ".join(commit_keys) + ") " +  # (`key`, `key2`)
+                        "VALUES (" + ", ".join(["%s"] * len(commit_keys)) + ")",  # (%s, %s), (%s, %s)
+                        commit_params
+                    )
+                except Exception:
+                    # this was probably just an update...
+                    pass
 
-        cursor.close()
         return row_count
