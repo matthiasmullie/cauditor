@@ -6,6 +6,7 @@ site:
     path: $REQUEST_URI
     twitter: cauditor_org
     assets: cauditor/assets
+    ga: $GOOGLE_ANALYTICS
 
 mysql:
     user: $RDS_USERNAME
