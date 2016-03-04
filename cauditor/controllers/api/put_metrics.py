@@ -2,6 +2,7 @@ from cauditor.controllers.api import fallback
 from cauditor.models import projects
 from cauditor import listeners
 import dateutil.parser
+import json
 
 
 class Controller(fallback.Controller):
@@ -34,8 +35,6 @@ class Controller(fallback.Controller):
         return super(Controller, self).headers()
 
     def render(self, template="container.html"):
-        import json
-
         if self.exception:
             return json.dumps({'error': str(self.exception)})
 

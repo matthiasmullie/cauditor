@@ -1,4 +1,5 @@
 from cauditor.controllers.web import login
+import json
 
 
 class Controller(login.Controller):
@@ -24,7 +25,6 @@ class Controller(login.Controller):
         return headers
 
     def render(self, template="container.html"):
-        import json
         return json.dumps(self.session('repos'))
 
     def update_changed_repos(self):

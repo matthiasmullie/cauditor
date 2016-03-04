@@ -1,5 +1,8 @@
 from cauditor.controllers.api import fallback
+from cauditor import container
+from cauditor import models
 from cauditor import jobs
+import json
 
 
 class Controller(fallback.Controller):
@@ -44,12 +47,9 @@ class Controller(fallback.Controller):
         return super(Controller, self).headers()
 
     def render(self, template="container.html"):
-        import json
         return json.dumps(self.project)
 
     def process(self, repo, action):
-        from cauditor import models
-
         model = models.projects.Projects()
         repo = self.get_repo(repo)
 
@@ -71,8 +71,6 @@ class Controller(fallback.Controller):
         return project
 
     def get_repo(self, name):
-        from cauditor import container
-
         token = self.session('github_token')
         github = container.github(token)
 

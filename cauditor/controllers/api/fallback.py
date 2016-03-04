@@ -10,7 +10,6 @@ class Controller(fallback.Controller):
         return [('Content-Type', "application/json; charset=UTF-8")]
 
     def render(self, template="container.html"):
-        import json
         return json.dumps({})
 
     def get_input(self):

@@ -1,6 +1,6 @@
 from cauditor.controllers.web import fallback
+from cauditor.models import commits as commits_model, projects as projects_model
 from cauditor import jobs
-from cauditor import models
 
 
 class Controller(fallback.Controller):
@@ -54,7 +54,7 @@ class Controller(fallback.Controller):
         return args
 
     def load_commits(self):
-        model = models.commits.Commits()
+        model = commits_model.Commits()
         emails = self.settings['emails'].split(',')
         return model.select(author=emails, options=["ORDER BY timestamp DESC", "LIMIT 5000"]) if emails else {}
 
@@ -62,7 +62,7 @@ class Controller(fallback.Controller):
         if len(commits) == 0:
             return []
 
-        model = models.commits.Commits()
+        model = commits_model.Commits()
         hashes = [commit['previous'] for commit in commits]
         return model.select(hash=hashes)
 
@@ -70,5 +70,5 @@ class Controller(fallback.Controller):
         if len(projects) == 0:
             return []
 
-        model = models.projects.Projects()
+        model = projects_model.Projects()
         return model.select(name=projects)

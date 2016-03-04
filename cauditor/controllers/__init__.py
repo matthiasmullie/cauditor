@@ -1,27 +1,26 @@
-from cauditor.controllers.web import fallback as web_fallback, index, project, chart, login, logout, user, insight
-from cauditor.controllers.api import fallback as api_fallback, get_repos, put_settings, put_project, put_webhook, put_metrics, get_commits
 import re
+import importlib
 
 
 routes = {
     # web
-    "": web_fallback,  # matches anything; 404 is fallback for every request
-    "^/$": index,  # matches /
-    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": project,  # matches /vendor/repo and /vendor/repo/commit
-    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>[a-z]+)$": chart,  # matches /vendor/repo/chart and /vendor/repo/commit/chart
-    "^/login\?code=(?P<code>[a-f0-9]+)$": login,  # matches /login?code=xyz
-    "^/logout$": logout,  # matches /logout
-    "^/user$": user,  # matches /user
-    "^/insight$": insight,  # matches /insight
+    "": 'cauditor.controllers.web.fallback',  # matches anything; 404 is fallback for every request
+    "^/$": 'cauditor.controllers.web.index',  # matches /
+    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?$": 'cauditor.controllers.web.project',  # matches /vendor/repo and /vendor/repo/commit
+    "^/(?!api)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>[a-z]+)$": 'cauditor.controllers.web.chart',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
+    "^/login\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
+    "^/logout$": 'cauditor.controllers.web.logout',  # matches /logout
+    "^/user$": 'cauditor.controllers.web.user',  # matches /user
+    "^/insight$": 'cauditor.controllers.web.insight',  # matches /insight
 
     # api
-    "^/api": api_fallback,  # matches /api*; 404 fallback for every request in /api
-    "^/api/user/repos$": get_repos,  # matches /api/user/repos
-    "^/api/user/settings$": put_settings,  # matches /api/user/settings
-    "^/api/user/link/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": put_project,  # matches /api/link/vendor/repo
-    "^/api/v1/webhook/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": put_webhook,  # matches /api/v1/webhook/vendor/repo
-    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": put_metrics,  # matches /api/v1/vendor/repo/branch/commit
-    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": get_commits,  # matches /api/v1/vendor/repo/branch
+    "^/api": 'cauditor.controllers.api.fallback',  # matches /api*; 404 fallback for every request in /api
+    "^/api/user/repos$": 'cauditor.controllers.api.get_repos',  # matches /api/user/repos
+    "^/api/user/settings$": 'cauditor.controllers.api.put_settings',  # matches /api/user/settings
+    "^/api/user/link/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": 'cauditor.controllers.api.put_project',  # matches /api/link/vendor/repo
+    "^/api/v1/webhook/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": 'cauditor.controllers.api.put_webhook',  # matches /api/v1/webhook/vendor/repo
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": 'cauditor.controllers.api.put_metrics',  # matches /api/v1/vendor/repo/branch/commit
+    "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_commits',  # matches /api/v1/vendor/repo/branch
 }
 
 
@@ -42,6 +41,8 @@ def route(uri):
         try:
             # init controller with named args as provided by the route regex
             (controller, match) = matched_controllers[i]
+            controller = importlib.import_module(controller)
+
             return controller.Controller(**match.groupdict())
         except Exception as exception:
             exceptions.append(exception)

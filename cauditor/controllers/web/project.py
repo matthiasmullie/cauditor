@@ -1,5 +1,5 @@
 from cauditor.controllers.web import fallback
-from cauditor import models
+from cauditor.models import commits as commits_model, projects as projects_model
 
 
 class Controller(fallback.Controller):
@@ -23,16 +23,16 @@ class Controller(fallback.Controller):
         return args
 
     def load_project(self, name):
-        model = models.projects.Projects()
+        model = projects_model.Projects()
         data = model.select(name=name)
         return next(data)
 
     def load_commit(self, project, hash):
-        model = models.commits.Commits()
+        model = commits_model.Commits()
         data = model.select(project=project, hash=hash)
         return next(data)
 
     def load_commits(self, project):
-        model = models.commits.Commits()
+        model = commits_model.Commits()
         commits = model.select(project=project, options=["ORDER BY timestamp DESC", "LIMIT 15"])
         return [commit for commit in commits]

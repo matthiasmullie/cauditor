@@ -1,5 +1,6 @@
 from cauditor.controllers.api import fallback
 from cauditor import models
+import json
 
 
 class Controller(fallback.Controller):
@@ -27,8 +28,6 @@ class Controller(fallback.Controller):
         return super(Controller, self).headers()
 
     def render(self, template="container.html"):
-        import json
-
         model = models.settings.Settings()
         settings = model.select(user=self.user['id'])
 

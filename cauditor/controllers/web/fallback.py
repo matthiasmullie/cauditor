@@ -1,5 +1,5 @@
 from cauditor import container
-from cauditor import models
+from cauditor.models import projects as projects_model, sessions as sessions_model, settings as settings_model
 from jinja2 import Environment, FileSystemLoader
 import http.cookies
 import os
@@ -21,12 +21,12 @@ class Controller(object):
         # init session (but don't load session data yet)
         session_id = self.cookie('session_id')
         max_age = self.config()['session']['max_age']
-        self.session_data = models.sessions.Sessions(session_id, max_age)
+        self.session_data = sessions_model.Sessions(session_id, max_age)
 
         self.user = self.session('user') or {}
         self.settings = {}
         if self.user:
-            model = models.settings.Settings()
+            model = settings_model.Settings()
             settings = model.select(user=self.user['id'])
             self.settings = {entry['key']: entry['value'] for entry in settings}
 
@@ -40,7 +40,7 @@ class Controller(object):
         projects = []
         if repos:
             # get all of this user's active projects
-            model = models.projects.Projects()
+            model = projects_model.Projects()
             repo_names = [repo['name'] for repo in repos]
             projects = model.select(name=repo_names)
 

@@ -1,5 +1,8 @@
 from cauditor.controllers.web import fallback
-from cauditor import models
+from cauditor.models import settings
+from cauditor import container
+from urllib import parse, request
+import json
 
 
 class Controller(fallback.Controller):
@@ -32,8 +35,6 @@ class Controller(fallback.Controller):
             return ""
 
     def import_from_github(self, token):
-        from cauditor import container
-
         github = container.github(token)
         user = github.get_user()
 
@@ -73,9 +74,6 @@ class Controller(fallback.Controller):
         }
 
     def get_auth_token(self, code):
-        from urllib import parse, request
-        import json
-
         config = self.config()
 
         url = "https://github.com/login/oauth/access_token"
@@ -106,17 +104,17 @@ class Controller(fallback.Controller):
 
     def store_email(self, user):
         # figure out if any email address has already been stored
-        model = models.settings.Settings()
+        model = settings.Settings()
         try:
-            settings = model.select(user=user['id'], key="emails")
-            store = settings[0]["value"] == ""
+            data = model.select(user=user['id'], key="emails")
+            store = data[0]["value"] == ""
         except Exception:
             # trying to access [0] will have fail if it didn't exist
             store = True
 
         # store user email if it doesn't already exist
         if store:
-            model = models.settings.Settings()
+            model = settings.Settings()
             model.store({
                 'user': user['id'],
                 'key': 'emails',

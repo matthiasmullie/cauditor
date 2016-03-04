@@ -1,3 +1,4 @@
+import pymysql
 import io
 import re
 import os
@@ -23,8 +24,6 @@ def load_config():
 
 
 def mysql():
-    import pymysql
-
     global mysql_connection
     if mysql_connection is None:
         config = load_config()['mysql']
@@ -35,6 +34,5 @@ def mysql():
 
 def github(token):
     import github
-
     config = load_config()['github']
     return github.Github(login_or_token=token, client_id=config['id'], client_secret=config['secret'], timeout=1, user_agent='cauditor.org', per_page=999)

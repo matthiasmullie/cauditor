@@ -1,6 +1,7 @@
 from cauditor.controllers.api import fallback
-from cauditor import jobs
 from cauditor.models import commits
+from cauditor import jobs
+
 
 class Controller(fallback.Controller):
     template = ""

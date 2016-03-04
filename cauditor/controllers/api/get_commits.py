@@ -1,5 +1,6 @@
 from cauditor.controllers.api import fallback
 from cauditor.models import commits
+import json
 
 
 class Controller(fallback.Controller):
@@ -12,7 +13,6 @@ class Controller(fallback.Controller):
         self.branch = branch
 
     def render(self, template="container.html"):
-        import json
         return json.dumps(self.get_commits())
 
     def get_commits(self):

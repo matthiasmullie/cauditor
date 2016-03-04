@@ -1,3 +1,4 @@
+from cauditor import container
 import pymysql
 
 
@@ -5,7 +6,6 @@ class DbManager(object):
     table = ""
 
     def __init__(self):
-        from cauditor import container
         self.connection = container.mysql()
 
     def select(self, options="", **kwargs):
