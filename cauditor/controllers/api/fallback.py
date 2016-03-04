@@ -9,7 +9,10 @@ class Controller(fallback.Controller):
     def __init__(self, route, cookies, session, container):
         super(Controller, self).__init__(route, cookies, session, container)
 
-        self.data = self.get_input()
+        try:
+            self.data = self.get_input()
+        except Exception:
+            self.data = {}
 
     def headers(self):
         return [('Content-Type', "application/json; charset=UTF-8")]
