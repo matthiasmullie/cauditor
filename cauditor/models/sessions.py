@@ -29,7 +29,7 @@ class Model(model.DbManager):
         if session_id is None:
             self.data = {}
 
-    def __del__(self):
+    def close(self):
         # depending on whether or not we've loaded existing data
         # already, store or extend expiration time
         # this is not __del__ because apparently, destruction order can be

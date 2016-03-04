@@ -30,9 +30,12 @@ def application(environ, start_response):
     controller = controllers.route(uri, cookies, session, container)
 
     headers = controller.headers()
+    body = controller.render().encode('utf-8')
+
     # fetch new (changed) cookies & write them
     cookies = [("Set-Cookie", morsel.OutputString()) for morsel in controller.cookie_set.values()]
-    body = controller.render().encode('utf-8')
+    # save session changes (or extend session timeout)
+    session.close()
 
     start_response(controller.status, headers + cookies + [('Content-Length', str(len(body)))])
     return [body]
