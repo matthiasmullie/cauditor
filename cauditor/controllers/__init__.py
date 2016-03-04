@@ -24,7 +24,7 @@ routes = {
 }
 
 
-def route(uri, container):
+def route(uri, cookies, session, container):
     matched_controllers = {}
     for regex, controller in routes.items():
         # figure out if controller can answer uri
@@ -43,7 +43,7 @@ def route(uri, container):
         module = importlib.import_module(module_name)
 
         try:
-            return module.Controller(container, match.groupdict())
+            return module.Controller(match.groupdict(), cookies, session, container)
         except Exception as exception:
             exceptions.append(exception)
             # controller failed to init - try next!

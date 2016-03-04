@@ -6,8 +6,8 @@ from cauditor import jobs
 class Controller(fallback.Controller):
     template = "insight.html"
 
-    def __init__(self, container, route):
-        super(Controller, self).__init__(container, route)
+    def __init__(self, route, cookies, session, container):
+        super(Controller, self).__init__(route, cookies, session, container)
 
         # filter out commits for which we can't find a previous commit, which could be:
         # - part of a push where not all commits were tested individually

@@ -8,27 +8,22 @@ class Controller(object):
     template = "404.html"
     status = "200 OK"
     route = {}
-    container = None
-    cookie_data = http.cookies.SimpleCookie()
-    cookie_set = http.cookies.SimpleCookie()
+    cookies = http.cookies.SimpleCookie()
     session_data = None
+    container = None
+    cookie_set = http.cookies.SimpleCookie()
     user = None
     settings = None
 
-    def __init__(self, container, route):
-        self.container = container
+    def __init__(self, route, cookies, session, container):
         self.route = route
+        self.cookies = cookies
+        self.session_data = session
+        self.container = container
 
         # all controllers extend from this one, so I'm going to special-case
         # the 404 header
         self.status = "404 Not Found" if self.__module__ == "cauditor.controllers.web.fallback" else "200 OK"
-
-        self.cookie_data.load(self.container.environ.get("HTTP_COOKIE", ""))
-
-        # init session (but don't load session data yet)
-        session_id = self.cookie('session_id')
-        max_age = self.container.config['session']['max_age']
-        self.session_data = models.sessions.Model(self.container.mysql, session_id, max_age)
 
         self.user = self.session('user') or {}
         self.settings = {}
@@ -80,8 +75,8 @@ class Controller(object):
             return self.cookie_set[key].value
 
         # check if value already existed in cookie
-        if key in self.cookie_data:
-            return self.cookie_data[key].value
+        if key in self.cookies:
+            return self.cookies[key].value
 
         return None
 
