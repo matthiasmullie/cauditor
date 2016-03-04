@@ -32,6 +32,12 @@ Cauditor.Visualization.Treemap.Class.prototype.filter = function(data) {
         }
         fqcn.push(d.fqcn);
 
+        /*
+         * no longer need a reference to parent, must now get rid of it so this data is json stringify-able
+         * @see http://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
+         */
+        delete d.parent;
+
         return true;
     });
 };
