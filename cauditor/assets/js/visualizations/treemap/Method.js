@@ -32,7 +32,7 @@ Cauditor.Visualization.Treemap.Method.prototype.filter = function(data) {
         return relevant;
     }
 
-    data.fqcn = (data.package !== '+global' ? data.package + '\\' : '') + data.class + data.name;
+    data.fqcn = (data.package !== '+global' ? data.package + '\\' : '') + data.class + '::' + data.name;
     relevant.push(data);
     return relevant;
 };
