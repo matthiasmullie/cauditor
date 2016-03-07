@@ -3,23 +3,23 @@
 import sys
 import os
 import http.cookies
-from cauditor import controllers
-from cauditor import models
-from cauditor.container import Container
 
 # add current directory to ensure these modules can be imported
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+from cauditor import controllers
+from cauditor import models
+from cauditor.container import Container
+
 
 def application(environ, start_response):
-    uri = environ["REQUEST_URI"]
+    uri = environ['REQUEST_URI']
     container = Container(environ)
 
-    try :
+    try:
         # load existing cookies
-        cookies = http.cookies.SimpleCookie()
-        cookies.load(container.environ.get("HTTP_COOKIE", ""))
+        cookies = http.cookies.SimpleCookie(environ.get('HTTP_COOKIE', ""))
 
         # init session (but don't load session data yet)
         session_id = cookies['session_id'].value if 'session_id' in cookies else None

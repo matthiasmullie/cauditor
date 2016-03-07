@@ -6,13 +6,12 @@ import yaml
 
 
 class Container:
-    _environ = dict(os.environ)
+    _environ = None
     _config = None
     _mysql = None
 
-    def __init__(self, environ=None):
-        if environ:
-            self._environ.update(dict(environ))
+    def __init__(self, environ):
+        self._environ = environ
 
     @property
     def environ(self):
