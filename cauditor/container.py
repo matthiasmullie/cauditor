@@ -23,7 +23,7 @@ class Container:
             # parse environment variables into config.yaml, in $VARIABLE format
             # @see http://stackoverflow.com/questions/26712003/pyyaml-parsing-of-the-environment-variable-in-the-yaml-configuration-file
             def pathex_constructor(loader, node):
-                return self.environ[node.value[1:]]
+                return os.environ[node.value[1:]]
             pattern = re.compile(r'\$([0-9a-z_]+)', re.IGNORECASE)
             yaml.add_implicit_resolver('tag', pattern)
             yaml.add_constructor('tag', pathex_constructor)
