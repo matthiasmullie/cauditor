@@ -26,7 +26,7 @@ class Controller(fallback.Controller):
         if self.data["action"] == "link":
             # create importer jobs
             # import last commit
-            jobs.execute(self.container, 'php-rest', {
+            jobs.execute(self.container, 'php-priority', {
                 'slug': self.project['name'],
                 'git': self.project['git'],
             }, 0)
