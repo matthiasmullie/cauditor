@@ -43,11 +43,19 @@ class Controller(fallback.Controller):
         return json.dumps(self.project)
 
     def process(self, repo, action):
-        model = models.projects.Model(self.container.mysql)
         repo = self.get_repo(repo)
 
-        if action == "link":
+        model = models.projects.Model(self.container.mysql)
+        results = model.select(name=repo.full_name)
+        try:
+            project = next(results)
+        except Exception:
+            # project does not yet exist in our DB
+            project = None
+
+        if action == "link" and (project is None or project['github_id'] is None):
             hook = self.create_hook(repo)
+
             project = {
                 'name': repo.full_name,
                 'git': repo.clone_url,
@@ -55,10 +63,10 @@ class Controller(fallback.Controller):
                 'github_hook': hook.id,
             }
             model.store(project)
-        else:  # unlink
-            results = model.select(name=repo.full_name)
-            project = next(results)
-            self.delete_hook(repo, project)
+        elif action == "unlink" and project is not None:  # unlink
+            if project['github_id'] is not None:
+                self.delete_hook(repo, project)
+
             results.delete()
 
         return project
