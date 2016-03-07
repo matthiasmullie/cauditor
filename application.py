@@ -14,7 +14,8 @@ from cauditor.container import Container
 
 
 def application(environ, start_response):
-    uri = environ['REQUEST_URI']
+    # path_info for wsgi, request_uri for cgi
+    uri = environ['PATH_INFO'] if 'PATH_INFO' in environ else environ['REQUEST_URI']
     container = Container(environ)
 
     try:
