@@ -1,9 +1,9 @@
 /* Homepage navbar should be completely transparent with white text */
-body[data-template="index.html"] ul.navbar-nav > .open > a,
-body[data-template="index.html"] ul.navbar-nav > li> a:focus {
+body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > .open > a,
+body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > li> a:focus {
     background: none;
 }
-body[data-template="index.html"] ul.navbar-nav > li > a:not(:hover) {
+body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > li > a:not(:hover) {
     color: #fff;
 }
 
