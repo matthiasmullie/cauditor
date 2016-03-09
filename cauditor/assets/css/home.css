@@ -60,3 +60,24 @@ body[data-template="index.html"] ul.navbar-nav > li > a:not(:hover) {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('../img/hero1.jpg');
     background-position: center bottom;
 }
+
+.home-project,
+.home-personal {
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+}
+.home-project {
+    background-image: url('../img/project.png');
+    background-position: left center;
+}
+.home-personal {
+    background-image: url('../img/personal.png');
+    background-position: right center;
+}
+.home-project div,
+.home-personal div {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
