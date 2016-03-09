@@ -12,6 +12,10 @@ html, body {
     margin-bottom: -50px;
 }
 
+.footer, .push {
+    height: 50px;
+}
+
 /*
  * On chart pages, I don't want the sticky footer to be visible.
  * I'd rather have the chart be slightly bigger and the footer be
@@ -19,9 +23,12 @@ html, body {
  */
 body[data-template="chart.html"] .content {
     height: 100%;
+
     margin-bottom: 0;
 }
-
-.footer, .push {
-    height: 50px;
+body[data-template="chart.html"] .chart {
+    /* Subtract size of secondary nav: */
+    /* 20px (margin-top) + 1px (border-top) + 70px (height) + 1px (border-bottom) + 20px (margin-bottom) */
+    /* But.. we've already preserved space for main navbar: -70px */
+    height: calc(100% - 42px);
 }

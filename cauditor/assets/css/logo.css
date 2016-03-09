@@ -12,16 +12,15 @@ a.navbar-brand {
  */
 a.navbar-brand::after {
     content: "";
-    width: 75px;
-    height: 75px;
+    width: 70px;
+    height: 70px;
 
-    /* Line up nicely, so bottom corners align with nav bottom */
     position: absolute;
-    top: -8px;
+    top: 0;
     left: 0;
 
     background: url(../img/logo.png) no-repeat;
-    background-size: 75px;
+    background-size: 70px;
 }
 
 a.navbar-brand:not(:hover) {

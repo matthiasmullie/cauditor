@@ -2,6 +2,7 @@
 
 /* Nav & titles should get uppercase Lato */
 .navbar ul li > a,
+.secondary-nav ul li > a,
 h1, h2, h3, h4, h5, h6 {
     font-family: Lato, Helvetica, arial, sans-serif;
     text-transform: uppercase;

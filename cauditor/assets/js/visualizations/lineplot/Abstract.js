@@ -13,7 +13,7 @@ Cauditor.Visualization.Lineplot.Abstract = function(data) {
         type: 'line',
         id: 'stub',
         color: function() {
-            return '#fc7e3f';
+            return '#79b31b';
         },
         x: 'date',
         y: 'score',

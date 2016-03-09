@@ -14,17 +14,17 @@
         <link rel="stylesheet" href="/assets/css/vendor/bootstrap-tagsinput.css">
         <link rel="stylesheet" href="/assets/css/vendor/bootstrap-switch.min.css">
 
-
         {% set project_names = imported_repos|map(attribute='name')|list %}
         {% set vendor = '' %}
 
-        <div class="row tabs-nav" style="padding-bottom: 0;">
-            <ul class="nav nav-pills nav-justified">
-                <li role="presentation" class="active"><a href="#repos">Repositories</a></li>
-                <li role="presentation"><a href="#details">Details</a></li>
-            </ul>
-
-            <hr />
+        <div class="container">
+            <div class="col-sm-0 col-md-2"></div>
+            <div class="row secondary-nav col-sm-12 col-md-7">
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation" class="active"><a href="#repos">Repositories</a></li>
+                    <li role="presentation"><a href="#details">Details</a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="row tabs-tab" id="repos">
@@ -200,8 +200,8 @@
             // tabs navigation
             function selectTab(selector) {
                 // set correct active states in nav
-                $('.tabs-nav li').removeClass('active');
-                $('.tabs-nav a[href=' + selector + ']').closest('li').addClass('active');
+                $('.secondary-nav li').removeClass('active');
+                $('.secondary-nav a[href=' + selector + ']').closest('li').addClass('active');
 
                 // show/hide appropriate divs
                 $('.tabs-tab').hide();
@@ -216,7 +216,7 @@
                     $(window).scrollTop(0);
                 });
             }
-            $('.tabs-nav a').on('click', function(e) {
+            $('.secondary-nav a').on('click', function(e) {
                 e.preventDefault();
                 selectTab($(this).attr('href'));
             });

@@ -8,6 +8,8 @@
     <script src="{{ file }}"></script>
 {% endfor %}
 
+{% include 'project_navbar.html' %}
+
 {% if commits %}
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
     <div class="chart"></div>

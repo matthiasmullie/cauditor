@@ -5,8 +5,13 @@
 
     <title>{{ site.title }}{% if title %}: {{ title }}{% endif %}</title>
 
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="shortcut icon" type="image/png" sizes="32x32" href="/assets/img/favicon.ico">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/img/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/img/apple-touch-icon-152x152.png" />
+    <meta name="application-name" content="Cauditor"/>
+    <meta name="msapplication-TileColor" content="#79b31b" />
+    <meta name="msapplication-TileImage" content="/assets/img/mstile-144x144.png" />
 
     <meta name="author" content="https://plus.google.com/u/0/114103174273569238978">
     <link rel="author" href="https://plus.google.com/u/0/114103174273569238978" />
@@ -53,7 +58,7 @@
 
     <a id="beta" href="https://github.com/cauditor/issues/issues/new">BETA</a>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-bar">
@@ -66,89 +71,17 @@
             </div>
 
             <div class="collapse navbar-collapse" id="top-bar">
-                <ul class="nav navbar-nav">
-                    {% if user %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i>
-                                {% if project %}{{ project.name }}{% else %}Select Repository{% endif %}
-                            <i class="fa fa-angle-down"></i></a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                {# show list of user's own, imported repos #}
-                                {% if imported_repos %}
-                                    {% for repo in imported_repos %}
-                                        <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
-                                    {% endfor %}
-                                {% endif %}
-
-                                {# show link to add more repos #}
-                                <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
-                            </ul>
-                        </li>
-                    {% elif project %}
-                        <li><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
-                    {% endif %}
-
-                    {% if project and commits[0] %}
-                        <li {% if commit %}class="dropdown"{% endif %}>
-                            <a href="#" class="{% if not commit %}dimmed{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa fa-code"></i>
-                                {% if not commit %}
-                                    HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}
-                                {% else %}
-                                    {{ commit.hash|truncate(7, True, "") }} {% if commit.timestamp %}({{ commit.timestamp.strftime('%Y-%m-%d') }}){% endif %}
-                                {% endif %}
-                                <i class="fa fa-angle-down"></i>
-                            </a>
-
-                            <ul class="dropdown-menu" role="menu">
-                                <li {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}><a href="/{{ project.name }}">HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
-
-                                {% for c in commits %}
-                                    {# skip first commit, we're already showing it as HEAD #}
-                                    {% if not loop.first %}
-                                        <li {% if commit and commit.hash == c.hash %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.hash }}">{{ c.hash|truncate(7, True, "") }} {% if c.timestamp %}({{ c.timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            {% if not chart %}
-                                <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> Overview <i class="fa fa-angle-down"></i></a>
-                            {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
-                            {% endif %}
-
-                            <ul class="dropdown-menu" role="menu">
-                                {% if not commit %}
-                                    <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}">Overview</a></li>
-                                {% else %}
-                                    <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}">Overview</a></li>
-                                {% endif %}
-
-                                {% for g in charts %}
-                                    {% if not commit %}
-                                        <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ g.code }}">{{ g.name }}</a></li>
-                                    {% else %}
-                                        <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/{{ g.code }}">{{ g.name }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-                    {% endif %}
-                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if not user %}
                         <li>
                             <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="avatar">
-                                <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png"> Sign in
+                                Sign in <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png">
                             </a>
                         </li>
                     {% else %}
                         <li class="dropdown">
                             <a href="#" class="avatar dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <img src="{{ user.avatar }}" /> {{ user.name }} <i class="fa fa-angle-down"></i>
+                                {{ user.name }} <i class="fa fa-angle-down"></i> <img src="{{ user.avatar }}" />
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li {% if controller == "controllers.insight" %}class="active"{% endif %}><a href="/insight">Insight</a></li>

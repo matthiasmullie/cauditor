@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="col-sm-0 col-md-2"></div>
+    <div class="row secondary-nav col-sm-12 col-md-7">
+        <ul class="nav nav-pills nav-justified">
+            {% if user %}
+                <li role="presentation" class="dropdown {% if template == 'project.html' and not commit %}active{% endif %}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i>
+                        {% if project %}{{ project.name }}{% else %}Select Repository{% endif %}
+                    <i class="fa fa-angle-down"></i></a>
+
+                    <ul class="dropdown-menu" role="menu">
+                        {# show list of user's own, imported repos #}
+                        {% if imported_repos %}
+                            {% for repo in imported_repos %}
+                                <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+
+                        {# show link to add more repos #}
+                        <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
+                    </ul>
+                </li>
+            {% elif project %}
+                <li role="presentation" {% if template == 'project.html' %}class="active"{% endif %}><a><i class="fa fa-code-fork"></i> {{ project.name }}</a></li>
+            {% endif %}
+
+            {% if project and commits[0] %}
+                <li role="presentation" class="dropdown {% if commit %}active{% endif %}">
+                    <a href="#" class="{% if not commit %}dimmed{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-code"></i>
+                        {% if not commit %}
+                            HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}
+                        {% else %}
+                            {{ commit.hash|truncate(7, True, "") }} {% if commit.timestamp %}({{ commit.timestamp.strftime('%Y-%m-%d') }}){% endif %}
+                        {% endif %}
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li {% if not commit or commit.hash == commits[0].hash %}class="active"{% endif %}><a href="/{{ project.name }}">HEAD {% if commits[0].timestamp %}({{ commits[0].timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+
+                        {% for c in commits %}
+                            {# skip first commit, we're already showing it as HEAD #}
+                            {% if not loop.first %}
+                                <li {% if commit and commit.hash == c.hash %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.hash }}">{{ c.hash|truncate(7, True, "") }} {% if c.timestamp %}({{ c.timestamp.strftime('%Y-%m-%d') }}){% endif %}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li role="presentation" class="dropdown {% if template == 'chart.html' %}active{% endif %}">
+                    {% if not chart %}
+                        <a href="#" class="dimmed dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> Overview <i class="fa fa-angle-down"></i></a>
+                    {% else %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
+                    {% endif %}
+
+                    <ul class="dropdown-menu" role="menu">
+                        {% if not commit %}
+                            <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}">Overview</a></li>
+                        {% else %}
+                            <li {% if not chart %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}">Overview</a></li>
+                        {% endif %}
+
+                        {% for g in charts %}
+                            {% if not commit %}
+                                <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ g.code }}">{{ g.name }}</a></li>
+                            {% else %}
+                                <li {% if chart and chart.code == g.code %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/{{ g.code }}">{{ g.name }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

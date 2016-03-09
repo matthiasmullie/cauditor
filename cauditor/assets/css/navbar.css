@@ -1,6 +1,13 @@
+/* Navbar links shouldn't have a colored background */
+body ul.navbar-nav >li > a:hover {
+    background-color: inherit !important;
+}
+
 /* Change font size */
 nav,
-nav .dropdown-menu {
+nav .dropdown-menu,
+.secondary-nav,
+.secondary-nav .dropdown-menu {
     font-size: 13px;
 }
 
@@ -21,9 +28,36 @@ nav a {
     line-height: 50px !important;
 }
 
-/* User avatar should be full nav height */
-nav .avatar img {
+/* User avatar should be full nav height and have no more padding on the right */
+.nav > li > a.avatar {
+    padding-right: 0;
+}
+.nav > li > a.avatar > img {
     height: inherit;
-    padding-right: 10px;
+    padding-left: 10px;
     vertical-align: top;
+}
+
+/* Pull secondary nav in between primary nav & make it look similar */
+.secondary-nav {
+    z-index: 9999;
+    /* Content preserves 70px for main header & we want to keep 20px, so pull it up only 50px */
+    margin-top: -50px;
+    margin-bottom: 20px;
+
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 0 !important;
+
+}
+
+/* Bigger "links" */
+.secondary-nav > ul > li > a {
+    line-height: 70px !important;
+    height: 70px !important;
+    padding: 0;
+}
+.secondary-nav ul.dropdown-menu a {
+    padding-top: 12px;
+    padding-bottom: 12px;
 }

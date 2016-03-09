@@ -12,15 +12,15 @@ body {
 .panel-primary, .panel-primary > .panel-heading,
 .label-primary,
 .btn-primary {
-    background-color: #fc7e3f !important;
-    border-color: #fc7e3f !important;
+    background-color: #79b31b !important;
+    border-color: #79b31b !important;
 }
 
 a {
     color: #000;
 }
 a:hover {
-    color: #fc7e3f;
+    color: #79b31b;
 }
 
 /* Default inverse text color isn't bright enough (esp. when also .dimmed) */
