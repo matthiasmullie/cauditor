@@ -9,7 +9,6 @@ Cauditor.Visualization.Treemap.Abstract = function(data) {
     Cauditor.Visualization.Abstract.apply(this, arguments);
     this.config = {
         type: 'tree_map',
-        data: this.data,
         // nesting package > class > method
         id: this.id,
         // set column to calculate size of blocks for
@@ -43,6 +42,7 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(value
 
     return d3plus.viz()
         .config(this.config)
+        .data(this.data)
         // d3plus capitalizes (and lowercases rest of the string) by default; I
         // want the text to display as-is
         .format({
