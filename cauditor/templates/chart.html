@@ -10,7 +10,9 @@
 
 {% include 'project_navbar.html' %}
 
-{% if commits %}
+{% if not commits %}
+    {% include 'utils/commits_missing.html' %}
+{% else %}
     {% if not commit %}{% set commit = commits[0] %}{% endif %}
     <div class="chart"></div>
 
@@ -24,13 +26,4 @@
             chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
         });
     </script>
-{% else %}
-    <div class="row">
-        <div class="col-xs-12 columns">
-            <div class="alert alert-danger" role="alert">
-                <i class="fa fa-exclamation-circle"></i>
-                Couldn't find any commits for {{ project.name }}. If it was recently added, it may be importing.
-            </div>
-        </div>
-    </div>
 {% endif %}
