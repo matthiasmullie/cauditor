@@ -12,7 +12,7 @@ class Controller(fallback.Controller):
         super(Controller, self).__init__(route, cookies, session, container)
 
         self.project = self.load_project(self.route['project'])
-        self.commit = self.load_commit(self.route['project'], self.route['commit']) if self.route['commit'] is not None else {}
+        self.commit = self.load_commit(self.route['project'], self.route['commit']) if 'commit' in self.route and self.route['commit'] is not None else {}
         self.commits = self.load_commits(self.route['project'])
 
     def args(self):
