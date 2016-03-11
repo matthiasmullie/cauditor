@@ -9,32 +9,41 @@ Cauditor.Visualization.Treemap.Method.prototype = Object.create(Cauditor.Visuali
  * Callback method transforming data to however 'visualization' needs it.
  *
  * @param {object} data
+ * @param {int} depth
  * @return {object}
  */
-Cauditor.Visualization.Treemap.Method.prototype.filter = function(data) {
-    var relevant = [];
+Cauditor.Visualization.Treemap.Method.prototype.filter = function(data, depth) {
+    var relevant = [], children = [];
+    depth = depth || 0;
+
+    data.fqcn = this.fqcn(data, depth);
 
     for (var i in data.children) {
         // relay package & class name to children
-        if (data.package === undefined) {
-            data.children[i].package = data.name;
-        } else {
-            data.children[i].package = data.package;
-            data.children[i].class = data.name;
-        }
+        data.children[i].parent = data.fqcn;
 
-        filtered_children = this.filter(data.children[i]);
-        relevant = relevant.concat(filtered_children);
+        children = this.filter(data.children[i], depth + 1);
+        relevant = relevant.concat(children);
     }
 
-    // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
-    if (data.ccn === undefined || data.name === undefined) {
+    // including topmost parent doesn't make sense; we need to start at namespaces
+    if (depth === 0) {
         return relevant;
     }
 
-    data.fqcn = (data.package !== '+global' ? data.package + '\\' : '') + data.class + '::' + data.name;
+    // we need to include this element because it's parent of nodes that are relevant
+    if (children.length > 0) {
+        relevant.push(data);
+        return relevant;
+    }
+
+    // CCN metric is only on method-level (also project-wide sum, which is excluded by the d.name check)
+    // since that metric can't be found here, this node is irrelevant
+    if (data.ccn === undefined) {
+        return relevant;
+    }
+
+    // now we're on a relevant node
     relevant.push(data);
     return relevant;
 };
-
-Cauditor.Visualization.Treemap.Method.prototype.id = ['package', 'class', 'name'];

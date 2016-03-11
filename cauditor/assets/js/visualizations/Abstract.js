@@ -20,10 +20,10 @@ Cauditor.Visualization.Abstract.prototype.filter = function(data) {
 };
 
 /**
- * d3plus visualization.
+ * highcharts config.
  *
- * @return {d3plus.viz}
+ * @return {object}
  */
 Cauditor.Visualization.Abstract.prototype.visualization = function() {
-    return d3plus.viz();
+    return {};
 };

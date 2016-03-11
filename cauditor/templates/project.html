@@ -1,5 +1,6 @@
-<script src="/assets/js/vendor/d3.min.js" charset="utf-8"></script>
-<script src="/assets/js/vendor/d3plus.min.js" charset="utf-8"></script>
+<script src="/assets/js/vendor/highcharts/highcharts.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/heatmap.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/treemap.js"></script>
 <script src="/assets/js/Cauditor.js"></script>
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
@@ -81,20 +82,22 @@
     {% endfor %}
 
     <script>
-        d3.json('{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}', function(data) {
-            var data = new Cauditor.Data(data),
-                tooltip = {},
-                visualization, chart;
+        $.ajax({
+            url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
+            datatype: 'json',
+            success: function(data) {
+                var data = new Cauditor.Data(data),
+                    visualization, chart;
 
-            {% for class, charts in charts|groupby('class') %}
-                visualization = new {{ class }}(data);
-                chart = new Cauditor(visualization);
+                {% for class, charts in charts|groupby('class') %}
+                    visualization = new {{ class }}(data);
+                    chart = new Cauditor(visualization);
 
-                {% for chart in charts %}
-                    tooltip = $.extend({}, visualization.tooltip, {'{{ chart.code }}': '{{ chart.name }}'});
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, tooltip]);
+                    {% for chart in charts %}
+                        chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            }
         });
 
 

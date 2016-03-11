@@ -46,7 +46,7 @@ charts:
         # 100-20 is considered ok; 20-10 suspicious; 10-0 bad
         # given the long green range and very low threshold, things can start to turn orange-ish a bit earlier
         # @see http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx
-        range: [80, 45, 35]
+        range: [70, 45, 30]
     -
         code: "ccn"
         name: "Cyclomatic Complexity"
@@ -57,7 +57,7 @@ charts:
         class: "Cauditor.Visualization.Treemap.Method"
         # 1-4 green-ish; 5-7 yellow-ish; 8-10: orange-ish; 10+: red
         # @see http://phpmd.org/rules/codesize.html#npathcomplexity
-        range: [0, 6, 11]
+        range: [0, 5, 11]
     -
         code: "hi"
         name: "Halstead Intelligent Content"
@@ -78,15 +78,15 @@ charts:
             <p>The more operators or operands, the bigger the program volume. More unique operators or fewer unique operands means higher difficulty. Given 2 different implementations of a same algorithm, the longer one will score higher.</p>
         files: ["/assets/js/visualizations/treemap/Method.js"]
         class: "Cauditor.Visualization.Treemap.Method"
-        range: [0, 40, 60]
+        range: [0, 30, 80]
     -
         code: "i"
         name: "Instability"
         description: |
             <p>The instability is based on the efferent and afferent coupling of the class and indicates how resilient a class is to change: 0 being very resilient & 1 very unstable. Classes using a lot of other classes are less resilient to change because they may have to respond to changes in those other classes.</p>
             <pre>I = efferent coupling / (efferent coupling + afferent coupling)</pre>
-        files: ["/assets/js/visualizations/treemap/Class.js", "/assets/js/visualizations/treemap/Instability.js"]
-        class: "Cauditor.Visualization.Treemap.Instability"
+        files: ["/assets/js/visualizations/treemap/Class.js"]
+        class: "Cauditor.Visualization.Treemap.Class"
         # range from 0 to 1, with 0 indicating a package very resilient to change in
         # dependency classes; 1 being very unstable
         # going with green-ish for 70% of the index so only the really problematic

@@ -7,90 +7,172 @@ Cauditor.Visualization.Treemap = Cauditor.Visualization.Treemap || {};
  */
 Cauditor.Visualization.Treemap.Abstract = function(data) {
     Cauditor.Visualization.Abstract.apply(this, arguments);
-    this.config = {
-        type: 'tree_map',
-        // nesting package > class > method
-        id: this.id,
-        // set column to calculate size of blocks for
-        // don't group really small blocks into an 'other' block
-        size: { 'threshold' : false, 'value': this.size },
-        // show full depth (0 = package level; 1 = class)
-        depth: this.id.length,
-        // don't show a legend of the colors; that'd be pretty useless since
-        // our weighed value isn't the actual value anymore
-        legend: false,
-        // title of tooltip = fully qualified class name
-        text: ['fqcn'],
-        // don't show any labels; fqcn are too long for those tiny blocks
-        labels: false,
-        // can't zoom in, everything's shown on class-level already
-        zoom: false
-    };
 };
 Cauditor.Visualization.Treemap.Abstract.prototype = Object.create(Cauditor.Visualization.Abstract.prototype);
 
 /**
- * d3plus visualization.
+ * highcharts visualization.
  *
- * @param {string|callback} value Name of the column holding value to color by, or callback function
+ * @see http://api.highcharts.com/highcharts#plotOptions.treemap
+ *
+ * @param {string} value Name of the metric column
  * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
- * @param {object} tooltip Object in { columnname: text } format
- * @return {d3plus.viz}
+ * @return {object}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(value, range, tooltip) {
-    tooltip = tooltip || this.tooltip;
-
-    return d3plus.viz()
-        .config(this.config)
-        .data(this.data)
-        // d3plus capitalizes (and lowercases rest of the string) by default; I
-        // want the text to display as-is
-        .format({
-            'text': function(tooltip, text, key) {
-                // check if full text was defined for tooltip
-                if (text in tooltip) {
-                    return tooltip[text];
+Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range) {
+    return {
+        colorAxis: {
+            min: Math.min(range[0], range[2]),
+            max: Math.max(range[0], range[2]),
+            stops: this.colors(range)
+        },
+        legend: {
+            // get legend out of here!
+            // I could do `enabled: false` instead, but that then seems to affect colors...
+            x: 999999,
+            y: 999999
+        },
+        tooltip: {
+            // tooltip shows "name: value" by default, but `value` (used for treemap sizing)
+            // is LOC; instead, I want the metric (used for colors) to show
+            formatter: function () {
+                if (this.point.metric === undefined) {
+                    // don't show if data is invalid (e.g. when hovering class name)
+                    return false;
                 }
 
-                return text;
-            }.bind(this, tooltip)
-        })
-        // values to be displayed in tooltip; don't show share % or children
-        .tooltip({ 'value': Object.keys(tooltip), 'share': false, 'children': false })
-        // color blocks from green to red, based on a particular column & range
-        .color(function(value, range, d) {
-            var color = d3.scale.linear()
-                .domain(range)
-                // green - yellow - red
-                .range(['#1F9B1F', '#F4BE00', '#F45800']);
-
-            /*
-             * value can be:
-             * * column name for value in d
-             * * callback function, accepting d, returning value
-             */
-            value = typeof(value) === 'function' ? value(d) : d[value];
-            return color(value)
-        }.bind(this, value, range));
+                return this.point.id + ":" + this.point.metric;
+            }
+        },
+        series: [{
+            type: 'treemap',
+            layoutAlgorithm: 'squarified',
+            data: this.transform(this.data, metric),
+            animation: false,
+            levels: [{
+                // namespace level
+                level: 1,
+                dataLabels: {
+                    enabled: false
+                },
+                borderWidth: 3,
+                borderColor: '#fff'
+            }, {
+                // class level
+                level: 2,
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        color: '#000'
+                    }
+                },
+                borderWidth: 1,
+                borderColor: '#fff'
+            }, {
+                // method level
+                level: 3,
+                dataLabels: {
+                    enabled: false
+                },
+                borderWidth: 1,
+                borderColor: '#888'
+            }],
+            alternateStartingDirection: true
+        }],
+        title: {
+            enabled: false,
+            text: false
+        }
+    };
 };
 
 /**
- * Id to use for d3plus.viz().id()
+ * Returns a data point's FQCN.
  *
- * @type {string[]}
+ * @param {object} data
+ * @param {int} depth
+ * @return {string}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.id = ['name'];
+Cauditor.Visualization.Treemap.Abstract.prototype.fqcn = function(data, depth) {
+    var fqcn = '';
+
+    if (depth === 0) {
+        // "project"
+        return '';
+    } else if (depth === 1) {
+        // namespace
+        fqcn = data.name;
+    } else if (depth === 2) {
+        // class
+        fqcn = data.parent + '\\' + data.name;
+    } else { // if (depth === 3)
+        // method
+        fqcn = data.parent + '::' + data.name;
+    }
+
+    return fqcn.replace(/^\+global\\?/, '');
+};
 
 /**
- * Column to base blocks' size on (d3plus.viz().size())
+ * Transforms data to the format understood by highcharts.
+ * This is not done in `filter`, because the result of that function is kept in memory,
+ * to be reused across multiple metrics charts.
+ * But we need to narrow it down even further and provide metrics-specific array of data.
  *
- * @type {string[]}
+ * @param {object} data
+ * @param {string} metric
+ * @return {object}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.size = 'loc';
+Cauditor.Visualization.Treemap.Abstract.prototype.transform = function(data, metric) {
+    var result = [], point;
+    // extract data for this specific metric
+    for (var i in data) {
+        point = {
+            id: data[i].fqcn,
+            name: data[i].name,
+            parent: data[i].parent,
+            value: data[i].loc,
+            metric: data[i][metric],
+            colorValue: data[i][metric]
+        };
+
+        /*
+         * Overriding value.
+         * Due to how instability is calculated (ce / (ce + ca)) it's pretty
+         * likely to light up red for small classes that have no ca and little
+         * ce. Instead of coloring based on the real instability value, I'll
+         * change the equation and add 1 to the divisor. For classes without ca,
+         * this can drop them significantly if they had little ce; if they have
+         * lots of ce and/or ca already, the effect will be minimal.
+         * The result of this operation will be that classes with a lot of
+         * coupling + instability will light up more than those with lots of
+         * instability due to no (or very little) ce.
+         */
+        if (metric === 'i') {
+            point.colorValue = data[i].ce / (data[i].ce + data[i].ca + 3);
+        }
+
+        result.push(point);
+    }
+
+    return result;
+};
 
 /**
- * Array of columns to include in tooltip
+ * In config, colors always range from good (green) to bad (red)
+ * good can sometimes be the highest possible number (e.g. maintenance index)
+ * and sometimes smallest (e.g. cyclomatic complexity)
+ * this swaps colors & calculates the percentage of where things should start
+ * to show up as yellow
  *
- * @type {Object} Object in { columnname: text } format
+ * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
+ * @return {array}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.tooltip = { 'loc': 'Lines of code' };
+Cauditor.Visualization.Treemap.Abstract.prototype.colors = function(range) {
+    var middle = (range[1] - Math.min(range[0], range[2])) / Math.abs(range[2] - range[0]);
+    if (range[0] < range[2]) {
+        return [[0, '#1F9B1F'], [middle, '#F4BE00'], [1, '#F45800']];
+    } else {
+        return [[0, '#F45800'], [middle, '#F4BE00'], [1, '#1F9B1F']];
+    }
+};
