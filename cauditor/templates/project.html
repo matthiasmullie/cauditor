@@ -5,17 +5,8 @@
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
-
-{# Elaborate workaround to only include unique files #}
-{% set files = [] %}
-{% for grouper, charts in charts|groupby('files') %}
-    {% for file in grouper %}
-        {% if file not in files %}
-            <script src="{{ file }}"></script>
-        {% endif %}
-    {% endfor %}
-    {% set files = files + grouper %}
-{% endfor %}
+<script src="/assets/js/visualizations/treemap/Method.js"></script>
+<script src="/assets/js/visualizations/treemap/Class.js"></script>
 
 {% include 'project_navbar.html' %}
 
@@ -89,13 +80,15 @@
                 var data = new Cauditor.Data(data),
                     visualization, chart;
 
-                {% for class, charts in charts|groupby('class') %}
-                    visualization = new {{ class }}(data);
+                {% for chart in charts %}
+                    {% if chart.basis == 'method' %}
+                        visualization = new Cauditor.Visualization.Treemap.Method(data),
+                    {% elif chart.basis == 'class' %}
+                        visualization = new Cauditor.Visualization.Treemap.Class(data),
+                    {% endif %}
                     chart = new Cauditor(visualization);
 
-                    {% for chart in charts %}
-                        chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
-                    {% endfor %}
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
                 {% endfor %}
             }
         });

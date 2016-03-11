@@ -5,9 +5,11 @@
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
-{% for file in chart.files %}
-    <script src="{{ file }}"></script>
-{% endfor %}
+{% if chart.basis == 'method' %}
+    <script src="/assets/js/visualizations/treemap/Method.js"></script>
+{% elif chart.basis == 'class' %}
+    <script src="/assets/js/visualizations/treemap/Class.js"></script>
+{% endif %}
 
 {% include 'project_navbar.html' %}
 
@@ -23,7 +25,11 @@
             datatype: 'json',
             success: function(data) {
                 var data = new Cauditor.Data(data),
-                    visualization = new {{ chart.class }}(data),
+                    {% if chart.basis == 'method' %}
+                        visualization = new Cauditor.Visualization.Treemap.Method(data),
+                    {% elif chart.basis == 'class' %}
+                        visualization = new Cauditor.Visualization.Treemap.Class(data),
+                    {% endif %}
                     chart = new Cauditor(visualization);
 
                 chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
