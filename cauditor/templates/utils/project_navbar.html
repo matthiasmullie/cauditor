@@ -22,8 +22,9 @@
                         <li><a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}"><i class="fa fa-plus"></i> Add repo</a></li>
                     {% endif %}
                 </ul>
+            </li>
 
-            {% if project and commits[0] %}
+            {% if project and commit %}
                 <li role="presentation" class="dropdown {% if template == 'project_all_metrics.html' or template == 'project_metrics.html' %}active{% endif %}">
                     {% if chart and template == 'project_metrics.html' %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-calculator"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
@@ -32,14 +33,14 @@
                     {% endif %}
 
                     <ul class="dropdown-menu" role="menu">
-                        {% if commit %}
+                        {% if route.commit %}
                             <li {% if template == 'project_all_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/metrics">Overview</a></li>
                         {% else %}
                             <li {% if template == 'project_all_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/metrics">Overview</a></li>
                         {% endif %}
 
                         {% for c in charts %}
-                            {% if commit %}
+                            {% if route.commit %}
                                 <li {% if chart and chart.code == c.code and template == 'project_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/{{ c.code }}">{{ c.name }}</a></li>
                             {% else %}
                                 <li {% if chart and chart.code == c.code and template == 'project_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.code }}">{{ c.name }}</a></li>

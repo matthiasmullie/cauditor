@@ -13,10 +13,9 @@
 
 {% include 'utils/project_navbar.html' %}
 
-{% if not commits %}
+{% if not commit %}
     {% include 'utils/commits_missing.html' %}
 {% else %}
-    {% if not commit %}{% set commit = commits[0] %}{% endif %}
     <div class="chart"></div>
 
     <script>

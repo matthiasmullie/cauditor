@@ -9,11 +9,9 @@
 
 {% include 'utils/project_navbar.html' %}
 
-{% if not commits %}
+{% if not commit %}
     {% include 'utils/commits_missing.html' %}
 {% else %}
-    {% if not commit %}{% set commit = commits[0] %}{% set no_commit = True %}{% endif %}
-
     <div class="container">
         <div class="row" style="padding: 0;">
             <div class="col-md-12 columns">
@@ -45,7 +43,7 @@
                 {% for chart in grouped_charts %}
                     <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
                         <h2><strong>{{ chart.name }}</strong></h2>
-                        <a href="/{{ project.name }}/{% if not no_commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
+                        <a href="/{{ project.name }}/{% if route.commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
                             <span class="chart"></span>
                         </a>
                     </div>

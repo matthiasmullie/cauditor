@@ -46,6 +46,7 @@ class Controller(object):
         args.update({
             'controller': self.__module__,
             'template': self.template,
+            'route': self.route,
             'user': self.user,
             'settings': self.settings,
             'repos': repos,
