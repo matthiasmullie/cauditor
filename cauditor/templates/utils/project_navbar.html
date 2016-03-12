@@ -1,0 +1,69 @@
+<div class="container">
+    <div class="row secondary-nav col-sm-12 col-md-7 col-md-offset-2">
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="dropdown {% if template == 'project.html' %}active{% endif %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i>
+                    {% if project %}{{ project.name }}{% else %}Select Repository{% endif %}
+                <i class="fa fa-angle-down"></i></a>
+
+                <ul class="dropdown-menu" role="menu">
+                    {% if user %}
+                        {# show list of user's own, imported repos #}
+                        {% if imported_repos %}
+                            {% for repo in imported_repos %}
+                                <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+
+                        {# show link to add more repos #}
+                        <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
+                    {% else %}
+                        {# show link to login #}
+                        <li><a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}"><i class="fa fa-plus"></i> Add repo</a></li>
+                    {% endif %}
+                </ul>
+
+            {% if project and commits[0] %}
+                <li role="presentation" class="dropdown {% if template == 'project_all_metrics.html' or template == 'project_metrics.html' %}active{% endif %}">
+                    {% if chart and template == 'project_metrics.html' %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-calculator"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
+                    {% else %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-calculator"></i> Metrics <i class="fa fa-angle-down"></i></a>
+                    {% endif %}
+
+                    <ul class="dropdown-menu" role="menu">
+                        {% if commit %}
+                            <li {% if template == 'project_all_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/metrics">Overview</a></li>
+                        {% else %}
+                            <li {% if template == 'project_all_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/metrics">Overview</a></li>
+                        {% endif %}
+
+                        {% for c in charts %}
+                            {% if commit %}
+                                <li {% if chart and chart.code == c.code and template == 'project_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ commit.hash }}/{{ c.code }}">{{ c.name }}</a></li>
+                            {% else %}
+                                <li {% if chart and chart.code == c.code and template == 'project_metrics.html' %}class="active"{% endif %}><a href="/{{ project.name }}/{{ c.code }}">{{ c.name }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li role="presentation" class="dropdown {% if template == 'project_all_progress.html' or template == 'project_progress.html' %}active{% endif %}">
+                    {% if chart and template == 'project_progress.html' %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
+                    {% else %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> Progress <i class="fa fa-angle-down"></i></a>
+                    {% endif %}
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li {% if template == 'project_all_progress.html' %}class="active"{% endif %}><a href="/{{ project.name }}/progress">Overview</a></li>
+
+                        {% for c in charts %}
+                            <li {% if chart and chart.code == c.code and template == 'project_progress.html' %}class="active"{% endif %}><a href="/{{ project.name }}/progress/{{ c.code }}">{{ c.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

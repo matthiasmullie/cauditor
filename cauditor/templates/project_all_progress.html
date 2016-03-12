@@ -1,0 +1,97 @@
+<script src="/assets/js/vendor/highcharts/highcharts.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/heatmap.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/treemap.js"></script>
+<script src="/assets/js/Cauditor.js"></script>
+<script src="/assets/js/visualizations/Data.js"></script>
+<script src="/assets/js/visualizations/Abstract.js"></script>
+<script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
+<script src="/assets/js/visualizations/lineplot/Progress.js"></script>
+
+{% include 'utils/project_navbar.html' %}
+
+{% if not commits %}
+    {% include 'utils/commits_missing.html' %}
+{% else %}
+    {% if not commit %}{% set commit = commits[0] %}{% set no_commit = True %}{% endif %}
+
+    <div class="container">
+        <div class="row" style="padding: 0;">
+            <div class="col-md-12 columns">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <i class="fa fa-info-circle"></i>
+                        Metric averages across the entire project, per commit. A trendline of your project's "health". <strong>Focus on spikes</strong>.
+
+                        {# This link will expand below panel-body (see JS later in this tpl) #}
+                        <a id="expand-panel">More&hellip;</a>
+                    </div>
+                    <div class="panel-body panel-more" style="display: none;">
+                        <p>
+                            The metrics are project-wide averages. In bigger projects, a single "bad" method or class could go almost unnoticed because it's too small to impacty the average.<br />
+                            It is custom for a project to steadily become more complex as it grows.
+                        </p>
+                        <p style="margin-bottom: 0;">
+                            Focus on sudden increases: a sudden increase can help surface the introduction of a problematic new architecture.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
+            <div class="row">
+                {% for chart in grouped_charts %}
+                    <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
+                        <h2><strong>{{ chart.name }}</strong></h2>
+                        <a href="/{{ project.name }}/{% if not no_commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
+                            <span class="chart"></span>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        var data = [], commit = {},
+            visualization, chart, total, average;
+
+        {#
+            Ridiculously convoluted way of preparing an array of commits from `all_commits`.
+            Need this because `all_commits` can't be rendered as a proper json object: some of
+            the values are "special" (like Decimal() or datetime.datetime)
+        #}
+        {%- for commit in all_commits -%}
+            commit = {
+                hash: '{{ commit.hash }}',
+                date: '{{ commit.timestamp.strftime('%Y-%m-%d') }}',
+                noc: '{{ commit.noc }}',
+                nom: '{{ commit.nom }}'
+            };
+            {%- for key, value in commit.items() -%}
+                {%- for chart in charts -%}
+                    {%- if key == chart.code -%}
+                        commit = $.extend(commit, { {{ key }}:{{ value }} });
+                    {%- endif -%}
+                {%- endfor -%}
+            {%- endfor -%}
+            data.push(commit);
+        {%- endfor -%}
+
+        data = new Cauditor.Data(data);
+        visualization = new Cauditor.Visualization.Lineplot.Progress(data);
+        chart = new Cauditor(visualization);
+
+        {% for chart in charts %}
+            chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+        {% endfor %}
+
+
+        $('#expand-panel').click(function() {
+            $(this).parent().hide().siblings('.panel-more').show();
+            $(this).hide();
+        });
+    </script>
+{% endif %}

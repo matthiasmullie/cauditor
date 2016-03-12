@@ -41,36 +41,20 @@
         </div>
     </div>
 
-    {% for chart in charts %}
-        <div class="chart-row">
-            <div class="container">
-                <div class="row">
-                    <div id="{{ chart.code }}" class="col-xs-12 col-md-8 columns">
+    <div class="container">
+        {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
+            <div class="row">
+                {% for chart in grouped_charts %}
+                    <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
                         <h2><strong>{{ chart.name }}</strong></h2>
                         <a href="/{{ project.name }}/{% if not no_commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
                             <span class="chart"></span>
                         </a>
                     </div>
-
-                    <div class="col-xs-12 col-md-4 columns">
-                        <h2>
-                            {#
-                                Don't keep repeating the title; only show it once & fill it with &nbsp; in other places
-                                (to push down real content below 'space reserved for title')
-                            #}
-                            {% if loop.first %}
-                                <strong>What</strong> is this?
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        </h2>
-
-                        {{ chart.description }}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
     <script>
         $.ajax({
@@ -88,7 +72,7 @@
                     {% endif %}
                     chart = new Cauditor(visualization);
 
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, false]);
                 {% endfor %}
             }
         });

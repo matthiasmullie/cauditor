@@ -1,6 +1,13 @@
 /* Navbar links shouldn't have a colored background */
-body ul.navbar-nav >li > a:hover {
+body ul.navbar-nav > li > a:hover {
     background-color: inherit !important;
+}
+
+/* Make it look as though navbar has a color (but it doesn't, not really) */
+.navbar-fixed-top {
+    /* Make navbar transparent */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: #ddd;
 }
 
 /* Change font size */
@@ -41,19 +48,26 @@ nav a {
 /* Pull secondary nav in between primary nav & make it look similar */
 .secondary-nav {
     z-index: 9999;
-    /* Content preserves 70px for main header & we want to keep 20px, so pull it up only 50px */
-    margin-top: -50px;
-    margin-bottom: 20px;
+    /* Content preserves 70px for main header & we want to keep 15px, so pull it up only 55px */
+    margin-top: -55px;
+    margin-bottom: 50px;
 
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 0 !important;
+
+}
+
+/* Justified will break off separate words & shorten the cell, but we don't want them to be split */
+.secondary-nav .nav-justified a {
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 /* Bigger "links" */
 .secondary-nav > ul > li > a {
-    line-height: 70px !important;
-    height: 70px !important;
+    line-height: 60px !important;
+    height: 60px !important;
     padding: 0;
 }
 .secondary-nav ul.dropdown-menu a {

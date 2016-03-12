@@ -1,6 +1,6 @@
 .chart {
     display: inline-block;
-    min-height: 400px;
+    min-height: 275px;
     height: 100%;
     width: calc(100% - 30px);
     margin: 0 15px;
@@ -9,4 +9,10 @@
 .row .chart {
     margin: 0;
     width: 100%;
+}
+
+/* highcharts already comes with a border; don't need any additional whitespace */
+body[data-template="project_all_metrics.html"] .row .columns,
+body[data-template="project_all_progress.html"] .row .columns {
+    padding: 0;
 }

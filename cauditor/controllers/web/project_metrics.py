@@ -2,7 +2,7 @@ from cauditor.controllers.web import project
 
 
 class Controller(project.Controller):
-    template = "chart.html"
+    template = "project_metrics.html"
     chart = None
 
     def __init__(self, route, cookies, session, container):

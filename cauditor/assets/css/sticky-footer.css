@@ -21,12 +21,14 @@ html, body {
  * I'd rather have the chart be slightly bigger and the footer be
  * just below the fold.
  */
-body[data-template="chart.html"] .content {
+body[data-template="project_metrics.html"] .content,
+body[data-template="project_progress.html"] .content {
     height: 100%;
 
     margin-bottom: 0;
 }
-body[data-template="chart.html"] .chart {
+body[data-template="project_metrics.html"] .chart,
+body[data-template="project_progress.html"] .chart {
     /* Subtract size of secondary nav: */
     /* 20px (margin-top) + 1px (border-top) + 70px (height) + 1px (border-bottom) + 20px (margin-bottom) */
     /* But.. we've already preserved space for main navbar: -70px */
