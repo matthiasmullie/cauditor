@@ -17,9 +17,13 @@ Cauditor.Visualization.Treemap.Abstract.prototype = Object.create(Cauditor.Visua
  *
  * @param {string} value Name of the metric column
  * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
+ * @param {bool} labels Whether or not to show class labels
  * @return {object}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range) {
+Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range, labels) {
+    // show class labels by default
+    labels = labels !== undefined ? labels : true;
+
     return {
         colorAxis: {
             min: Math.min(range[0], range[2]),
@@ -31,6 +35,10 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metri
             // I could do `enabled: false` instead, but that then seems to affect colors...
             x: 999999,
             y: 999999
+        },
+        title: {
+            enabled: false,
+            text: false
         },
         tooltip: {
             // tooltip shows "name: value" by default, but `value` (used for treemap sizing)
@@ -61,7 +69,7 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metri
                 // class level
                 level: 2,
                 dataLabels: {
-                    enabled: true,
+                    enabled: labels,
                     style: {
                         color: '#000'
                     }
@@ -78,11 +86,7 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metri
                 borderColor: '#888'
             }],
             alternateStartingDirection: true
-        }],
-        title: {
-            enabled: false,
-            text: false
-        }
+        }]
     };
 };
 
@@ -156,23 +160,4 @@ Cauditor.Visualization.Treemap.Abstract.prototype.transform = function(data, met
     }
 
     return result;
-};
-
-/**
- * In config, colors always range from good (green) to bad (red)
- * good can sometimes be the highest possible number (e.g. maintenance index)
- * and sometimes smallest (e.g. cyclomatic complexity)
- * this swaps colors & calculates the percentage of where things should start
- * to show up as yellow
- *
- * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
- * @return {array}
- */
-Cauditor.Visualization.Treemap.Abstract.prototype.colors = function(range) {
-    var middle = (range[1] - Math.min(range[0], range[2])) / Math.abs(range[2] - range[0]);
-    if (range[0] < range[2]) {
-        return [[0, '#1F9B1F'], [middle, '#F4BE00'], [1, '#F45800']];
-    } else {
-        return [[0, '#F45800'], [middle, '#F4BE00'], [1, '#1F9B1F']];
-    }
 };

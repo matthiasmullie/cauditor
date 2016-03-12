@@ -6,101 +6,84 @@ Cauditor.Visualization.Lineplot = Cauditor.Visualization.Lineplot || {};
  * @param {Cauditor.Data} data
  */
 Cauditor.Visualization.Lineplot.Abstract = function(data) {
-    this.bounds = [];
     Cauditor.Visualization.Abstract.apply(this, arguments);
-
-    this.config = {
-        type: 'line',
-        id: 'stub',
-        color: function() {
-            return '#79b31b';
-        },
-        x: 'date',
-        y: 'score',
-        aggs: { 'score': 'mean' },
-        time: { 'value': 'date' },
-        format: {
-            'number': function(number, key) {
-                return Math.round(number * 10000) / 10000;
-            }
-        }
-    };
 };
 Cauditor.Visualization.Lineplot.Abstract.prototype = Object.create(Cauditor.Visualization.Abstract.prototype);
 
 /**
- * d3plus visualization.
+ * highcharts visualization.
  *
- * @param {string|callback} value Name of the metric column
- * @return {d3plus.viz}
+ * @see http://api.highcharts.com/highcharts#plotOptions.line
+ *
+ * @param {string} value Name of the metric column
+ * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
+ * @return {object}
  */
-Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(value) {
-    return d3plus.viz()
-        .data(this.data[value])
-        .config(this.config);
+Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metric, range, basis) {
+    return {
+        legend: {
+            enabled: false
+        },
+        title: {
+            enabled: false,
+            text: false
+        },
+        xAxis: {
+            labels: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            title: {
+                enabled: false
+            }
+        },
+        tooltip: {
+            formatter: function () {
+                return 'Commit: ' + this.point.commit + '<br>' +
+                    'Date: ' + this.point.date + '<br>' +
+                    'Average: ' + this.point.avg + '<br>' +
+                    'Total: ' + this.point.total + '<br>';
+            }
+        },
+        series: [{
+            data: this.transform(this.data, metric, basis),
+            animation: false,
+            color: '#79b31b'
+        }]
+    };
 };
 
 /**
- * Transforms the data & removes the % outliers for all metrics.
+ * Transforms data to the format understood by highcharts.
+ * This is not done in `filter`, because the result of that function is kept in memory,
+ * to be reused across multiple metrics charts.
+ * But we need to narrow it down even further and provide metrics-specific array of data.
  *
  * @param {object} data
+ * @param {string} metric
  * @return {object}
  */
-Cauditor.Visualization.Abstract.prototype.filter = function(data) {
-    var total = data.length,
-        outliers = Math.round(data.length * 0.05),
-        result = [];
-
-    if (data.length === 0) {
-        return [];
-    }
-
-    // gather metrics (= all keys except for 'date')
-    metrics = {};
-    for (metric in data[0]) {
-        if (metric === 'date') {
-            continue;
-        }
-        metrics[metric] = metric;
-    }
-
-    // remove commits with 0 on all metrics; likely non-code related
-    // commits that shouldn't influence the results
-    for (i = 0; i < data.length; i++) {
-        empty = true;
-        for (metric in metrics) {
-            if (data[i][metric] !== 0) {
-                empty = false;
-                break;
-            }
+Cauditor.Visualization.Lineplot.Abstract.prototype.transform = function(data, metric, basis) {
+    var result = [], point, avg;
+    // extract data for this specific metric
+    for (var i in data) {
+        if (basis === 'method') {
+            avg = Math.round(data[i][metric] / Math.max(data[i].nom, 1) * 100) / 100;
+        } else if (basis === 'class') {
+            avg = Math.round(data[i][metric] / Math.max(data[i].noc, 1) * 100) / 100;
         }
 
-        if (empty) {
-            data.splice(i, 1);
-            i--;
-        }
-    }
+        point = {
+            x: parseInt(i),
+            y: avg,
+            commit: data[i].hash,
+            date: data[i].date,
+            avg: avg,
+            total: data[i][metric]
+        };
 
-    // split up per metric
-    for (metric in metrics) {
-        result[metric] = [];
-        for (i in data) {
-            result[metric].push({
-                'date': data[i]['date'],
-                'score': data[i][metric],
-                'stub': '' // need some non-unique value for .id()
-            });
-        }
-    }
-
-    for (metric in result) {
-        // sort based on metric score
-        result[metric].sort(function(a, b) {
-            return a.score > b.score ? 1 : -1;
-        });
-
-        // remove % outliers on both sides
-        result[metric] = result[metric].slice(outliers, -outliers);
+        result.push(point);
     }
 
     return result;
