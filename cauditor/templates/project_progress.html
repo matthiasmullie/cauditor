@@ -14,33 +14,18 @@
     <div class="chart"></div>
 
     <script>
-        var data = [], commit = {},
-            visualization, chart, total, average;
+        $.ajax({
+            url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
+            datatype: 'json',
+            success: function(data) {
+                var visualization, chart;
 
-        {#
-            Ridiculously convoluted way of preparing an array of commits from `all_commits`.
-            Need this because `all_commits` can't be rendered as a proper json object: some of
-            the values are "special" (like Decimal() or datetime.datetime)
-        #}
-        {%- for commit in all_commits -%}
-            commit = {
-                hash: '{{ commit.hash }}',
-                date: '{{ commit.timestamp.strftime('%Y-%m-%d') }}',
-                noc: '{{ commit.noc }}',
-                nom: '{{ commit.nom }}'
-            };
-            {%- for key, value in commit.items() -%}
-                {%- if key == chart.code -%}
-                    commit = $.extend(commit, { {{ key }}:{{ value }} });
-                {%- endif -%}
-            {%- endfor -%}
-            data.push(commit);
-        {%- endfor -%}
+                data = new Cauditor.Data(data);
+                visualization = new Cauditor.Visualization.Lineplot.Progress(data);
+                chart = new Cauditor(visualization);
 
-        data = new Cauditor.Data(data);
-        visualization = new Cauditor.Visualization.Lineplot.Progress(data);
-        chart = new Cauditor(visualization);
-
-        chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+                chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+            }
+        });
     </script>
 {% endif %}

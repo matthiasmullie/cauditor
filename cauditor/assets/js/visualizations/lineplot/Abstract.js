@@ -40,8 +40,9 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
         },
         tooltip: {
             formatter: function () {
+                date = new Date(this.point.date);
                 return 'Commit: ' + this.point.commit + '<br>' +
-                    'Date: ' + this.point.date + '<br>' +
+                    'Date: ' + date + '<br>' +
                     'Average: ' + this.point.avg + '<br>' +
                     'Total: ' + this.point.total + '<br>';
             }
@@ -78,7 +79,7 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.transform = function(data, me
             x: parseInt(i),
             y: avg,
             commit: data[i].hash,
-            date: data[i].date,
+            date: data[i].timestamp,
             avg: avg,
             total: data[i][metric]
         };

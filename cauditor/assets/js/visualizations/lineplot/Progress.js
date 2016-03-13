@@ -14,7 +14,7 @@ Cauditor.Visualization.Lineplot.Progress.prototype = Object.create(Cauditor.Visu
 Cauditor.Visualization.Lineplot.Progress.prototype.filter = function(data) {
     // sort on date: oldest first
     data.sort(function(a, b) {
-        return a.date > b.date ? 1 : -1;
+        return a.timestamp > b.timestamp ? 1 : -1;
     });
 
     return data;

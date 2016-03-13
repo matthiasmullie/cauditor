@@ -43,7 +43,7 @@
                 {% for chart in grouped_charts %}
                     <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
                         <h2><strong>{{ chart.name }}</strong></h2>
-                        <a href="/{{ project.name }}/{% if route.commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
+                        <a href="/{{ project.name }}/progress/{{ chart.code }}">
                             <span class="chart"></span>
                         </a>
                     </div>
@@ -53,38 +53,21 @@
     </div>
 
     <script>
-        var data = [], commit = {},
-            visualization, chart, total, average;
+        $.ajax({
+            url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
+            datatype: 'json',
+            success: function(data) {
+                var visualization, chart;
 
-        {#
-            Ridiculously convoluted way of preparing an array of commits from `all_commits`.
-            Need this because `all_commits` can't be rendered as a proper json object: some of
-            the values are "special" (like Decimal() or datetime.datetime)
-        #}
-        {%- for commit in all_commits -%}
-            commit = {
-                hash: '{{ commit.hash }}',
-                date: '{{ commit.timestamp.strftime('%Y-%m-%d') }}',
-                noc: '{{ commit.noc }}',
-                nom: '{{ commit.nom }}'
-            };
-            {%- for key, value in commit.items() -%}
-                {%- for chart in charts -%}
-                    {%- if key == chart.code -%}
-                        commit = $.extend(commit, { {{ key }}:{{ value }} });
-                    {%- endif -%}
-                {%- endfor -%}
-            {%- endfor -%}
-            data.push(commit);
-        {%- endfor -%}
+                data = new Cauditor.Data(data);
+                visualization = new Cauditor.Visualization.Lineplot.Progress(data);
+                chart = new Cauditor(visualization);
 
-        data = new Cauditor.Data(data);
-        visualization = new Cauditor.Visualization.Lineplot.Progress(data);
-        chart = new Cauditor(visualization);
-
-        {% for chart in charts %}
-            chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
-        {% endfor %}
+                {% for chart in charts %}
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+                {% endfor %}
+            }
+        });
 
 
         $('#expand-panel').click(function() {
