@@ -43,6 +43,7 @@ class Controller(fallback.Controller):
             return {
                 'name': self.route['project'],
                 'git': self.data['repo'],
+                'default_branch': self.data['default_branch'],
             }
 
     def get_commit(self):

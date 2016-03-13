@@ -60,6 +60,7 @@ class Controller(fallback.Controller):
             'name': repo.full_name,
             'url': repo.html_url,
             'git': repo.clone_url,
+            'default_branch': repo.default_branch,
             'private': repo.private,
             'language': repo.language,
             'fork': repo.fork,

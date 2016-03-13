@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `projects` (
   `name` varchar(255) NOT NULL, -- vendor/project
   `git` blob NOT NULL, -- clone url
+  `default_branch` varchar(255) NOT NULL,
   `github_id` INT UNSIGNED DEFAULT NULL, -- repo id
   `github_hook` INT UNSIGNED DEFAULT NULL, -- hook id
   PRIMARY KEY (`name`),

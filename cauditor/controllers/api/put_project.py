@@ -59,6 +59,7 @@ class Controller(fallback.Controller):
             project = {
                 'name': repo.full_name,
                 'git': repo.clone_url,
+                'default_branch': repo.default_branch,
                 'github_id': repo.id,
                 'github_hook': hook.id,
             }

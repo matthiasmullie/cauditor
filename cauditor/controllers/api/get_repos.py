@@ -41,6 +41,7 @@ class Controller(login.Controller):
         changed = [{
             'name': repo['name'],
             'git': repo['git'],
+            'default_branch': repo['default_branch'],
             'github_id': repo['id']
         } for repo in changed]
         if len(changed) > 0:
