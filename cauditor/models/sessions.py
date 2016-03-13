@@ -1,6 +1,7 @@
 from cauditor.models import model
 from datetime import datetime, timedelta
 from random import randint, getrandbits
+import dateutil.parser
 import json
 
 
@@ -65,6 +66,7 @@ class Model(model.DbManager):
         data = self.select(id=self.id)
         try:
             data = data[0]
+            data['touched'] = dateutil.parser.parse(data['touched'])
         except IndexError:
             # no existing session data
             self.data = {}

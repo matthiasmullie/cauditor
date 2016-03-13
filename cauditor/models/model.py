@@ -1,5 +1,6 @@
 import pymysql
-
+from decimal import Decimal
+from datetime import datetime
 
 class DbManager(object):
     table = ""
@@ -106,12 +107,25 @@ class Select(object):
         if self.cursor is None:
             self.__iter__()
 
-        result = self.cursor.fetchone()
-        if result is None:
+        row = self.cursor.fetchone()
+        if row is None:
             self.cursor.close()
             raise StopIteration
 
-        return self.bytes_to_string(result)
+        return self.normalize(row)
+
+    def normalize(self, row):
+        result = self.bytes_to_string(row)
+
+        # turn Decimal into float & datetime into ISO8901 string, so data can be json.dumps'ed
+        for i in result:
+            if isinstance(result[i], Decimal):
+                result[i] = float(result[i])
+
+            if isinstance(result[i], datetime):
+                result[i] = result[i].isoformat()
+
+        return result
 
     def __getitem__(self, index):
         """ Retrieve a specific item from the result list
