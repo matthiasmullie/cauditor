@@ -1,0 +1,159 @@
+<script src="/assets/js/vendor/highcharts/highcharts.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/heatmap.js"></script>
+<script src="/assets/js/vendor/highcharts/modules/treemap.js"></script>
+<script src="/assets/js/Cauditor.js"></script>
+<script src="/assets/js/visualizations/Data.js"></script>
+<script src="/assets/js/visualizations/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Method.js"></script>
+<script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
+<script src="/assets/js/visualizations/lineplot/Progress.js"></script>
+
+{% include 'utils/project_navbar.html' %}
+
+{% if not commit %}
+    {% include 'utils/commits_missing.html' %}
+{% else %}
+    <div class="container">
+        <div class="row" style="padding: 0;">
+            <div class="col-md-8 columns">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-1 text-center">
+
+                            </th>
+                            <th class="col-xs-2">
+                                Commit
+                            </th>
+                            <th class="col-xs-2">
+                                Branch
+                            </th>
+                            <th class="col-xs-3">
+                                Timestamp
+                            </th>
+                            <th class="col-xs-1">
+                            </th>
+                            <th class="col-xs-1">
+                                Average
+                            </th>
+                            <th class="col-xs-1">
+                            </th>
+                            <th class="col-xs-1">
+                                Worst
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commit in commits %}
+                            {% set score = commit|score %}
+                            {% set rank = score|rank %}
+                            {% if commit.previous in prev_commits %}
+                                {% set prev_score = prev_commits[commit.previous]|score %}
+                                {% set difference = score - prev_score %}
+                            {% else %}
+                                {% set prev_score = None %}
+                                {% set difference = 0 %}
+                            {% endif %}
+                            <tr>
+                                <td class="col-xs-1 text-center">
+                                    {% if prev_score %}
+                                        {% set difference = score - prev_score %}
+                                        {% if difference > 0 %}
+                                            <i class="fa fa-caret-up green"></i>
+                                        {% elif difference == 0 %}
+                                        {% else %}
+                                            <i class="fa fa-caret-down red"></i>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="col-xs-2">
+                                    <i class="fa fa-code"></i>
+                                    <strong>
+                                        <a href="/{{ project.name }}/{{ commit.hash }}/metrics">{{ commit.hash|truncate(7, True, "") }}</a><br />
+                                    </strong>
+                                </td>
+                                <td class="col-xs-2">
+                                    <i class="fa fa-code-fork"></i>
+                                    {{ commit.branch }}
+                                </td>
+                                <td class="col-xs-3">
+                                    {{ commit.timestamp|datetime }}
+                                </td>
+                                <td class="col-xs-1">
+                                </td>
+                                <td class="col-xs-1">
+                                    {{ commit.avg_mi }}
+                                </td>
+                                <td class="col-xs-1">
+                                </td>
+                                <td class="col-xs-1">
+                                    {{ commit.worst_mi }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-4 columns">
+                {% set rank = project.score|rank %}
+                <div class="score">
+                    {# Show arrow to indicate how good/bad this score is! #}
+                    <div class="range-arrow" style="top: {{ rank|int }}%">&blacktriangleleft;</div>
+
+                    <p class="rank">
+                        <span>
+                            <strong>{{ rank|int }}</strong>%
+                        </span>
+                        of analyzed projects score worse than this!
+                    </p>
+                </div>
+
+                <a href="/{{ project.name }}/metrics" class="metrics">
+                    <span class="chart"></span>
+                </a>
+
+                <a href="/{{ project.name }}/progress" class="progress">
+                    <span class="chart"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $.ajax({
+            url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
+            datatype: 'json',
+            success: function(data) {
+                var data = new Cauditor.Data(data),
+                    visualization = new Cauditor.Visualization.Treemap.Method(data),
+                    chart = new Cauditor(visualization);
+
+                {% for chart in charts %}
+                    {% if chart.code == 'mi' %}
+                        chart.draw('.metrics .chart', ['{{ chart.code }}', {{ chart.range }}, false]);
+                    {% endif %}
+                {% endfor %}
+            }
+        });
+
+        $.ajax({
+            url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
+            datatype: 'json',
+            success: function(data) {
+                var data = new Cauditor.Data(data),
+                    visualization = new Cauditor.Visualization.Lineplot.Progress(data),
+                    chart = new Cauditor(visualization);
+
+                {% for chart in charts %}
+                    {% if chart.code == 'mi' %}
+                        chart.draw('.progress .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+                    {% endif %}
+                {% endfor %}
+
+                // @todo: keep track of original `data`, so we van load more commits in left column!
+            }
+        });
+    </script>
+{% endif %}

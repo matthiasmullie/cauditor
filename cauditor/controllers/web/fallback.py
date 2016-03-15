@@ -1,5 +1,6 @@
 from cauditor import models
 from jinja2 import Environment, FileSystemLoader
+import dateutil.parser
 import http.cookies
 import os
 
@@ -14,6 +15,7 @@ class Controller(object):
     cookie_set = http.cookies.SimpleCookie()
     user = None
     settings = None
+    template_env = None
 
     def __init__(self, route, cookies, session, container):
         self.route = route
@@ -31,6 +33,10 @@ class Controller(object):
             model = models.settings.Model(self.container.mysql)
             settings = model.select(user=self.user['id'])
             self.settings = {entry['key']: entry['value'] for entry in settings}
+
+        path = os.path.dirname(os.path.abspath(__file__)) + "/../../templates/"
+        self.template_env = Environment(loader=FileSystemLoader(path))
+        self.template_env.filters['datetime'] = self.datetime
 
     def args(self):
         args = self.container.config
@@ -58,11 +64,13 @@ class Controller(object):
         return [('Content-Type', "text/html; charset=UTF-8")]
 
     def render(self, template="container.html"):
-        path = os.path.dirname(os.path.abspath(__file__)) + "/../../templates/"
-        env = Environment(loader=FileSystemLoader(path))
-        template = env.get_template(template)
+        template = self.template_env.get_template(template)
         args = self.args()
         return template.render(args)
+
+    def datetime(self, value):
+        date = dateutil.parser.parse(value)
+        return str(date)
 
     def cookie(self, key, value=None, expire=None):
         if value is not None:

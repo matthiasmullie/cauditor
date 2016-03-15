@@ -68,3 +68,34 @@ html, body {
 a .title {
     font-weight: bold;
 }
+
+/* Project maintenance score */
+.score {
+    position: relative;
+    margin: 12px;
+
+    height: 140px;
+    background: url(../img/range.png) no-repeat left center;
+    background-size: 20px 100%;
+
+    text-align: center;
+}
+.score .range-arrow {
+    position: absolute;
+    padding-left: 15px;
+    line-height: 50px;
+    font-size: 50px;
+    margin-top: -25px;
+}
+.score .rank {
+    padding-left: 40px;
+}
+.score .rank span {
+    display: block;
+    font-size: 75px;
+    line-height: 75px;
+}
+.score .rank strong {
+    font-size: 110px;
+    line-height: 110px;
+}

@@ -40,3 +40,13 @@ a:hover {
 .logo-strip img:hover {
     background: #f3f3f3;
 }
+
+.green {
+    color: #79b31b;
+}
+.yellow {
+    color: #f4be00;
+}
+.red {
+    color: #f45800;
+}

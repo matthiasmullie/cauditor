@@ -3,7 +3,7 @@ from cauditor import models
 
 
 class Controller(fallback.Controller):
-    template = "project.html"
+    template = ""
     project = None
     commit = None
 
