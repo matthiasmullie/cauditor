@@ -18,13 +18,11 @@
             url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
             datatype: 'json',
             success: function(data) {
-                var visualization, chart;
+                var data = new Cauditor.Data(data),
+                    visualization = new Cauditor.Visualization.Lineplot.Progress(data),
+                    chart = new Cauditor(visualization);
 
-                data = new Cauditor.Data(data);
-                visualization = new Cauditor.Visualization.Lineplot.Progress(data);
-                chart = new Cauditor(visualization);
-
-                chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+                chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
             }
         });
     </script>

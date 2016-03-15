@@ -18,18 +18,19 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <i class="fa fa-info-circle"></i>
-                        Metric averages across the entire project, per commit. A trendline of your project's "health". <strong>Focus on spikes</strong>.
+                        Red = worst method/class, Green = average. A trendline of your project's "health". <strong>Focus on spikes</strong>.
 
                         {# This link will expand below panel-body (see JS later in this tpl) #}
                         <a id="expand-panel">More&hellip;</a>
                     </div>
                     <div class="panel-body panel-more" style="display: none;">
                         <p>
-                            The metrics are project-wide averages. In bigger projects, a single "bad" method or class could go almost unnoticed because it's too small to impacty the average.<br />
+                            Average & worst metrics for your entire project, per commit.<br />
+                            In bigger projects, a few single "bad" methods or classes could go almost unnoticed because they're too small to impact the average.<br />
                             It is custom for a project to steadily become more complex as it grows.
                         </p>
                         <p style="margin-bottom: 0;">
-                            Focus on sudden increases: a sudden increase can help surface the introduction of a problematic new architecture.
+                            Focus on sudden increases: a sudden spike can help surface the introduction of a problematic new architecture.
                         </p>
                     </div>
                 </div>
@@ -57,14 +58,12 @@
             url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
             datatype: 'json',
             success: function(data) {
-                var visualization, chart;
-
-                data = new Cauditor.Data(data);
-                visualization = new Cauditor.Visualization.Lineplot.Progress(data);
-                chart = new Cauditor(visualization);
+                var data = new Cauditor.Data(data),
+                    visualization = new Cauditor.Visualization.Lineplot.Progress(data),
+                    chart = new Cauditor(visualization);
 
                 {% for chart in charts %}
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
+                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
                 {% endfor %}
             }
         });

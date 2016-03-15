@@ -19,7 +19,9 @@ Cauditor.Visualization.Lineplot.Abstract.prototype = Object.create(Cauditor.Visu
  * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
  * @return {object}
  */
-Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metric, range, basis) {
+Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metric, range) {
+    var data = this.transform(this.data, metric);
+
     return {
         legend: {
             enabled: false
@@ -42,15 +44,19 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
             formatter: function () {
                 date = new Date(this.point.date);
                 return 'Commit: ' + this.point.commit + '<br>' +
-                    'Date: ' + date + '<br>' +
+                    'Date: ' + this.point.date + '<br>' +
                     'Average: ' + this.point.avg + '<br>' +
-                    'Total: ' + this.point.total + '<br>';
+                    'Worst: ' + this.point.worst + '<br>';
             }
         },
         series: [{
-            data: this.transform(this.data, metric, basis),
+            data: data.avg,
             animation: false,
             color: '#79b31b'
+        }, {
+            data: data.worst,
+            animation: false,
+            color: '#f45800'
         }]
     };
 };
@@ -65,26 +71,31 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
  * @param {string} metric
  * @return {object}
  */
-Cauditor.Visualization.Lineplot.Abstract.prototype.transform = function(data, metric, basis) {
-    var result = [], point, avg;
+Cauditor.Visualization.Lineplot.Abstract.prototype.transform = function(data, metric) {
+    var result = {avg: [], worst: []}, point, avg;
+
     // extract data for this specific metric
     for (var i in data) {
-        if (basis === 'method') {
-            avg = Math.round(data[i][metric] / Math.max(data[i].nom, 1) * 100) / 100;
-        } else if (basis === 'class') {
-            avg = Math.round(data[i][metric] / Math.max(data[i].noc, 1) * 100) / 100;
-        }
-
-        point = {
+        avg = {
             x: parseInt(i),
-            y: avg,
+            y: data[i]['avg_' + metric],
             commit: data[i].hash,
             date: data[i].timestamp,
-            avg: avg,
-            total: data[i][metric]
+            avg: data[i]['avg_' + metric],
+            worst: data[i]['worst_' + metric]
         };
 
-        result.push(point);
+        worst = {
+            x: parseInt(i),
+            y: data[i]['worst_' + metric],
+            commit: data[i].hash,
+            date: data[i].timestamp,
+            avg: data[i]['avg_' + metric],
+            worst: data[i]['worst_' + metric]
+        };
+
+        result.avg.push(avg);
+        result.worst.push(worst);
     }
 
     return result;
