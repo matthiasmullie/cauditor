@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `default_branch` varchar(255) NOT NULL,
   `github_id` INT UNSIGNED DEFAULT NULL, -- repo id
   `github_hook` INT UNSIGNED DEFAULT NULL, -- hook id
+  `score` decimal(11, 2) NOT NULL, -- score, for comparison with other projects
   PRIMARY KEY (`name`),
   UNIQUE KEY `idx_git` (`github_id`)
 ) DEFAULT CHARSET=utf8;
@@ -25,15 +26,26 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
   `loc` INT UNSIGNED NOT NULL,
   `noc` INT UNSIGNED NOT NULL,
   `nom` INT UNSIGNED NOT NULL,
-  `ca` INT UNSIGNED NOT NULL,
-  `ce` INT UNSIGNED NOT NULL,
-  `i` decimal(11, 2) NOT NULL,
-  `dit` INT UNSIGNED NOT NULL,
-  `ccn` INT UNSIGNED NOT NULL,
-  `npath` BIGINT UNSIGNED NOT NULL,
-  `he` decimal(11, 2) NOT NULL,
-  `hi` decimal(11, 2) NOT NULL,
-  `mi` decimal(11, 2) NOT NULL,
+  -- project-wide averages as of this commit
+  `avg_ca` INT UNSIGNED NOT NULL,
+  `avg_ce` INT UNSIGNED NOT NULL,
+  `avg_i` decimal(11, 2) NOT NULL,
+  `avg_dit` INT UNSIGNED NOT NULL,
+  `avg_ccn` INT UNSIGNED NOT NULL,
+  `avg_npath` BIGINT UNSIGNED NOT NULL,
+  `avg_he` decimal(11, 2) NOT NULL,
+  `avg_hi` decimal(11, 2) NOT NULL,
+  `avg_mi` decimal(11, 2) NOT NULL,
+  -- project-wide worsts as of this commit
+  `worst_ca` INT UNSIGNED NOT NULL,
+  `worst_ce` INT UNSIGNED NOT NULL,
+  `worst_i` decimal(11, 2) NOT NULL,
+  `worst_dit` INT UNSIGNED NOT NULL,
+  `worst_ccn` INT UNSIGNED NOT NULL,
+  `worst_npath` BIGINT UNSIGNED NOT NULL,
+  `worst_he` decimal(11, 2) NOT NULL,
+  `worst_hi` decimal(11, 2) NOT NULL,
+  `worst_mi` decimal(11, 2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique` (`author`,`timestamp`,`hash`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

@@ -2,6 +2,7 @@ from cauditor.controllers.api import fallback
 from cauditor import models
 from cauditor import listeners
 import dateutil.parser
+import dateutil.tz
 import json
 
 
@@ -19,7 +20,15 @@ class Controller(fallback.Controller):
             project = self.get_project()
             commit = self.get_commit()
 
-            listeners.execute(self.container, project, commit, self.data['metrics'])
+            listeners.execute(
+                self.container,
+                project,
+                commit,
+                self.data['metrics'],
+                self.data['avg'],
+                self.data['min'],
+                self.data['max'],
+            )
         except Exception as exception:
             self.status = "401 Unauthorized"
             self.exception = exception
@@ -43,7 +52,7 @@ class Controller(fallback.Controller):
             return {
                 'name': self.route['project'],
                 'git': self.data['repo'],
-                'default_branch': self.data['default_branch'],
+                'default_branch': self.data['default-branch'],
             }
 
     def get_commit(self):
