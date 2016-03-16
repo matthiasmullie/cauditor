@@ -47,7 +47,6 @@
                     <tbody>
                         {% for commit in commits %}
                             {% set score = commit|score %}
-                            {% set rank = score|rank %}
                             {% if commit.previous in prev_commits %}
                                 {% set prev_score = prev_commits[commit.previous]|score %}
                                 {% set difference = score - prev_score %}

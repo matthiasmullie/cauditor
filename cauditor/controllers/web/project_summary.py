@@ -6,8 +6,6 @@ class Controller(project.Controller):
     template = "project_summary.html"
     commits = {}
     prev_commits = {}
-    rank = 100
-    scores = []
 
     def __init__(self, route, cookies, session, container):
         super(Controller, self).__init__(route, cookies, session, container)
@@ -15,13 +13,8 @@ class Controller(project.Controller):
         self.commits = self.load_commits(self.route['project'], 30)
         self.prev_commits = {commit['hash']: commit for commit in self.load_prev_commits(self.commits)}
 
-        model = models.projects.Model(self.container.mysql)
-        projects = model.select(options=['ORDER BY score DESC'])
-        for project in projects:
-            self.scores.append(project['score'])
-
         self.template_env.filters['score'] = self.get_score
-        self.template_env.filters['rank'] = self.get_rank
+        self.template_env.filters['rank'] = self.get_rank()
 
     def args(self):
         args = super(Controller, self).args()
@@ -47,13 +40,22 @@ class Controller(project.Controller):
     def get_score(self, commit):
         return round((2 * commit['worst_mi'] + commit['avg_mi']) / 3, 2)
 
-    def get_rank(self, score):
-        better = 0
-        for i in self.scores:
-            if i > score:
-                better += 1
-            else:
-                break
+    def get_rank(self):
+        scores = []
+        model = models.projects.Model(self.container.mysql)
+        projects = model.select(options=['ORDER BY score DESC'])
+        for project in projects:
+            scores.append(project['score'])
 
-        # calculate the amount of projects that score worst than this score
-        return 100 * (1 - better / len(self.scores) or 1)
+        def rank_calculator(score):
+            better = 0
+            for i in scores:
+                if i > score:
+                    better += 1
+                else:
+                    break
+
+            # calculate the amount of projects that score worst than this score
+            return 100 * (1 - better / len(scores) or 1)\
+
+        return rank_calculator
