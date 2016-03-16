@@ -22,14 +22,18 @@
         $.ajax({
             url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
             datatype: 'json',
+            jsonp: false,
+            cache: true,
             success: function(data) {
-                var data = new Cauditor.Data(data),
-                    {% if chart.basis == 'method' %}
-                        visualization = new Cauditor.Visualization.Treemap.Method(data),
-                    {% elif chart.basis == 'class' %}
-                        visualization = new Cauditor.Visualization.Treemap.Class(data),
-                    {% endif %}
-                    chart = new Cauditor(visualization);
+                data = new Cauditor.Data(data);
+                var visualization, chart;
+
+                {% if chart.basis == 'method' %}
+                    visualization = new Cauditor.Visualization.Treemap.Method(data);
+                {% elif chart.basis == 'class' %}
+                    visualization = new Cauditor.Visualization.Treemap.Class(data);
+                {% endif %}
+                chart = new Cauditor(visualization);
 
                 chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
             }

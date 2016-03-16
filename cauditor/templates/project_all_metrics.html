@@ -58,9 +58,11 @@
         $.ajax({
             url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
             datatype: 'json',
+            jsonp: false,
+            cache: true,
             success: function(data) {
-                var data = new Cauditor.Data(data),
-                    visualization, chart;
+                data = new Cauditor.Data(data);
+                var visualization, chart;
 
                 {% for chart in charts %}
                     {% if chart.basis == 'method' %}

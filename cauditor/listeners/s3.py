@@ -13,8 +13,9 @@ def execute(config, project, commit, metrics):
     path = config['data']['filename'].format(project=project['name'], hash=commit['hash'])
 
     client.put_object(
+        ContentType="application/json",
         Body=json.dumps(metrics),
         Key=path,
-        ACL='public-read',
+        ACL="public-read",
         Bucket=config['s3']['bucket'],
     )
