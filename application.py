@@ -14,9 +14,14 @@ from cauditor.container import Container
 
 
 def application(environ, start_response):
-    # path_info for wsgi, request_uri for cgi
-    uri = environ['PATH_INFO'] if 'PATH_INFO' in environ else environ['REQUEST_URI']
     container = Container(environ)
+
+    # path_info for wsgi, request_uri for cgi
+    if 'PATH_INFO' in environ:
+        uri = environ['PATH_INFO']
+        uri = uri + '?' + environ['QUERY_STRING'] if 'QUERY_STRING' in environ else uri
+    else:
+        uri = environ['REQUEST_URI']
 
     try:
         # load existing cookies

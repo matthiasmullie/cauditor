@@ -60,9 +60,9 @@ class Controller(fallback.Controller):
             'name': repo.full_name,
             'url': repo.html_url,
             'git': repo.clone_url,
-            'default_branch': repo.default_branch,
             'private': repo.private,
             'language': repo.language,
+            'stargazers_count': repo.stargazers_count,
             'fork': repo.fork,
             'forks_count': repo.forks_count,
             # 'subscribers_count': repo.subscribers_count,  # doesn't yet exist in this version of pygithub
