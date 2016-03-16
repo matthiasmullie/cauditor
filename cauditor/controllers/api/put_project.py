@@ -5,7 +5,6 @@ import json
 
 
 class Controller(fallback.Controller):
-    template = ""
     project = {}
 
     def headers(self):

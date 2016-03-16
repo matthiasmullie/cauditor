@@ -4,8 +4,6 @@ import json
 
 
 class Controller(fallback.Controller):
-    template = ""
-
     def headers(self):
         if 'id' in self.user:
             model = models.settings.Model(self.container.mysql)

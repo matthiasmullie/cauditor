@@ -7,7 +7,6 @@ import json
 
 
 class Controller(fallback.Controller):
-    template = ""
     exception = ""
 
     def headers(self):

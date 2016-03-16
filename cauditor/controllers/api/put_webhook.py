@@ -4,8 +4,6 @@ from cauditor import jobs
 
 
 class Controller(fallback.Controller):
-    template = ""
-
     # hook is triggered for these events:
     # https://developer.github.com/v3/activity/events/types/#pushevent
     # https://developer.github.com/v3/activity/events/types/#pullrequestevent

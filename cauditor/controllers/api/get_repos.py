@@ -3,8 +3,6 @@ import json
 
 
 class Controller(login.Controller):
-    template = ""
-
     def headers(self):
         headers = [('Content-Type', "application/json; charset=UTF-8")]
 

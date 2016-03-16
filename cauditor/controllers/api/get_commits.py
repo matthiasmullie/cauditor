@@ -4,8 +4,6 @@ import json
 
 
 class Controller(fallback.Controller):
-    template = ""
-
     def render(self, template="container.html"):
         return json.dumps(self.get_commits())
 
