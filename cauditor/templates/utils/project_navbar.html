@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row secondary-nav col-sm-12 col-md-7 col-md-offset-2">
         <ul class="nav nav-pills nav-justified">
-            <li role="presentation" class="dropdown {% if template == 'project.html' %}active{% endif %}">
+            <li role="presentation" class="dropdown {% if template == 'project_summary.html' %}active{% endif %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-code-fork"></i>
                     {% if project %}{{ project.name }}{% else %}Select Repository{% endif %}
                 <i class="fa fa-angle-down"></i></a>
@@ -9,15 +9,25 @@
                 <ul class="dropdown-menu" role="menu">
                     {% if user %}
                         {# show list of user's own, imported repos #}
+                        {% set repo_included = False %}
                         {% if imported_repos %}
                             {% for repo in imported_repos %}
+                                {% if project and repo.name == project.name %}
+                                    {% set repo_included = True %}
+                                {% endif %}
                                 <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
                             {% endfor %}
                         {% endif %}
 
+                        {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
+                        {% if not repo_included %}<li class="active"><a href="/{{ commit.project }}">{{ commit.project }}</a></li>{% endif %}
+
                         {# show link to add more repos #}
                         <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
                     {% else %}
+                        {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
+                        {% if project %}<li class="active"><a href="/{{ commit.project }}">{{ commit.project }}</a></li>{% endif %}
+
                         {# show link to login #}
                         <li><a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}"><i class="fa fa-plus"></i> Add repo</a></li>
                     {% endif %}
