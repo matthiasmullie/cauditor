@@ -52,10 +52,12 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
         series: [{
             data: data.avg,
             animation: false,
+            turboThreshold: 0,
             color: '#79b31b'
         }, {
             data: data.worst,
             animation: false,
+            turboThreshold: 0,
             color: '#f45800'
         }]
     };

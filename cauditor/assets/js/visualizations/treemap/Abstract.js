@@ -57,6 +57,7 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metri
             layoutAlgorithm: 'squarified',
             data: this.transform(this.data, metric),
             animation: false,
+            turboThreshold: 0,
             levels: [{
                 // namespace level
                 level: 1,
