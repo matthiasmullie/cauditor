@@ -16,11 +16,7 @@ class Controller(fallback.Controller):
             self.status = "400 Bad Request"
             return super(Controller, self).headers()
 
-        try:
-            self.project = self.process(self.data["repo"], self.data["action"])
-        except Exception:
-            self.status = "401 Unauthorized"
-            return super(Controller, self).headers()
+        self.project = self.process(self.data["repo"], self.data["action"])
 
         if self.data["action"] == "link":
             # create importer jobs
