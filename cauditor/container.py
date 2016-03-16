@@ -57,7 +57,7 @@ class Container:
             login_or_token=token,
             client_id=config['id'],
             client_secret=config['secret'],
-            timeout=1,
+            timeout=10,
             user_agent='cauditor.org',
             per_page=999
         )
