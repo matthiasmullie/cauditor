@@ -39,16 +39,9 @@ def route(uri, cookies, session, container):
     # sort routes based on match length (the more of a url matches, the better)
     # pick the first route (there'll always be at least 1, the fallback (404))
     matched_controllers = sorted(matched_controllers.items(), key=lambda controller: controller[1].end(0), reverse=True)
-    exceptions = []
-    for i in range(0, len(matched_controllers)):
-        # init controller with named args as provided by the route regex
-        (module_name, match) = matched_controllers[i]
-        module = importlib.import_module(module_name)
 
-        try:
-            return module.Controller(match.groupdict(), cookies, session, container)
-        except Exception as exception:
-            exceptions.append(exception)
-            # controller failed to init - try next!
+    # init controller with named args as provided by the route regex
+    (module_name, match) = matched_controllers[0]
+    module = importlib.import_module(module_name)
 
-    raise Exception("No available route for uri: " + uri + '. ' + str(exceptions))
+    return module.Controller(match.groupdict(), cookies, session, container)
