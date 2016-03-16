@@ -6,23 +6,30 @@ class Controller(fallback.Controller):
     template = ""
     project = None
     commit = None
+    fail = False
 
     def __init__(self, route, cookies, session, container):
         super(Controller, self).__init__(route, cookies, session, container)
 
-        self.project = self.load_project(self.route['project'])
-        if 'commit' in self.route and self.route['commit']:
-            self.commit = self.load_commit(self.route['project'], self.route['commit'])
-        else:
-            self.commit = self.load_last_commit(self.route['project'])
+        try:
+            self.project = self.load_project(self.route['project'])
+            if 'commit' in self.route and self.route['commit']:
+                self.commit = self.load_commit(self.route['project'], self.route['commit'])
+            else:
+                self.commit = self.load_last_commit(self.route['project'])
+        except Exception:
+            self.fail = True
+            self.status = "404 Not Found"
+            self.template = "404.html"
 
     def args(self):
         args = super(Controller, self).args()
-        args.update({
-            'project': self.project,
-            'commit': self.commit,
-            'title': self.project['name']
-        })
+        if not self.fail:
+            args.update({
+                'project': self.project,
+                'commit': self.commit,
+                'title': self.project['name']
+            })
         return args
 
     def load_project(self, name):
