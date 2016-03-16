@@ -8,19 +8,18 @@
 
                 <ul class="dropdown-menu" role="menu">
                     {% if user %}
+                        {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
+                        {% set project_names = imported_repos|map(attribute='name')|list %}
+                        {% if project.name not in project_names %}
+                            <li class="active"><a href="/{{ commit.project }}">{{ commit.project }}</a></li>
+                        {% endif %}
+
                         {# show list of user's own, imported repos #}
-                        {% set repo_included = False %}
                         {% if imported_repos %}
                             {% for repo in imported_repos %}
-                                {% if project and repo.name == project.name %}
-                                    {% set repo_included = True %}
-                                {% endif %}
                                 <li {% if project and repo.name == project.name %}class="active"{% endif %}><a href="/{{ repo.name }}">{{ repo.name }}</a></li>
                             {% endfor %}
                         {% endif %}
-
-                        {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
-                        {% if not repo_included %}<li class="active"><a href="/{{ commit.project }}">{{ commit.project }}</a></li>{% endif %}
 
                         {# show link to add more repos #}
                         <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
