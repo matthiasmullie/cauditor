@@ -91,11 +91,19 @@
                             </tr>
 
                             {% if loop.last %}
-                                <tr>
-                                    <td colspan="8" class="col-xs-12 text-center load-more">
-                                        <a href="#">Load more</a>
-                                    </td>
-                                </tr>
+                                {% if commit.previous %}
+                                    <tr>
+                                        <td colspan="8" class="col-xs-12 text-center load-more">
+                                            <a href="#">Load more</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="8" class="col-xs-12 text-center">
+                                            Commit history is incomplete. Missing commits should be imported soon!
+                                        </td>
+                                    </tr>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </tbody>
@@ -202,7 +210,18 @@
                         }
                     }
 
-                    // if we make it here, we've rendered all of the commits...
+                    // if we make it here, there are no commits left - let's check if this is actually the first commit!
+                    if (!commits[commits.length - 1].previous) {
+                        $(element).closest('tr').before('\
+                            <tr>\
+                                <td colspan="8" class="col-xs-12 text-center">\
+                                    Commit history is incomplete. Missing commits should be imported soon!\
+                                </td>\
+                            </tr>\
+                        ');
+                    }
+
+                    // no more commits left; get rid of "load more" link
                     $(element).closest('tr').remove();
                 });
         });
