@@ -89,6 +89,14 @@
                                     {{ commit.worst_mi }}
                                 </td>
                             </tr>
+
+                            {% if loop.last %}
+                                <tr>
+                                    <td colspan="8" class="col-xs-12 text-center load-more">
+                                        <a href="#">Load more</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -120,6 +128,10 @@
     </div>
 
     <script>
+        var hashes = [
+            {% for commit in commits %}"{{ commit.hash }}"{% if not loop.last %},{% endif %}{% endfor %}
+        ], batch = 15, promise;
+
         $.ajax({
             url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
             datatype: 'json',
@@ -136,7 +148,7 @@
             }
         });
 
-        $.ajax({
+        promise = $.ajax({
             url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
             datatype: 'json',
             success: function(data) {
@@ -149,9 +161,94 @@
                         chart.draw('.progress .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
                     {% endif %}
                 {% endfor %}
-
-                // @todo: keep track of original `data`, so we van load more commits in left column!
             }
         });
+
+        $('.load-more a').click(function(e) {
+            var element = this;
+
+            e.preventDefault();
+
+            // we've started fetching this data on pageload already (for some chart), but
+            // it may not yet be available, so indicate that we're actually doing something!
+            $(this).after(' <i class="fa fa-spinner fa-spin"></i>');
+
+            promise
+                .always(function() {
+                    // success or failure, get rid of that spinner!
+                    $(element).next('.fa-spinner').remove();
+                })
+                .done(function(commits) {
+                    var count = 0;
+
+                    // sort on date: newest first
+                    commits.sort(function(a, b) {
+                        return a.timestamp < b.timestamp ? 1 : -1;
+                    });
+
+                    for (i in commits) {
+                        if (hashes.indexOf(commits[i].hash) < 0) {
+                            hashes.push(commits[i].hash);
+
+                            append.call(
+                                $(element).closest('tr').get(0),
+                                commits[i],
+                                commits[parseInt(i) + 1] || {}
+                            );
+
+                            if (++count >= batch) {
+                                return;
+                            }
+                        }
+                    }
+
+                    // if we make it here, we've rendered all of the commits...
+                    $(element).closest('tr').remove();
+                });
+        });
+
+        function append(commit, prev) {
+            var indicator = '', score, prev_score;
+            if (prev) {
+                score = (commit.avg_mi + 2 * commit.worst_mi) / 3;
+                prev_score = (prev.avg_mi + 2 * prev.worst_mi) / 3;
+                if (score > prev_score) {
+                    indicator = '<i class="fa fa-caret-up green"></i>';
+                } else if (score < prev_score) {
+                    indicator = '<i class="fa fa-caret-down red"></i>';
+                }
+            }
+
+            $(this).before('\
+                <tr>\
+                    <td class="col-xs-1 text-center">\
+                        ' + indicator + '\
+                    </td>\
+                    <td class="col-xs-2">\
+                        <i class="fa fa-code"></i>\
+                        <strong>\
+                            <a href="/' + commit.project + '/' + commit.hash + '/metrics">' + commit.hash.substr(0, 7) + '</a><br />\
+                        </strong>\
+                    </td>\
+                    <td class="col-xs-2">\
+                        <i class="fa fa-code-fork"></i>\
+                        ' + commit.branch + '\
+                    </td>\
+                    <td class="col-xs-3">\
+                        ' + commit.timestamp.replace('T', ' ') + '\
+                    </td>\
+                    <td class="col-xs-1">\
+                    </td>\
+                    <td class="col-xs-1">\
+                        ' + commit.avg_mi + '\
+                    </td>\
+                    <td class="col-xs-1">\
+                    </td>\
+                    <td class="col-xs-1">\
+                        ' + commit.worst_mi + '\
+                    </td>\
+                </tr>\
+            ');
+        }
     </script>
 {% endif %}
