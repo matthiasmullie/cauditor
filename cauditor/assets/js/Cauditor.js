@@ -1,4 +1,4 @@
-// vendor/highcharts/highcharts.js must be loaded before this file
+// vendor/d3.min.js & vendor/d3plus.min.js must be loaded before this file
 
 /**
  * @param {Cauditor.Visualization.Abstract} visualization
@@ -15,5 +15,8 @@ var Cauditor = function(visualization) {
  */
 Cauditor.prototype.draw = function(selector, args) {
     var config = this.visualization.visualization.apply(this.visualization, args);
-    $(selector).highcharts(config);
+    d3plus.viz()
+        .container(selector)
+        .config(config)
+        .draw();
 };

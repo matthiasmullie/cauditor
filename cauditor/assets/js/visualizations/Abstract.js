@@ -20,7 +20,7 @@ Cauditor.Visualization.Abstract.prototype.filter = function(data) {
 };
 
 /**
- * highcharts config.
+ * d3plus config.
  *
  * @return {object}
  */

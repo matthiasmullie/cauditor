@@ -11,83 +11,78 @@ Cauditor.Visualization.Treemap.Abstract = function(data) {
 Cauditor.Visualization.Treemap.Abstract.prototype = Object.create(Cauditor.Visualization.Abstract.prototype);
 
 /**
- * highcharts visualization.
- *
- * @see http://api.highcharts.com/highcharts#plotOptions.treemap
+ * d3plus config.
  *
  * @param {string} value Name of the metric column
  * @param {array} range Array with 3 values: good, medium & bad threshold values [g, y, r]
- * @param {bool} labels Whether or not to show class labels
  * @return {object}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range, labels) {
-    // show class labels by default
-    labels = labels !== undefined ? labels : true;
-
+Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range) {
     return {
-        colorAxis: {
-            min: Math.min(range[0], range[2]),
-            max: Math.max(range[0], range[2]),
-            stops: this.colors(range)
-        },
-        legend: {
-            // get legend out of here!
-            // I could do `enabled: false` instead, but that then seems to affect colors...
-            x: 999999,
-            y: 999999
-        },
-        title: {
-            enabled: false,
-            text: false
-        },
-        tooltip: {
-            // tooltip shows "name: value" by default, but `value` (used for treemap sizing)
-            // is LOC; instead, I want the metric (used for colors) to show
-            formatter: function () {
-                if (this.point.metric === undefined) {
-                    // don't show if data is invalid (e.g. when hovering class name)
-                    return false;
-                }
-
-                return this.point.id + ":" + this.point.metric;
+        type: 'tree_map',
+        data: this.data,
+        // nesting package > class > method
+        id: this.id,
+        // set column to calculate size of blocks for
+        // don't group really small blocks into an 'other' block
+        size: { threshold : false, value: 'loc' },
+        // show full depth (0 = package level; 1 = class)
+        depth: this.id.length,
+        // don't show a legend of the colors; that'd be pretty useless since
+        // our weighed value isn't the actual value anymore
+        legend: false,
+        // don't show any labels; fqcn are too long for those tiny blocks
+        labels: false,
+        // can't zoom in, everything's shown on deepest level already
+        zoom: false,
+        // title of tooltip = fully qualified class name
+        text: {
+            value: function(data, key) {
+                return data.fqcn + ': ' + data[metric];
             }
         },
-        series: [{
-            type: 'treemap',
-            layoutAlgorithm: 'squarified',
-            data: this.transform(this.data, metric),
-            animation: false,
-            turboThreshold: 0,
-            levels: [{
-                // namespace level
-                level: 1,
-                dataLabels: {
-                    enabled: false
-                },
-                borderWidth: 3,
-                borderColor: '#fff'
-            }, {
-                // class level
-                level: 2,
-                dataLabels: {
-                    enabled: labels,
-                    style: {
-                        color: '#000'
-                    }
-                },
-                borderWidth: 1,
-                borderColor: '#fff'
-            }, {
-                // method level
-                level: 3,
-                dataLabels: {
-                    enabled: false
-                },
-                borderWidth: 1,
-                borderColor: '#888'
-            }],
-            alternateStartingDirection: true
-        }]
+        // values to be displayed in tooltip; don't show share % or children etc
+        tooltip: {
+            size: false,
+            share: false,
+            children: false,
+            // whatever size is required to fit the text in
+            small: '100%'
+        },
+        // d3plus capitalizes (and lowercases rest of the string) by default; I
+        // want the text to display as-is
+        format: {
+            text: function(text, key) {
+                return text;
+            }
+        },
+        // color blocks from green to red, based on a particular column & range
+        color: function(metric, range, data) {
+            var color = d3.scale.linear()
+                .domain(range)
+                // green - yellow - red
+                .range(['#1F9B1F', '#F4BE00', '#F45800']);
+
+            value = data[metric];
+
+            /*
+             * Overriding value.
+             * Due to how instability is calculated (ce / (ce + ca)) it's pretty
+             * likely to light up red for small classes that have no ca and little
+             * ce. Instead of coloring based on the real instability value, I'll
+             * change the equation and add 1 to the divisor. For classes without ca,
+             * this can drop them significantly if they had little ce; if they have
+             * lots of ce and/or ca already, the effect will be minimal.
+             * The result of this operation will be that classes with a lot of
+             * coupling + instability will light up more than those with lots of
+             * instability due to no (or very little) ce.
+             */
+            if (metric === 'i') {
+                value = data.ce / (data.ce + data.ca + 3);
+            }
+
+            return color(value);
+        }.bind(this, metric, range)
     };
 };
 
@@ -95,70 +90,31 @@ Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metri
  * Returns a data point's FQCN.
  *
  * @param {object} data
- * @param {int} depth
  * @return {string}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.fqcn = function(data, depth) {
+Cauditor.Visualization.Treemap.Abstract.prototype.fqcn = function(data) {
     var fqcn = '';
 
-    if (depth === 0) {
-        // "project"
-        return '';
-    } else if (depth === 1) {
+    if (data.ccn !== undefined) {
+        // method
+        fqcn = data.package + '\\' + data.class + '::' + data.name;
+    } else if (data.ca !== undefined) {
+        // class
+        fqcn = data.package + '\\' + data.name;
+    } else if (data.noc === undefined) {
         // namespace
         fqcn = data.name;
-    } else if (depth === 2) {
-        // class
-        fqcn = data.parent + '\\' + data.name;
-    } else { // if (depth === 3)
-        // method
-        fqcn = data.parent + '::' + data.name;
+    } else {
+        // "project"
+        return '';
     }
 
     return fqcn.replace(/^\+global\\?/, '');
 };
 
 /**
- * Transforms data to the format understood by highcharts.
- * This is not done in `filter`, because the result of that function is kept in memory,
- * to be reused across multiple metrics charts.
- * But we need to narrow it down even further and provide metrics-specific array of data.
+ * Id to use for d3plus.viz().id()
  *
- * @param {object} data
- * @param {string} metric
- * @return {object}
+ * @type {string[]}
  */
-Cauditor.Visualization.Treemap.Abstract.prototype.transform = function(data, metric) {
-    var result = [], point;
-    // extract data for this specific metric
-    for (var i in data) {
-        point = {
-            id: data[i].fqcn,
-            name: data[i].name,
-            parent: data[i].parent,
-            value: data[i].loc,
-            metric: data[i][metric],
-            colorValue: data[i][metric]
-        };
-
-        /*
-         * Overriding value.
-         * Due to how instability is calculated (ce / (ce + ca)) it's pretty
-         * likely to light up red for small classes that have no ca and little
-         * ce. Instead of coloring based on the real instability value, I'll
-         * change the equation and add 1 to the divisor. For classes without ca,
-         * this can drop them significantly if they had little ce; if they have
-         * lots of ce and/or ca already, the effect will be minimal.
-         * The result of this operation will be that classes with a lot of
-         * coupling + instability will light up more than those with lots of
-         * instability due to no (or very little) ce.
-         */
-        if (metric === 'i') {
-            point.colorValue = data[i].ce / (data[i].ce + data[i].ca + 3);
-        }
-
-        result.push(point);
-    }
-
-    return result;
-};
+Cauditor.Visualization.Treemap.Abstract.prototype.id = ['name'];
