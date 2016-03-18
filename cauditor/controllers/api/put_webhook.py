@@ -15,7 +15,7 @@ class Controller(fallback.Controller):
         if 'ref' not in self.data:
             return
 
-        branch = self.data['ref'].replace("refs/heads/")
+        branch = self.data['ref'].replace("refs/heads/", '')
 
         # import these specific commits
         # don't deliver message immediately; wait a couple of minutes and hope CI is running analyzer!
