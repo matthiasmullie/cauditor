@@ -6,11 +6,12 @@ class Controller(project.Controller):
     template = "project_summary.html"
     commits = {}
     prev_commits = {}
+    batch_size = 30
 
     def __init__(self, route, cookies, session, container):
         super(Controller, self).__init__(route, cookies, session, container)
 
-        self.commits = self.load_commits(self.route['project'], 30)
+        self.commits = self.load_commits(self.route['project'], self.batch_size)
         self.prev_commits = {commit['hash']: commit for commit in self.load_prev_commits(self.commits)}
 
         self.template_env.filters['score'] = self.get_score
@@ -21,6 +22,7 @@ class Controller(project.Controller):
         args.update({
             'commits': self.commits,
             'prev_commits': self.prev_commits,
+            'batch_size': self.batch_size,
         })
         return args
 
