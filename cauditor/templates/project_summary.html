@@ -6,7 +6,7 @@
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
-<script src="/assets/js/visualizations/lineplot/Progress.js"></script>
+<script src="/assets/js/visualizations/lineplot/Project.js"></script>
 
 {% include 'utils/project_navbar.html' %}
 
@@ -161,7 +161,7 @@
             datatype: 'json',
             success: function(data) {
                 var data = new Cauditor.Data(data),
-                    visualization = new Cauditor.Visualization.Lineplot.Progress(data),
+                    visualization = new Cauditor.Visualization.Lineplot.Project(data),
                     chart = new Cauditor(visualization);
 
                 {% for chart in charts %}

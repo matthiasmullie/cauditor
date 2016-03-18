@@ -5,17 +5,19 @@ import json
 
 class Controller(fallback.Controller):
     def headers(self):
-        if 'id' in self.user:
-            model = models.settings.Model(self.container.mysql)
-            for key in self.data:
-                model.store({
-                    'user': self.user['id'],
-                    'key': key,
-                    'value': self.data[key],
-                })
-        else:
+        if 'id' not in self.user:
             # not logged in
             self.status = "401 Unauthorized"
+
+            return super(Controller, self).headers()
+
+        model = models.settings.Model(self.container.mysql)
+        for key in self.data:
+            model.store({
+                'user': self.user['id'],
+                'key': key,
+                'value': self.data[key],
+            })
 
         return super(Controller, self).headers()
 

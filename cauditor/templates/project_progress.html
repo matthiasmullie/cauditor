@@ -4,7 +4,7 @@
 <script src="/assets/js/visualizations/Data.js"></script>
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
-<script src="/assets/js/visualizations/lineplot/Progress.js"></script>
+<script src="/assets/js/visualizations/lineplot/Project.js"></script>
 
 {% include 'utils/project_navbar.html' %}
 
@@ -19,7 +19,7 @@
             datatype: 'json',
             success: function(data) {
                 var data = new Cauditor.Data(data),
-                    visualization = new Cauditor.Visualization.Lineplot.Progress(data),
+                    visualization = new Cauditor.Visualization.Lineplot.Project(data),
                     chart = new Cauditor(visualization);
 
                 chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);

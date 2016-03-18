@@ -22,23 +22,6 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
         type: 'line',
         data: this.data,
         id: 'id',
-        x: {
-            value: function(data, key) {
-                // with a value of 0, the chart fails to render
-                // starting from 1, the x-axis is very irregular...
-                return data.count + 100;
-            },
-            grid: false,
-            label: false
-        },
-        y: function(data, key) {
-            // we'll have 2 lines, with id "avg" & "worst", where we want to show
-            // respectively "avg_..." and "worst_..." data from
-            var prefix = data.id;
-
-            // with a value of 0, the chart fails to render
-            return data[prefix+'_'+metric] || .00001;
-        },
         // color blocks from green to red, based on a particular column & range
         color: 'color',
         // don't show a legend of the colors
@@ -48,13 +31,6 @@ Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metr
             value: function(data, key) {
                 return data.hash;
             }
-        },
-        // values to be displayed in tooltip; don't show share % or children etc
-        tooltip: {
-            size: false,
-            value: ['timestamp', 'avg_'+metric, 'worst_'+metric],
-            // whatever size is required to fit the text in
-            small: '100%'
         },
         format: {
             // d3plus capitalizes (and lowercases rest of the string) by default; I

@@ -1,0 +1,109 @@
+{% include 'utils/user_navbar.html' %}
+
+<div class="container">
+    {% if not user %}
+        <div class="row">
+            <div class="col-xs-12 columns">
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-exclamation-circle"></i>
+                    You are not currently logged in. Please <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="alert-link">authenticate via GitHub</a>.
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% if not settings.emails %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 columns">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-exclamation-circle"></i>
+                            Couldn't find any commits for {{ user.name }}. Please <a href="/user#details" class="alert-link">fill out your git author email addresses</a> to locate your commits.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <script src="/assets/js/vendor/d3.min.js"></script>
+            <script src="/assets/js/vendor/d3plus.min.js"></script>
+            <script src="/assets/js/Cauditor.js"></script>
+            <script src="/assets/js/visualizations/Data.js"></script>
+            <script src="/assets/js/visualizations/Abstract.js"></script>
+            <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
+            <script src="/assets/js/visualizations/lineplot/User.js"></script>
+
+            {# Prepare error msg for when we can't find relevant commits; then all we have to do is unhide this #}
+            <div class="container no-commits" style="display: none">
+                <div class="row">
+                    <div class="col-xs-12 columns">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-exclamation-circle"></i>
+                            Couldn't find any commits for {{ settings.emails }}. <a href="/user#repos" class="alert-link">Add some of your work</a> or <a href="/user#details" class="alert-link">complete your author email addresses</a>. If projects were recently added, they may still be importing.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
+                    <div class="row">
+                        {% for chart in grouped_charts %}
+                            <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
+                                <h2><strong>{{ chart.name }}</strong></h2>
+                                <span class="chart"></span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <script>
+                    $.ajax({
+                        url: '/api/user/diffs',
+                        datatype: 'json',
+                        success: function(json) {
+                            if (!json) {
+                                $('.no-commits').show();
+                            } else {
+                                var data = new Cauditor.Data(json),
+                                    visualization = new Cauditor.Visualization.Lineplot.User(data),
+                                    chart = new Cauditor(visualization),
+                                    metrics = {}, include, median;
+
+                                {% for chart in charts %}
+                                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
+                                {% endfor %}
+
+                                // loop all commits, figure out which we want to include & add their relevant values to `metrics`
+                                for (i in json) {
+                                    include = false;
+                                    // we only want to include commits where at least 1 metric was affected; otherwise they likely weren't code changes
+                                    {% for chart in charts %}
+                                        include = include || json[i].{{ chart.code }} !== 0;
+                                    {% endfor %}
+
+                                    if (include) {
+                                        {% for chart in charts %}
+                                            metrics.{{ chart.code }} = metrics.{{ chart.code }} || [];
+                                            metrics.{{ chart.code }}.push(json[i].{{ chart.code }});
+                                        {% endfor %}
+                                    }
+                                }
+
+                                // now that we have values for all metrics, fetch the median value & add to title
+                                for (metric in metrics) {
+                                    // sort on metric scores, so we can easily grab median
+                                    metrics[metric].sort(function(a, b) {
+                                        return a[metric] > b[metric] ? 1 : -1;
+                                    });
+
+                                    median = metrics[metric][Math.floor(metrics[metric].length / 2)];
+                                    median = Math.round(median * 10000) / 10000;
+                                    $('#' + metric + ' h2').append(': <span style="text-transform: none">' + median + ' median</span>');
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

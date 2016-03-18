@@ -63,23 +63,7 @@ body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > li > a:not(:h
     background-position: center bottom;
 }
 
-.home-project,
-.home-personal {
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-}
-.home-project {
-    background-image: url('../img/project.png');
-    background-position: left center;
-}
-.home-personal {
-    background-image: url('../img/personal.png');
-    background-position: right center;
-}
-.home-project div,
-.home-personal div {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+.features img {
+    width: 100%;
+    height: 200px;
 }
