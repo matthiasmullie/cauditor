@@ -149,7 +149,14 @@ class Select(object):
         """
         # build `WHERE `key` IN (%s) AND `key2` IN (%s, %s)` clause
         kwargs = {key: value if isinstance(value, list) else [value] for key, value in kwargs.items()}
-        where = ["`" + key + "` IN (" + ", ".join((["%s"] * len(values))) + ")" for key, values in kwargs.items()]
+        where = []
+        for key, values in kwargs.items():
+            # special case: WHERE `key` IS NULL
+            if len(values) == 1 and values[0] is None:
+                where.append("`" + key + "` IS NULL")
+                kwargs[key] = {}
+            else:
+                where.append("`" + key + "` IN (" + ", ".join((["%s"] * len(values))) + ")")
 
         self.__where = "WHERE " + " AND ".join(where) if where else ""
         self.__params = [param for params in kwargs.values() for param in params]
