@@ -51,6 +51,7 @@ def store_commit(connection, commit, metrics, avg, min, max):
         'loc': metrics['loc'] or 0 if 'loc' in metrics else 0,
         'noc': metrics['noc'] or 0 if 'noc' in metrics else 0,
         'nom': metrics['nom'] or 0 if 'nom' in metrics else 0,
+        'nof': metrics['nof'] or 0 if 'nof' in metrics else 0,
 
         # averages
         'avg_ca': avg['ca'] or 0 if 'ca' in avg else 0,

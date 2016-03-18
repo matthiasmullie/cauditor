@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
   `loc` INT UNSIGNED NOT NULL,
   `noc` INT UNSIGNED NOT NULL,
   `nom` INT UNSIGNED NOT NULL,
+  `nof` INT UNSIGNED NOT NULL,
   -- project-wide averages as of this commit
   `avg_ca` INT UNSIGNED NOT NULL,
   `avg_ce` INT UNSIGNED NOT NULL,

@@ -63,10 +63,11 @@ class Controller(fallback.Controller):
             # if we multiply the average metric score with the amount of methods or
             # classes, we'll get the project-wide total metric value, which we can
             # then compare to the previous commit to see the actual change
-            multiplier = 'nom' if chart['basis'] == 'method' else 'noc'
+            multiplier = commit['nom'] + commit['nof'] if chart['basis'] == 'method' else commit['noc']
+            prev_multiplier = prev_commit['nom'] + prev_commit['nof'] if chart['basis'] == 'method' else prev_commit['noc']
 
-            cur = commit['avg_'+chart['code']] * commit[multiplier]
-            prev = prev_commit['avg_'+chart['code']] * prev_commit[multiplier]
+            cur = commit['avg_'+chart['code']] * multiplier
+            prev = prev_commit['avg_'+chart['code']] * prev_multiplier
             data[chart['code']] = cur - prev
 
         return data
