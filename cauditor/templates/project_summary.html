@@ -179,12 +179,20 @@
                     $(element).next('.fa-spinner').remove();
                 })
                 .done(function(commits) {
-                    var count = 0;
+                    var count = 0, map = {};
 
                     // sort on date: newest first
                     commits.sort(function(a, b) {
                         return a.timestamp < b.timestamp ? 1 : -1;
                     });
+
+                    // the next commit (datewise) may not actually be the next one;
+                    // our timestamp is author timestamp
+                    // we'll want to find the real previous commit (for which we have
+                    // the hash), so having a map to locate it will be useful
+                    for (i in commits) {
+                        map[commits[i].hash] = commits[i];
+                    }
 
                     for (i in commits) {
                         if (hashes.indexOf(commits[i].hash) < 0) {
@@ -193,7 +201,7 @@
                             append.call(
                                 $(element).closest('tr').get(0),
                                 commits[i],
-                                commits[parseInt(i) + 1] || {}
+                                map[commits[i].previous] || {}
                             );
 
                             if (++count >= batch) {
