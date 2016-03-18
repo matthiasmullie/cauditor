@@ -45,22 +45,14 @@
                     </thead>
                     <tbody>
                         {% for commit in commits %}
-                            {% set score = commit|score %}
-                            {% if commit.previous in prev_commits %}
-                                {% set prev_score = prev_commits[commit.previous]|score %}
-                                {% set difference = score - prev_score %}
-                            {% else %}
-                                {% set prev_score = None %}
-                                {% set difference = 0 %}
-                            {% endif %}
                             <tr>
                                 <td class="col-xs-1 text-center">
-                                    {% if prev_score %}
-                                        {% set difference = score - prev_score %}
-                                        {% if difference > 0 %}
+                                    {% if commit.previous in prev_commits %}
+                                        {% set score = commit|score %}
+                                        {% set prev_score = prev_commits[commit.previous]|score %}
+                                        {% if score > prev_score %}
                                             <i class="fa fa-caret-up green"></i>
-                                        {% elif difference == 0 %}
-                                        {% else %}
+                                        {% elif score < prev_score %}
                                             <i class="fa fa-caret-down red"></i>
                                         {% endif %}
                                     {% endif %}
