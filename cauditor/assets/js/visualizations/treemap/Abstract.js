@@ -96,8 +96,13 @@ Cauditor.Visualization.Treemap.Abstract.prototype.fqcn = function(data) {
     var fqcn = '';
 
     if (data.ccn !== undefined) {
-        // method
-        fqcn = data.package + '\\' + data.class + '::' + data.name;
+        if (data.class) {
+            // method
+            fqcn = data.package + '\\' + data.class + '::' + data.name;
+        } else {
+            // function
+            fqcn = data.package + '\\' + data.name;
+        }
     } else if (data.ca !== undefined) {
         // class
         fqcn = data.package + '\\' + data.name;
