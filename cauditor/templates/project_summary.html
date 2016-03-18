@@ -120,7 +120,7 @@
                         <span>
                             <strong>{{ rank|int }}</strong>%
                         </span>
-                        of analyzed projects score worse than this!
+                        of analyzed projects are more complex!
                     </p>
                 </div>
 
@@ -229,8 +229,8 @@
         function append(commit, prev) {
             var indicator = '', score, prev_score;
             if (prev) {
-                score = (commit.avg_mi + 2 * commit.worst_mi) / 3;
-                prev_score = (prev.avg_mi + 2 * prev.worst_mi) / 3;
+                score = (commit.worst_mi + commit.avg_mi) / 2;
+                prev_score = (prev.worst_mi + prev.avg_mi) / 2;
                 if (score > prev_score) {
                     indicator = '<i class="fa fa-caret-up green"></i>';
                 } else if (score < prev_score) {

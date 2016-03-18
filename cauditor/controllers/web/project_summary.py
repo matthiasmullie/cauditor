@@ -40,7 +40,7 @@ class Controller(project.Controller):
         return model.select(project=commits[0]['project'], hash=hashes)
 
     def get_score(self, commit):
-        return round((2 * commit['worst_mi'] + commit['avg_mi']) / 3, 2)
+        return round((commit['worst_mi'] + commit['avg_mi']) / 2, 2)
 
     def get_rank(self):
         scores = []

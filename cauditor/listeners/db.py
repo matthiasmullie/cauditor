@@ -35,10 +35,9 @@ def store_project(connection, project, commit, avg, min, max):
     if add_score:
         project.update({
             # score is based on maintenance index:
-            # * 1/3rd the project average
-            # * 2/3rd the worst in the project (because 1 horrible
-            #   function can have a big impact on a project)
-            'score': round((2 * min['mi'] + avg['mi']) / 3, 2) or 0 if 'mi' in avg else 0
+            # * half the project average
+            # * half the worst in the project
+            'score': round((min['mi'] + avg['mi']) / 2, 2) or 0 if 'mi' in avg else 0
         })
 
     projects = models.projects.Model(connection)
