@@ -22,7 +22,7 @@
                         {% endif %}
 
                         {# show link to add more repos #}
-                        <li><a href="/user#repos"><i class="fa fa-plus"></i> Add repo</a></li>
+                        <li><a href="/user"><i class="fa fa-plus"></i> Add repo</a></li>
                     {% else %}
                         {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
                         {% if project %}<li class="active"><a href="/{{ commit.project }}">{{ commit.project }}</a></li>{% endif %}

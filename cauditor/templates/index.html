@@ -15,7 +15,7 @@
                 {% elif imported_repos %}
                     {% set random_repo = imported_repos|random %}
                     {% set messages = [
-                        'Want to analyze <strong><a href="/user#repos">another repo</a></strong>?',
+                        'Want to analyze <strong><a href="/user">another repo</a></strong>?',
                         'How have <strong><a href="/user/progress">you been doing</a></strong> lately?',
                         "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
                         "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
@@ -23,7 +23,7 @@
                     ] %}
                     Welcome back, {{ user.name }}! {{ messages|random }}
                 {% else %}
-                    Welcome back, {{ user.name }}! How about we analyze <strong><a href="/user#repos">one of your repos</a></strong>?
+                    Welcome back, {{ user.name }}! How about we analyze <strong><a href="/user">one of your repos</a></strong>?
                 {% endif %}
             </div>
         </div>
