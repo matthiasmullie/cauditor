@@ -24,7 +24,7 @@ class Controller(fallback.Controller):
             'git': self.data['repository']['clone_url'],
             'branch': branch,
             'commits': ','.join([commit['id'] for commit in self.data['commits']]),
-        }, 0)
+        }, 300)
 
         # next (only if we're on default branch), check if the commit before this push is known already,
         # otherwise we should also queue up a full analyze
