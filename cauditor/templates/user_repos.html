@@ -12,12 +12,10 @@
         </div>
     </div>
 {% else %}
-    <div class="container">
-        <script src="/assets/js/vendor/bootstrap-tagsinput.min.js"></script>
-        <script src="/assets/js/vendor/bootstrap-switch.min.js"></script>
-        <link rel="stylesheet" href="/assets/css/vendor/bootstrap-tagsinput.css">
-        <link rel="stylesheet" href="/assets/css/vendor/bootstrap-switch.min.css">
+    <script src="/assets/js/vendor/bootstrap-switch.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/vendor/bootstrap-switch.min.css">
 
+    <div class="container">
         {% set project_names = imported_repos|map(attribute='name')|list %}
         {% set vendor = '' %}
 
