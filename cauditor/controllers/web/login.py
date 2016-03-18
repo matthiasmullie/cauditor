@@ -50,6 +50,7 @@ class Controller(fallback.Controller):
         return {
             'id': user.id,
             'email': user.email,
+            'username': user.login,
             'name': user.name,
             'avatar': user.avatar_url,
         }
@@ -62,7 +63,6 @@ class Controller(fallback.Controller):
             'git': repo.clone_url,
             'private': repo.private,
             'language': repo.language,
-            'stargazers_count': repo.stargazers_count,
             'fork': repo.fork,
             'forks_count': repo.forks_count,
             # 'subscribers_count': repo.subscribers_count,  # doesn't yet exist in this version of pygithub
