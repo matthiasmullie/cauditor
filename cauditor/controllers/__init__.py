@@ -16,6 +16,7 @@ routes = {
     "^/user$": 'cauditor.controllers.web.user_repos',  # matches /user
     "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
     "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
+    "^/user/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
 
     # api
     "^/api": 'cauditor.controllers.api.fallback',  # matches /api*; 404 fallback for every request in /api

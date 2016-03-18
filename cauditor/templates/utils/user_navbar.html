@@ -4,7 +4,22 @@
         <ul class="nav nav-pills nav-justified">
             <li role="presentation" {% if template == 'user_repos.html' %}class="active"{% endif %}><a href="/user"><i class="fa fa-code-fork"></i> Repositories</a></li>
             <li role="presentation" {% if template == 'user_settings.html' %}class="active"{% endif %}><a href="/user/settings"><i class="fa fa-cogs"></i> Details</a></li>
-            <li role="presentation" {% if template == 'user_all_progress.html' %}class="active"{% endif %}><a href="/user/progress"><i class="fa fa-line-chart"></i> Progress</a></li>
+
+            <li role="presentation" class="dropdown {% if template == 'user_all_progress.html' or template == 'user_progress.html' %}active{% endif %}">
+                {% if chart and template == 'user_progress.html' %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> {{ chart.name }} <i class="fa fa-angle-down"></i></a>
+                {% else %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-line-chart"></i> Progress <i class="fa fa-angle-down"></i></a>
+                {% endif %}
+
+                <ul class="dropdown-menu" role="menu">
+                    <li {% if template == 'user_all_progress.html' %}class="active"{% endif %}><a href="/user/progress">Overview</a></li>
+
+                    {% for c in charts %}
+                        <li {% if chart and chart.code == c.code and template == 'user_progress.html' %}class="active"{% endif %}><a href="/user/progress/{{ c.code }}">{{ c.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
         </ul>
     </div>
 </div>
