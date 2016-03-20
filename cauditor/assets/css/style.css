@@ -56,9 +56,8 @@ a .title {
 /* Project maintenance score */
 .score {
     position: relative;
-    margin: 12px;
 
-    height: 140px;
+    height: 225px;
     background: url(../img/range.png) no-repeat left center;
     background-size: 20px 100%;
 
@@ -73,13 +72,31 @@ a .title {
 }
 .score .rank {
     padding-left: 40px;
+    height: 225px;
+    padding: 30px 0 40px 40px;
 }
 .score .rank span {
     display: block;
     font-size: 75px;
     line-height: 75px;
+    padding-bottom: 15px;
 }
 .score .rank strong {
     font-size: 110px;
     line-height: 110px;
+}
+
+.arrow {
+    opacity: .3;
+}
+.summary_chart .arrow {
+    float: right;
+    margin: 5px;
+    font-size: 50px;
+    line-height: 50px;
+}
+.summary_commits .arrow {
+    text-align: center;
+    font-size: 50px;
+    line-height: 30px;
 }
