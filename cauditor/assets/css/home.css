@@ -11,8 +11,8 @@ body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > li > a:not(:h
 
 .hero {
     position: relative;
-    height: 700px;
-    padding-top: 225px;
+    height: 600px;
+    padding-top: 175px;
 
     /* Pull back to top, under navbar */
     margin-top: -70px;
@@ -61,6 +61,29 @@ body[data-template="index.html"] .navbar-fixed-top ul.navbar-nav > li > a:not(:h
 .hero-1::before {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('../img/hero1.jpg');
     background-position: center bottom;
+}
+
+/* Strip of logos, charts */
+.logo-strip a {
+    /* There are 8 logos in here - distribute them evenly */
+    /* The -8 is for what I guess is rounding issues, because they seem to total >100% */
+    width: calc(100% / 8 - 8px);
+    margin: 0;
+}
+.logo-strip img {
+    padding: 35px 15px;
+    width: inherit;
+}
+.logo-strip img:not(:hover) {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+.logo-strip,
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+.logo-strip img:hover {
+    background: #f3f3f3;
 }
 
 .features img {

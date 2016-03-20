@@ -23,19 +23,6 @@ a:hover {
     color: #79b31b;
 }
 
-/* Default inverse text color isn't bright enough (esp. when also .dimmed) */
-.navbar-inverse .navbar-nav > li > a {
-    color: #fff;
-}
-
-.logo-strip,
-.table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #fff;
-}
-.logo-strip img:hover {
-    background: #f3f3f3;
-}
-
 .green-text {
     color: #79b31b;
 }
