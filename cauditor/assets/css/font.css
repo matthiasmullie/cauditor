@@ -1,5 +1,9 @@
 @import "//fonts.googleapis.com/css?family=Lato:300,400,700,900";
 
+body {
+    font-size: 16px;
+}
+
 /* Nav & titles should get uppercase Lato */
 .navbar ul li > a,
 .secondary-nav ul li > a,
@@ -16,13 +20,13 @@ h1 {
 }
 
 h2 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 300;
     margin-bottom: 15px;
 }
 
 h3 {
-    font-size: 14px;
+    font-size: 16px;
     text-transform: none;
     margin: 0;
 }
