@@ -20,16 +20,15 @@ class Controller(fallback.Controller):
         except Exception:
             self.fail = True
             self.status = "404 Not Found"
-            self.template = "404.html"
+            self.project = self.project or {'name': self.route['project']}
 
     def args(self):
         args = super(Controller, self).args()
-        if not self.fail:
-            args.update({
-                'project': self.project,
-                'commit': self.commit,
-                'title': self.project['name']
-            })
+        args.update({
+            'project': self.project,
+            'commit': self.commit,
+            'title': self.project['name']
+        })
         return args
 
     def load_project(self, name):
