@@ -45,15 +45,21 @@
                     </thead>
                     <tbody>
                         {% for commit in commits %}
+                            {% if commit.previous in prev_commits %}
+                            {% set score = commit|score %}
+                            {% set prev_score = prev_commits[commit.previous]|score %}
+                            <tr class="{% if score > prev_score %}positive{% elif score < prev_score %}negative{% endif %}">
+                            {% else %}
                             <tr>
+                            {% endif %}
                                 <td class="col-xs-1 text-center">
                                     {% if commit.previous in prev_commits %}
                                         {% set score = commit|score %}
                                         {% set prev_score = prev_commits[commit.previous]|score %}
                                         {% if score > prev_score %}
-                                            <i class="fa fa-caret-up green"></i>
+                                            <i class="fa fa-caret-up green-text"></i>
                                         {% elif score < prev_score %}
-                                            <i class="fa fa-caret-down red"></i>
+                                            <i class="fa fa-caret-down red-text"></i>
                                         {% endif %}
                                     {% endif %}
                                 </td>
@@ -227,19 +233,21 @@
         });
 
         function append(commit, prev) {
-            var indicator = '', score, prev_score;
+            var indicator = '', classname = '', score, prev_score;
             if (prev) {
                 score = (commit.worst_mi + commit.avg_mi) / 2;
                 prev_score = (prev.worst_mi + prev.avg_mi) / 2;
                 if (score > prev_score) {
-                    indicator = '<i class="fa fa-caret-up green"></i>';
+                    indicator = '<i class="fa fa-caret-up green-text"></i>';
+                    classname = 'positive';
                 } else if (score < prev_score) {
-                    indicator = '<i class="fa fa-caret-down red"></i>';
+                    indicator = '<i class="fa fa-caret-down red-text"></i>';
+                    classname = 'negative';
                 }
             }
 
             $(this).before('\
-                <tr>\
+                <tr class="' + classname + '">\
                     <td class="col-xs-1 text-center">\
                         ' + indicator + '\
                     </td>\

@@ -30,18 +30,22 @@ a:hover {
 
 .logo-strip,
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #fff !important;
+    background-color: #fff;
 }
 .logo-strip img:hover {
     background: #f3f3f3;
 }
 
-.green {
+.green-text {
     color: #79b31b;
 }
-.yellow {
-    color: #f4be00;
-}
-.red {
+.red-text {
     color: #f45800;
+}
+
+.positive {
+    background-color: rgba(121, 179, 27, .1) !important; /* #79b31b */
+}
+.negative {
+    background-color: rgba(244, 88, 0, .1) !important; /* #f45800 */
 }
