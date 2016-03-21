@@ -30,11 +30,23 @@
             <script src="/assets/js/visualizations/lineplot/User.js"></script>
 
             {# Prepare error msg for when we can't find relevant commits; then all we have to do is unhide this #}
-            <div class="no-commits" style="display: none">
+            <div class="rows no-commits" style="display: none">
                 <div class="col-xs-12 columns">
                     <div class="alert alert-danger" role="alert">
                         <i class="fa fa-exclamation-circle"></i>
                         Couldn't find any commits for {{ settings.emails }}. <a href="/user" class="alert-link">Add some of your work</a> or <a href="/user/settings" class="alert-link">complete your author email addresses</a>. If projects were recently added, they may still be importing.
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 columns">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <i class="fa fa-info-circle"></i>
+                            These should be interpreted in the right context.
+                            High complexity can mean you've done a terrible job, or you've just tackled the nastiest problem.
+                        </div>
                     </div>
                 </div>
             </div>

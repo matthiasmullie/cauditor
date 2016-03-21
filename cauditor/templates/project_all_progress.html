@@ -35,9 +35,7 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container">
         {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
             <div class="row">
                 {% for chart in grouped_charts %}
