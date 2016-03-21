@@ -58,7 +58,7 @@ charts:
         range: [0, 5, 11]
     -
         code: "hi"
-        name: "Halstead Intelligent Content"
+        name: "Intelligent Content"
         description: |
             <p>Halstead intelligent content represents the algorithm complexity in a mostly language-agnostic way by counting the amount of operators (<code>+</code>, <code>=</code>, <code>&&</code>, &hellip; and reserved words) and operands (variables, function names, &hellip;)</p>
             <pre>
