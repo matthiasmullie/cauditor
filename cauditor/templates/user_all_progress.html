@@ -106,7 +106,7 @@
                             for (metric in metrics) {
                                 // sort on metric scores, so we can easily grab median
                                 metrics[metric].sort(function(a, b) {
-                                    return a[metric] > b[metric] ? 1 : -1;
+                                    return a > b ? 1 : -1;
                                 });
 
                                 median = metrics[metric][Math.floor(metrics[metric].length / 2)];
