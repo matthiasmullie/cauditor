@@ -52,7 +52,6 @@
                                 {% if repo.name in project_names %}</a>{% endif %}
                                 {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
                                 {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
-                                <a href="{{ repo.url }}" title="{{ repo.name }} on GitHub"><i class="fa fa-github"></i></a>
                             </td>
                             <td class="col-xs-1">
                                 <i class="fa fa-code"></i> {% if repo.language %}<span class="code-language">{{ repo.language }}</span>{% else %}&hellip;{% endif %}
