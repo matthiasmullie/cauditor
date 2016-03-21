@@ -39,7 +39,8 @@ charts:
         code: "mi"
         name: "Maintainability Index"
         description: |
-            <p>The maintainability index tries to indicate how hard a program is to maintain, by taking into account cyclomatic complexity, Halstead intelligent content and the amount of lines of code. The index is scored from 0 to 100, with 100 being very maintainable.</p>
+            <p>The maintainability index tries to indicate how hard a program is to maintain by combining a few complexity-relates methods.<br />The index is scored <strong>from 0 to 100, with 100 being very maintainable</strong>.</p>
+            <p>It takes into account cyclomatic complexity (which calculates the amount of decision paths), Halstead Volume (amount of operators and operands) and the amount of lines of code.</p>
             <pre>Maintainability index = max(0, (171 - 5.2 * ln(Halstead volume) - 0.23 * (cyclomatic complexity) - 16.2 * ln(lines of code)) * 100 / 171)</pre>
         basis: "method"
         # 100-20 is considered ok; 20-10 suspicious; 10-0 bad
@@ -50,7 +51,7 @@ charts:
         code: "ccn"
         name: "Cyclomatic Complexity"
         description: |
-            <p>Cyclomatic complexity is calculated by counting the amount of decision paths. After an <code>if</code> statement, your code can go do 2 different things. Every conditional statement increases the complexity of your program. It's harder to test, likely contains more bugs & is harder to understand when you look at it again.</p>
+            <p>Cyclomatic complexity is calculated by counting the <strong>amount of decision paths</strong>. After an <code>if</code> statement, your code can go do 2 different things. Every conditional statement increases the complexity of your program. It's harder to test, likely contains more bugs & is harder to understand when you look at it again.</p>
             <p>The cyclomatic complexity is calculated by counting the amount of these conditional statements in the code: <code>?</code>, <code>&&</code>, <code>||</code>, <code>and</code>, <code>or</code>, <code>xor</code>, <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>, <code>case</code>, <code>while</code> & <code>catch</code>.</p>
         basis: "method"
         # 1-4 green-ish; 5-7 yellow-ish; 8-10: orange-ish; 10+: red
@@ -80,7 +81,7 @@ charts:
         code: "i"
         name: "Instability"
         description: |
-            <p>The instability is based on the efferent and afferent coupling of the class and indicates how resilient a class is to change: 0 being very resilient & 1 very unstable. Classes using a lot of other classes are less resilient to change because they may have to respond to changes in those other classes.</p>
+            <p>The instability is based on the efferent and afferent coupling of the class and indicates <strong>how resilient a class is to change</strong>: 0 being very resilient & 1 very unstable. Classes using a lot of other classes are less resilient to change because they may have to respond to changes in those other classes.</p>
             <pre>I = efferent coupling / (efferent coupling + afferent coupling)</pre>
         basis: "class"
         # range from 0 to 1, with 0 indicating a package very resilient to change in
@@ -92,7 +93,7 @@ charts:
         code: "ca"
         name: "Afferent Coupling"
         description: |
-            <p>Afferent coupling measures the responsibility of a class by counting the incoming dependencies, or how often a class is used in other classes. The higher the value, the more important the class is and the bigger its impact on the codebase. Changes to or bugs in these areas can have a big impact since cover a lot of the codebase.</p>
+            <p>Afferent coupling measures the responsibility of a class by counting the incoming dependencies, or <strong>how often a class is used in other classes</strong>. The higher the value, the more important the class is and the bigger its impact on the codebase. Changes to or bugs in these areas can have a big impact since cover a lot of the codebase.</p>
             <p>Core functionality usually scores rather high on this metric.</p>
         basis: "class"
         # being used by lots of other packages can signify the class isn't independent enough
@@ -102,7 +103,7 @@ charts:
         code: "ce"
         name: "Efferent Coupling"
         description: |
-            <p>Efferent coupling is very similar to the stability index (which is in large part based on this number) and reflects how much a class depends on other classes.</p>
+            <p>Efferent coupling is very similar to the stability index (which is in large part based on this number) and reflects <strong>how much a class depends on other classes</strong>.</p>
             <p>You can expect high efferent coupling in 'god classes' - those that decide what other places to fan out to (e.g. routers) - but it can also expose unfocused classes that try to do too much and should be decomposed into more discrete classes with a single purpose.</p>
         basis: "class"
         # using lots of other packages can signify the class has too much responsibilities

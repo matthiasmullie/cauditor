@@ -10,7 +10,7 @@
                     {% if user %}
                         {# project may not be in user's own repos, but when viewing metrics (and this nav is shown), we want to be able to go back to summary #}
                         {% set project_names = imported_repos|map(attribute='name')|list %}
-                        {% if project.name not in project_names %}
+                        {% if project and project.name not in project_names %}
                             <li class="active"><a href="/{{ project.name }}">{{ project.name }}</a></li>
                         {% endif %}
 

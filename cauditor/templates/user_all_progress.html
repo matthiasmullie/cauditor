@@ -55,7 +55,12 @@
                 <div class="row">
                     {% for chart in grouped_charts %}
                         <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
-                            <h2><strong>{{ chart.name }}</strong></h2>
+                            <h2>
+                                <strong>{{ chart.name }}</strong>
+                                <a href="/help#{{ chart.code }}" title="What is {{ chart.name }}?">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                            </h2>
                             <a href="/user/progress/{{ chart.code }}">
                                 <span class="chart"></span>
                             </a>
