@@ -72,5 +72,11 @@
             $(this).parent().hide().siblings('.panel-more').show();
             $(this).hide();
         });
+
+        // automatically open the longer description if this is the user's first visit to this page
+        if (!document.cookie.match(/(^|;\s*)progress_panel=1($|\s*;)/)) {
+            $('#expand-panel').click();
+            document.cookie = 'progress_panel=1; expires=Tue, 19 Jan 2038 03:14:08 UTC; path=/';
+        }
     </script>
 {% endif %}

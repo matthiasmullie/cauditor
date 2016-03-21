@@ -25,8 +25,9 @@
                     </div>
                     <div class="panel-body panel-more" style="display: none;">
                         <p>
-                            The size of the square represents the amount of lines of code in that method or class.
-                            The color is determined by the metric score, ranging from green to red. Red means worse.
+                            The size of the square represents the amount of lines of code in that method/class.
+                            The color is determined by the metric score, ranging from green to red. <br />
+                            <strong>Red means worse</strong>.
                         </p>
                         <p style="margin-bottom: 0;">
                             Focus on really high or unexpected red spots. Red spots are not necessarily bad! Not all code is alike and different problems need different solutions.<br />
@@ -81,5 +82,11 @@
             $(this).parent().hide().siblings('.panel-more').show();
             $(this).hide();
         });
+
+        // automatically open the longer description if this is the user's first visit to this page
+        if (!document.cookie.match(/(^|;\s*)metrics_panel=1($|\s*;)/)) {
+            $('#expand-panel').click();
+            document.cookie = 'metrics_panel=1; expires=Tue, 19 Jan 2038 03:14:08 UTC; path=/';
+        }
     </script>
 {% endif %}
