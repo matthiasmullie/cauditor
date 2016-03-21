@@ -20,7 +20,6 @@ Cauditor.Visualization.Lineplot.Abstract.prototype = Object.create(Cauditor.Visu
 Cauditor.Visualization.Lineplot.Abstract.prototype.visualization = function(metric, range) {
     return {
         type: 'line',
-        data: this.data,
         id: 'id',
         // color blocks from green to red, based on a particular column & range
         color: 'color',

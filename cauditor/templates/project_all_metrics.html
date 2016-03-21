@@ -66,16 +66,15 @@
             jsonp: false,
             cache: true,
             success: function(data) {
-                data = new Cauditor.Data(data);
-                var visualization, chart;
-
                 {% for chart in charts %}
-                    {% if chart.basis == 'method' %}
-                        visualization = new Cauditor.Visualization.Treemap.Method(data),
-                    {% elif chart.basis == 'class' %}
-                        visualization = new Cauditor.Visualization.Treemap.Class(data),
-                    {% endif %}
-                    chart = new Cauditor(visualization);
+                    var chart = new Cauditor(
+                        {% if chart.basis == 'method' %}
+                            new Cauditor.Visualization.Treemap.Method(),
+                        {% elif chart.basis == 'class' %}
+                            new Cauditor.Visualization.Treemap.Class(),
+                        {% endif %}
+                        new Cauditor.Data(data)
+                    );
 
                     chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, false]);
                 {% endfor %}

@@ -73,31 +73,31 @@
                 $.ajax({
                     url: '/api/user/diffs',
                     datatype: 'json',
-                    success: function(json) {
-                        if (!json) {
+                    success: function(data) {
+                        if (!data) {
                             $('.no-commits').show();
                         } else {
-                            var data = new Cauditor.Data(json),
-                                visualization = new Cauditor.Visualization.Lineplot.User(data),
-                                chart = new Cauditor(visualization),
-                                metrics = {}, include, median;
+                            var chart = new Cauditor(
+                                new Cauditor.Visualization.Lineplot.User(),
+                                new Cauditor.Data(data)
+                            ), metrics = {}, include, median;
 
                             {% for chart in charts %}
                                 chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
                             {% endfor %}
 
                             // loop all commits, figure out which we want to include & add their relevant values to `metrics`
-                            for (i in json) {
+                            for (i in data) {
                                 include = false;
                                 // we only want to include commits where at least 1 metric was affected; otherwise they likely weren't code changes
                                 {% for chart in charts %}
-                                    include = include || json[i].{{ chart.code }} !== 0;
+                                    include = include || data[i].{{ chart.code }} !== 0;
                                 {% endfor %}
 
                                 if (include) {
                                     {% for chart in charts %}
                                         metrics.{{ chart.code }} = metrics.{{ chart.code }} || [];
-                                        metrics.{{ chart.code }}.push(json[i].{{ chart.code }});
+                                        metrics.{{ chart.code }}.push(data[i].{{ chart.code }});
                                     {% endfor %}
                                 }
                             }

@@ -5,8 +5,6 @@
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
-<script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
-<script src="/assets/js/visualizations/lineplot/Project.js"></script>
 
 {% include 'utils/project_navbar.html' %}
 
@@ -173,9 +171,10 @@
             url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
             datatype: 'json',
             success: function(data) {
-                var data = new Cauditor.Data(data),
-                    visualization = new Cauditor.Visualization.Treemap.Method(data),
-                    chart = new Cauditor(visualization);
+                var chart = new Cauditor(
+                    new Cauditor.Visualization.Treemap.Method(),
+                    new Cauditor.Data(data)
+                );
 
                 {% for chart in charts %}
                     {% if chart.code == 'mi' %}
@@ -193,18 +192,7 @@
             if (!promise) {
                 promise = $.ajax({
                     url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
-                    datatype: 'json',
-                    success: function(data) {
-                        var data = new Cauditor.Data(data),
-                            visualization = new Cauditor.Visualization.Lineplot.Project(data),
-                            chart = new Cauditor(visualization);
-
-                        {% for chart in charts %}
-                            {% if chart.code == 'mi' %}
-                                chart.draw('.progress .chart', ['{{ chart.code }}', {{ chart.range }}, '{{ chart.basis }}']);
-                            {% endif %}
-                        {% endfor %}
-                    }
+                    datatype: 'json'
                 });
             }
 

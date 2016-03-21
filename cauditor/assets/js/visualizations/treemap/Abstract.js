@@ -20,7 +20,6 @@ Cauditor.Visualization.Treemap.Abstract.prototype = Object.create(Cauditor.Visua
 Cauditor.Visualization.Treemap.Abstract.prototype.visualization = function(metric, range) {
     return {
         type: 'tree_map',
-        data: this.data,
         // nesting package > class > method
         id: this.id,
         // set column to calculate size of blocks for

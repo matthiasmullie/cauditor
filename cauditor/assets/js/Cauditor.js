@@ -2,9 +2,11 @@
 
 /**
  * @param {Cauditor.Visualization.Abstract} visualization
+ * @param {Cauditor.Data} data
  */
-var Cauditor = function(visualization) {
+var Cauditor = function(visualization, data) {
     this.visualization = visualization;
+    this.data = data;
 };
 
 /**
@@ -14,9 +16,12 @@ var Cauditor = function(visualization) {
  * @param {array} args Arguments to pass to to visualization.visualization
  */
 Cauditor.prototype.draw = function(selector, args) {
-    var config = this.visualization.visualization.apply(this.visualization, args);
+    var config = this.visualization.visualization.apply(this.visualization, args),
+        data = this.data.filter(this.visualization);
+
     d3plus.viz()
         .container(selector)
         .config(config)
+        .data(data)
         .draw();
 };

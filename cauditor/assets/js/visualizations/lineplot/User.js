@@ -18,11 +18,7 @@ Cauditor.Visualization.Lineplot.User.prototype.visualization = function(metric, 
     return $.extend(config, {
         id: 'id',
         x: {
-            value: function(data, key) {
-                // with a value of 0, the chart fails to render
-                // starting from 1, the x-axis is very irregular...
-                return data.count + 100000;
-            },
+            value: 'x',
             grid: false,
             label: false
         },
@@ -56,7 +52,12 @@ Cauditor.Visualization.Lineplot.User.prototype.filter = function(data) {
     });
 
     for (i in data) {
-        data[i].count = parseInt(i);
+        // x value must be unique (or data is aggregated), not 0 (or drawing
+        // fails), and just a series of increment integers also seems to produce
+        // weird charts when there's lots of data...
+        // this should do, I guess...
+        data[i].x = data[i].timestamp + i;
+
         data[i].id = '';
     }
 

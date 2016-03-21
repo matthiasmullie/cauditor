@@ -24,15 +24,14 @@
             jsonp: false,
             cache: true,
             success: function(data) {
-                data = new Cauditor.Data(data);
-                var visualization, chart;
-
-                {% if chart.basis == 'method' %}
-                    visualization = new Cauditor.Visualization.Treemap.Method(data);
-                {% elif chart.basis == 'class' %}
-                    visualization = new Cauditor.Visualization.Treemap.Class(data);
-                {% endif %}
-                chart = new Cauditor(visualization);
+                var chart = new Cauditor(
+                    {% if chart.basis == 'method' %}
+                        new Cauditor.Visualization.Treemap.Method(data),
+                    {% elif chart.basis == 'class' %}
+                        new Cauditor.Visualization.Treemap.Class(data),
+                    {% endif %}
+                    new Cauditor.Data(data)
+                );
 
                 chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
             }

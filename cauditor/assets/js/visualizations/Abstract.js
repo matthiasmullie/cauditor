@@ -2,12 +2,7 @@
 
 Cauditor.Visualization = Cauditor.Visualization || {};
 
-/**
- * @param {Cauditor.Data} data
- */
-Cauditor.Visualization.Abstract = function(data) {
-    this.data = data.filter(this);
-};
+Cauditor.Visualization.Abstract = function() {};
 
 /**
  * Callback method transforming data to however 'visualization' needs it.
