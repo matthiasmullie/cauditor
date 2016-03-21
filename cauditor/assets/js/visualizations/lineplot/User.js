@@ -21,7 +21,7 @@ Cauditor.Visualization.Lineplot.User.prototype.visualization = function(metric, 
             value: function(data, key) {
                 // with a value of 0, the chart fails to render
                 // starting from 1, the x-axis is very irregular...
-                return data.count + 100;
+                return data.count + 100000;
             },
             grid: false,
             label: false
