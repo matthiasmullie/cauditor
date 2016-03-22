@@ -9,10 +9,10 @@ class Controller(object):
     template = "404.html"
     status = "200 OK"
     route = {}
-    cookies = http.cookies.SimpleCookie()
+    cookies = None
+    cookie_set = None
     session_data = None
     container = None
-    cookie_set = http.cookies.SimpleCookie()
     user = None
     settings = None
     template_env = None
@@ -22,6 +22,8 @@ class Controller(object):
         self.cookies = cookies
         self.session_data = session
         self.container = container
+
+        self.cookie_set = http.cookies.SimpleCookie()
 
         # all controllers extend from this one, so I'm going to special-case
         # the 404 header
