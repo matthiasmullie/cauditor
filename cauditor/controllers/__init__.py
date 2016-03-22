@@ -6,18 +6,18 @@ routes = {
     # web
     "": 'cauditor.controllers.web.fallback',  # matches anything; 404 is fallback for every request
     "^/$": 'cauditor.controllers.web.index',  # matches /
-    "^/(?!api|user)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.web.project_summary',  # matches /vendor/repo and /vendor/repo
-    "^/(?!api|user)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/metrics": 'cauditor.controllers.web.project_all_metrics',  # matches /vendor/repo/overview and /vendor/repo/commit/overview
-    "^/(?!api|user)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
-    "^/(?!api|user)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress$": 'cauditor.controllers.web.project_all_progress',  # matches /vendor/repo/progress
-    "^/(?!api|user)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
+    "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.web.project_summary',  # matches /vendor/repo and /vendor/repo
+    "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/metrics": 'cauditor.controllers.web.project_all_metrics',  # matches /vendor/repo/overview and /vendor/repo/commit/overview
+    "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
+    "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress$": 'cauditor.controllers.web.project_all_progress',  # matches /vendor/repo/progress
+    "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
     "^/login\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
     "^/logout$": 'cauditor.controllers.web.logout',  # matches /logout
     "^/user$": 'cauditor.controllers.web.user_repos',  # matches /user
     "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
     "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
     "^/user/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
-    "^/help$": 'cauditor.controllers.web.help',  # matches /help
+    "^/help/metrics$": 'cauditor.controllers.web.help_metrics',  # matches /help/metrics
 
     # api
     "^/api": 'cauditor.controllers.api.fallback',  # matches /api*; 404 fallback for every request in /api
