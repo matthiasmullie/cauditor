@@ -6,6 +6,7 @@ import json
 
 
 class Model(model.DbManager):
+    id = None
     data = None
 
     """ (Ab)use model for session management """
