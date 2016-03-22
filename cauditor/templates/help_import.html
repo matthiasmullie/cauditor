@@ -1,0 +1,93 @@
+{% include 'utils/project_navbar.html' %}
+
+<div class="container">
+    <div class="row">
+        <div id="yml" class="col-xs-12 columns">
+            <h2><strong>Customize</strong> what code is analyzed</h2>
+
+            <p>Customize how your code is analyzed by adding a <strong>.cauditor.yml</strong> file to the root of your project.</p>
+            <p>Available configuration options (and their defaults) are:</p>
+
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Default</th>
+                        <th>What?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>exclude_folders</td>
+                        <td>[tests, vendor]</td>
+                        <td>
+                            Folders to be excluded when analyzing code.<br />
+                            <i>In addition to whatever is configured, folders 'vendors', '.git' & '.svn' are always excluded.</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>build_path</td>
+                        <td>build/cauditor</td>
+                        <td>
+                            Path where metrics data will be exported to.<br />
+                            <i>Only useful when self-analyzing & <a href="#bin">submitting own metrics</a>.</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Example <strong>.cauditor.yml</strong></p>
+
+            <pre>
+build_path: build/cauditor
+exclude_folders: [tests, vendor]</pre>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="bin" class="col-xs-12 columns">
+            <h2><strong>Submit</strong> your own metrics</h2>
+
+            <p>
+                History of all linked repositories will be analyzed, and so will new commits as they are pushed.<br/>
+                However, you may wish to analyze a repo yourself, if you:
+            </p>
+            <ul>
+                <li>Don't want to login with GitHub & link your project</li>
+                <li>Don't want to wait until Cauditor's import queue get around to analyzing your project</li>
+                <li>Are a nice person and want to take some of the import duties away from Cauditor</li>
+            </ul>
+
+            <h3>Continuous integration</h3>
+
+            <h4>Installation</h4>
+
+            <p>Add a dependency on cauditor/analyzer to your <strong>composer.json</strong> file if you use <a href="https://getcomposer.org">Composer</a> to manage the dependencies of your project:</p>
+            <pre>composer require cauditor/analyzer --dev</pre>
+            <p>This will make the Cauditor analyzer available in your CI server.</p>
+
+            <h4>Build</h4>
+
+            <p>Add this to your <strong>.travis.yml</strong>'s <code>after_success</code> statements:</p>
+            <pre>after_success:
+- vendor/bin/cauditor</pre>
+            <p>It'll instruct <a href="https://travis-ci.org">Travis CI</a> to generate the metrics & submit them to cauditor.org. <i>This should also work on other CI providers.</i></p>
+
+            <h3>On your own machine</h3>
+
+            <p>Similar to how code would be analyzed on Travis CI if you follow the above steps, you can run it on your own machine:</p>
+
+            <h4>Installation</h4>
+
+            <p>Add a global dependency on cauditor/analyzer:</p>
+            <pre>composer global require cauditor/analyzer</pre>
+            <p>This will make the Cauditor analyzer available for your entire machine, instead of for just 1 project.</p>
+
+            <h4>Run</h4>
+
+            <p>Now you can play around with the script! You can analyze all commits of a particular project like this:</p>
+            <pre>cauditor --repo=https://github.com/vendor/repo.git --path=/tmp/import --all</pre>
+            <p>Execute <code>cauditor --help</code> to find out more.</p>
+        </div>
+    </div>
+</div>

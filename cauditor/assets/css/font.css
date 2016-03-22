@@ -31,8 +31,14 @@ body[data-template="index.html"] h2 {
 
 h3 {
     font-size: 16px;
+    margin: 25px 0 15px;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 16px;
     text-transform: none;
-    margin: 0;
+    font-weight: bold;
 }
 
 /* Make bold really really bold */
