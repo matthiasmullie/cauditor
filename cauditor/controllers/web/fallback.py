@@ -76,6 +76,7 @@ class Controller(object):
         if value is not None:
             # new cookie data to be stored
             self.cookie_set[key] = value
+            self.cookie_set[key]['path'] = '/'
             if expire is not None:
                 self.cookie_set[key]['max-age'] = expire
 
