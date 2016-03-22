@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
 
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` varchar(32) NOT NULL, -- session id
-  `data` blob NOT NULL, -- session data
+  `data` longblob NOT NULL, -- session data
   `touched` datetime NOT NULL, -- last read/written
   PRIMARY KEY (`id`),
   KEY `touched` (`touched`)
