@@ -25,14 +25,14 @@ $.ajax({
                 for (i in data) {
                     include = false;
                     // we only want to include commits where at least 1 metric was affected; otherwise they likely weren't code changes
-                    for (i in charts) {
-                        include = include || data[i][charts[i]] !== 0;
+                    for (j in charts) {
+                        include = include || data[i][charts[j]] !== 0;
                     }
 
                     if (include) {
-                        for (i in charts) {
-                            metrics[charts[i]] = metrics[charts[i]] || [];
-                            metrics[charts[i]].push(data[i][charts[i]]);
+                        for (j in charts) {
+                            metrics[charts[j]] = metrics[charts[j]] || [];
+                            metrics[charts[j]].push(data[i][charts[j]]);
                         }
                     }
                 }
