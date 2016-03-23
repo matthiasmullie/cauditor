@@ -4,7 +4,7 @@ $.ajax({
     url: jsonUrlMetrics,
     datatype: 'json',
     success: function(data) {
-        $( document ).ready(function() {
+        $(document).ready(function() {
             var $element = $('.chart'),
                 code = $element.data('chartCode'),
                 basis = $element.data('chartBasis'),
@@ -19,7 +19,7 @@ $.ajax({
     }
 });
 
-$( document ).ready(function() {
+$(document).ready(function() {
     $('.load-more a').click(function(e) {
         var element = this;
 

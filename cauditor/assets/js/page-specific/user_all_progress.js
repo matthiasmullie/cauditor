@@ -2,7 +2,7 @@ $.ajax({
     url: '/api/user/diffs',
     datatype: 'json',
     success: function(data) {
-        $( document ).ready(function() {
+        $(document).ready(function() {
             if (!data) {
                 $('.no-commits').show();
             } else {

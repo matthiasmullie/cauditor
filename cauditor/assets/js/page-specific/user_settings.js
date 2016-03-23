@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function() {
     // email address multi-input field
     $('#emails').tagsinput({
         tagClass: 'label label-default',

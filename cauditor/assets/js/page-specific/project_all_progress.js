@@ -2,7 +2,7 @@ $.ajax({
     url: jsonUrl,
     datatype: 'json',
     success: function(data) {
-        $( document ).ready(function() {
+        $(document).ready(function() {
             $('.chart').each(function() {
                 var code = $(this).data('chartCode'),
                     range = $(this).data('chartRange').split(','),
@@ -18,7 +18,7 @@ $.ajax({
 });
 
 
-$( document ).ready(function() {
+$(document).ready(function() {
     $('#expand-panel').click(function() {
         $(this).parent().hide().siblings('.panel-more').show();
         $(this).hide();

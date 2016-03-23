@@ -4,7 +4,7 @@ $.ajax({
     jsonp: false,
     cache: true,
     success: function(data) {
-        $( document ).ready(function() {
+        $(document).ready(function() {
             $('.chart').each(function() {
                 var code = $(this).data('chartCode'),
                     basis = $(this).data('chartBasis'),
@@ -21,7 +21,7 @@ $.ajax({
 });
 
 
-$( document ).ready(function() {
+$(document).ready(function() {
     $('#expand-panel').click(function() {
         $(this).parent().hide().siblings('.panel-more').show();
         $(this).hide();

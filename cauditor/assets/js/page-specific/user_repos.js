@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function() {
     // link/unlink projects
     $('.switch input')
         .bootstrapSwitch({ size: 'mini' })

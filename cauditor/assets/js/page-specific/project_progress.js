@@ -2,7 +2,7 @@ $.ajax({
     url: jsonUrl,
     datatype: 'json',
     success: function(data) {
-        $( document ).ready(function() {
+        $(document).ready(function() {
             var $element = $('.chart'),
                 code = $element.data('chartCode'),
                 range = $element.data('chartRange').split(','),
