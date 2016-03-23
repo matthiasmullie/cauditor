@@ -21,7 +21,7 @@ var jsonUrls = {
 <div class="container">
     <div class="row">
         <div class="col-xs-12 columns">
-            <h2>Welcome back, {{ user.name }}!</h2>
+            <h2 style="display: inline">Welcome back, {{ user.name }}!</h2>
 
             {% if imported_repos %}
                 {% set random_repo = imported_repos|random %}
@@ -32,9 +32,9 @@ var jsonUrls = {
                     "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
                     "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
                 ] %}
-                <p>{{ messages|random }}</p>
+                <p style="display: inline">{{ messages|random }}</p>
             {% else %}
-                <p>How about we analyze <strong><a href="/user">one of your repos</a></strong>?</p>
+                <p style="display: inline">How about we analyze <strong><a href="/user">one of your repos</a></strong>?</p>
             {% endif %}
         </div>
     </div>
@@ -48,8 +48,14 @@ var jsonUrls = {
                     <table class="table table-condensed">
                         <tbody>
                             <tr>
-                                <td>Rank</td>
-                                <td><strong>{{ project.score|rank|int }}</strong>%</td>
+                                <td style="width: 100px">Rank</td>
+                                <td>
+                                    {% if project.name in commits %}
+                                        <strong>{{ project.score|rank|int }}</strong>%
+                                    {% else %}
+                                        <i class="fa fa-spin fa-spinner"></i>
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Branch</td>
@@ -57,7 +63,7 @@ var jsonUrls = {
                             </tr>
                             <tr>
                                 <td>Commit</td>
-                                <td>{{ commits[project.name].timestamp|datetime if project.name in commits else '?' }}</td>
+                                <td>{{ commits[project.name].timestamp|datetime if project.name in commits else '<i class="fa fa-spin fa-spinner"></i>' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -74,14 +80,45 @@ var jsonUrls = {
                         </a>
                     {% else %}
                         {# Not yet imported... #}
-                        <span class="chart" style="background-color:grey"></span>
+                        <span class="chart" style="background-color:#ddd"></span>
                     {% endif %}
                 </div>
             </div>
 
-            {% if loop.cycle('odd', 'even') == 'even' and not loop.last %}
+            {% if loop.cycle('odd', 'even') == 'even' %}
                 </div><div class="row">
             {% endif %}
         {% endfor %}
+
+        <div>
+            <div class="col-xs-3 columns">
+                <h3><a href="/user/repos"><i class="fa fa-plus-circle"></i> Add repo</a></h3>
+
+                <table class="table table-condensed">
+                    <tbody>
+                        <tr>
+                            <td style="width: 100px">Rank</td>
+                            <td>&hellip;</td>
+                        </tr>
+                        <tr>
+                            <td>Branch</td>
+                            <td>&hellip;</td>
+                        </tr>
+                        <tr>
+                            <td>Commit</td>
+                            <td>&hellip;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-xs-3 columns">
+                <a href="/user/repos">
+                    <span class="chart">
+                        <span class="chart" style="background-color:#ddd"></span>
+                    </span>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
