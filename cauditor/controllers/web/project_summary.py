@@ -38,26 +38,3 @@ class Controller(project.Controller):
         model = models.commits.Model(self.container.mysql)
         hashes = [commit['previous'] for commit in commits]
         return model.select(project=commits[0]['project'], hash=hashes)
-
-    def get_score(self, commit):
-        return (commit['worst_mi'] + commit['avg_mi']) / 2
-
-    def get_rank(self):
-        scores = []
-        model = models.projects.Model(self.container.mysql)
-        projects = model.select(options=['ORDER BY score DESC'])
-        for project in projects:
-            scores.append(project['score'])
-
-        def rank_calculator(score):
-            better = 0
-            for i in scores:
-                if i > score:
-                    better += 1
-                else:
-                    break
-
-            # calculate the amount of projects that score worst than this score
-            return 100 * (1 - better / len(scores) or 1)\
-
-        return rank_calculator

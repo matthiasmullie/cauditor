@@ -1,0 +1,87 @@
+<script src="/assets/js/vendor/d3.min.js"></script>
+<script src="/assets/js/vendor/d3plus.min.js"></script>
+<script src="/assets/js/Cauditor.js"></script>
+<script src="/assets/js/visualizations/Data.js"></script>
+<script src="/assets/js/visualizations/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Abstract.js"></script>
+<script src="/assets/js/visualizations/treemap/Method.js"></script>
+<script>
+var jsonUrls = {
+    {% for project in imported_repos %}
+        {% if project.name in commits %}
+            '{{ project.name }}': '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commits[project.name].hash) }}',
+        {% endif %}
+    {% endfor %}
+};
+</script>
+<script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
+
+{% include 'utils/project_navbar.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 columns">
+            <h2>Welcome back, {{ user.name }}!</h2>
+
+            {% if imported_repos %}
+                {% set random_repo = imported_repos|random %}
+                {% set messages = [
+                    'Want to analyze <strong><a href="/user">another repo</a></strong>?',
+                    'How have <strong><a href="/user/progress">you been doing</a></strong> lately?',
+                    "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                    "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                    "How's <strong><a href='/" ~ random_repo.name ~ "'>" ~ random_repo.name ~ "</a></strong> doing?",
+                ] %}
+                <p>{{ messages|random }}</p>
+            {% else %}
+                <p>How about we analyze <strong><a href="/user">one of your repos</a></strong>?</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% for project in imported_repos %}
+            <div id="{{ project.name|replace('/', '_') }}">
+                <div class="col-xs-3 columns">
+                    <h3><a href="/{{ project.name }}">{{ project.name }}</a></h3>
+
+                    <table class="table table-condensed">
+                        <tbody>
+                            <tr>
+                                <td>Score</td>
+                                <td><strong>{{ project.score|rank|int }}</strong>%</td>
+                            </tr>
+                            <tr>
+                                <td>Branch</td>
+                                <td>{{ project.default_branch }}</td>
+                            </tr>
+                            <tr>
+                                <td>Commit</td>
+                                <td>{{ commits[project.name].timestamp|datetime if project.name in commits else '?' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-xs-3 columns">
+                    {% if project.name in commits %}
+                        <a href="/{{ project.name }}/metrics">
+                            {% for chart in charts %}
+                                {% if chart.code == 'mi' %}
+                                    <span class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></span>
+                                {% endif %}
+                            {% endfor %}
+                        </a>
+                    {% else %}
+                        {# Not yet imported... #}
+                        <span class="chart" style="background-color:grey"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if loop.cycle('odd', 'even') == 'even' and not loop.last %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

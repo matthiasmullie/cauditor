@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+body[data-template="index_logged_in.html"] .chart {
+    min-height: 150px;
+}
+
 a .chart .d3plus_rect {
     cursor: pointer !important;
 }
