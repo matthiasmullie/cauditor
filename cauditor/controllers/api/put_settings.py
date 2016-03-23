@@ -4,6 +4,8 @@ import json
 
 
 class Controller(fallback.Controller):
+    allowed = ['emails']
+
     def headers(self):
         if 'id' not in self.user:
             # not logged in
@@ -13,11 +15,12 @@ class Controller(fallback.Controller):
 
         model = models.settings.Model(self.container.mysql)
         for key in self.data:
-            model.store({
-                'user': self.user['id'],
-                'key': key,
-                'value': self.data[key],
-            })
+            if key in self.allowed:
+                model.store({
+                    'user': self.user['id'],
+                    'key': key,
+                    'value': self.data[key],
+                })
 
         return super(Controller, self).headers()
 
