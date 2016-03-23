@@ -5,26 +5,13 @@
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Project.js"></script>
+<script>var jsonUrl = '/api/v1/{{ project.name }}/{{ project.default_branch }}';</script>
+<script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
 {% include 'utils/project_navbar.html' %}
 
 {% if not commit %}
     {% include 'utils/commits_missing.html' %}
 {% else %}
-    <div class="chart"></div>
-
-    <script>
-        $.ajax({
-            url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
-            datatype: 'json',
-            success: function(data) {
-                var chart = new Cauditor(
-                    new Cauditor.Visualization.Lineplot.Project(),
-                    new Cauditor.Data(data)
-                );
-
-                chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
-            }
-        });
-    </script>
+    <div class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></div>
 {% endif %}

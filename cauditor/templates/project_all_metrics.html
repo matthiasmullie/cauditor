@@ -6,6 +6,8 @@
 <script src="/assets/js/visualizations/treemap/Abstract.js"></script>
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
 <script src="/assets/js/visualizations/treemap/Class.js"></script>
+<script>var jsonUrl = '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}';</script>
+<script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
 {% include 'utils/project_navbar.html' %}
 
@@ -43,7 +45,7 @@
         {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
             <div class="row">
                 {% for chart in grouped_charts %}
-                    <div id="{{ chart.code }}" class="col-xs-12 col-md-4 columns">
+                    <div class="col-xs-12 col-md-4 columns">
                         <h2>
                             <strong>{{ chart.name }}</strong>
                             <a href="/help/metrics#{{ chart.code }}" title="What is {{ chart.name }}?">
@@ -51,46 +53,11 @@
                             </a>
                         </h2>
                         <a href="/{{ project.name }}/{% if route.commit %}{{ commit.hash }}/{% endif %}{{ chart.code }}">
-                            <span class="chart"></span>
+                            <span class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></span>
                         </a>
                     </div>
                 {% endfor %}
             </div>
         {% endfor %}
     </div>
-
-    <script>
-        $.ajax({
-            url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
-            datatype: 'json',
-            jsonp: false,
-            cache: true,
-            success: function(data) {
-                {% for chart in charts %}
-                    var chart = new Cauditor(
-                        {% if chart.basis == 'method' %}
-                            new Cauditor.Visualization.Treemap.Method(),
-                        {% elif chart.basis == 'class' %}
-                            new Cauditor.Visualization.Treemap.Class(),
-                        {% endif %}
-                        new Cauditor.Data(data)
-                    );
-
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}, false]);
-                {% endfor %}
-            }
-        });
-
-
-        $('#expand-panel').click(function() {
-            $(this).parent().hide().siblings('.panel-more').show();
-            $(this).hide();
-        });
-
-        // automatically open the longer description if this is the user's first visit to this page
-        if (!document.cookie.match(/(^|;\s*)metrics_panel=1($|\s*;)/)) {
-            $('#expand-panel').click();
-            document.cookie = 'metrics_panel=1; expires=Tue, 19 Jan 2038 03:14:08 UTC; path=/';
-        }
-    </script>
 {% endif %}

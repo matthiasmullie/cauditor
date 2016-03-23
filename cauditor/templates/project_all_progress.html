@@ -5,6 +5,8 @@
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Project.js"></script>
+<script>var jsonUrl = '/api/v1/{{ project.name }}/{{ project.default_branch }}';</script>
+<script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
 {% include 'utils/project_navbar.html' %}
 
@@ -47,40 +49,11 @@
                             </a>
                         </h2>
                         <a href="/{{ project.name }}/progress/{{ chart.code }}">
-                            <span class="chart"></span>
+                            <span class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></span>
                         </a>
                     </div>
                 {% endfor %}
             </div>
         {% endfor %}
     </div>
-
-    <script>
-        $.ajax({
-            url: '/api/v1/{{ project.name }}/{{ project.default_branch }}',
-            datatype: 'json',
-            success: function(data) {
-                var chart = new Cauditor(
-                    new Cauditor.Visualization.Lineplot.Project(),
-                    new Cauditor.Data(data)
-                );
-
-                {% for chart in charts %}
-                    chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
-                {% endfor %}
-            }
-        });
-
-
-        $('#expand-panel').click(function() {
-            $(this).parent().hide().siblings('.panel-more').show();
-            $(this).hide();
-        });
-
-        // automatically open the longer description if this is the user's first visit to this page
-        if (!document.cookie.match(/(^|;\s*)progress_panel=1($|\s*;)/)) {
-            $('#expand-panel').click();
-            document.cookie = 'progress_panel=1; expires=Tue, 19 Jan 2038 03:14:08 UTC; path=/';
-        }
-    </script>
 {% endif %}

@@ -28,6 +28,7 @@
             <script src="/assets/js/visualizations/Abstract.js"></script>
             <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
             <script src="/assets/js/visualizations/lineplot/User.js"></script>
+            <script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
             {# Prepare error msg for when we can't find relevant commits; then all we have to do is unhide this #}
             <div class="rows no-commits" style="display: none">
@@ -62,61 +63,12 @@
                                 </a>
                             </h2>
                             <a href="/user/progress/{{ chart.code }}">
-                                <span class="chart"></span>
+                                <span class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></span>
                             </a>
                         </div>
                     {% endfor %}
                 </div>
             {% endfor %}
-
-            <script>
-                $.ajax({
-                    url: '/api/user/diffs',
-                    datatype: 'json',
-                    success: function(data) {
-                        if (!data) {
-                            $('.no-commits').show();
-                        } else {
-                            var chart = new Cauditor(
-                                new Cauditor.Visualization.Lineplot.User(),
-                                new Cauditor.Data(data)
-                            ), metrics = {}, include, median;
-
-                            {% for chart in charts %}
-                                chart.draw('#{{ chart.code }} .chart', ['{{ chart.code }}', {{ chart.range }}]);
-                            {% endfor %}
-
-                            // loop all commits, figure out which we want to include & add their relevant values to `metrics`
-                            for (i in data) {
-                                include = false;
-                                // we only want to include commits where at least 1 metric was affected; otherwise they likely weren't code changes
-                                {% for chart in charts %}
-                                    include = include || data[i].{{ chart.code }} !== 0;
-                                {% endfor %}
-
-                                if (include) {
-                                    {% for chart in charts %}
-                                        metrics.{{ chart.code }} = metrics.{{ chart.code }} || [];
-                                        metrics.{{ chart.code }}.push(data[i].{{ chart.code }});
-                                    {% endfor %}
-                                }
-                            }
-
-                            // now that we have values for all metrics, fetch the median value & add to title
-                            for (metric in metrics) {
-                                // sort on metric scores, so we can easily grab median
-                                metrics[metric].sort(function(a, b) {
-                                    return a > b ? 1 : -1;
-                                });
-
-                                median = metrics[metric][Math.floor(metrics[metric].length / 2)];
-                                median = Math.round(median * 10000) / 10000;
-                                $('#' + metric + ' h2').append(': <span style="text-transform: none">' + median + ' median</span>');
-                            }
-                        }
-                    }
-                });
-            </script>
         {% endif %}
     {% endif %}
 </div>

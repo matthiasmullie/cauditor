@@ -9,32 +9,13 @@
 {% elif chart.basis == 'class' %}
     <script src="/assets/js/visualizations/treemap/Class.js"></script>
 {% endif %}
+<script>var jsonUrl = '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}';</script>
+<script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
 {% include 'utils/project_navbar.html' %}
 
 {% if not commit %}
     {% include 'utils/commits_missing.html' %}
 {% else %}
-    <div class="chart"></div>
-
-    <script>
-        $.ajax({
-            url: '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
-            datatype: 'json',
-            jsonp: false,
-            cache: true,
-            success: function(data) {
-                var chart = new Cauditor(
-                    {% if chart.basis == 'method' %}
-                        new Cauditor.Visualization.Treemap.Method(data),
-                    {% elif chart.basis == 'class' %}
-                        new Cauditor.Visualization.Treemap.Class(data),
-                    {% endif %}
-                    new Cauditor.Data(data)
-                );
-
-                chart.draw('.chart', ['{{ chart.code }}', {{ chart.range }}]);
-            }
-        });
-    </script>
+    <div class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></div>
 {% endif %}
