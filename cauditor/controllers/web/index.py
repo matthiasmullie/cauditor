@@ -18,14 +18,23 @@ class Controller(fallback.Controller):
 
         if self.user:
             projects = [project['name'] for project in args['imported_repos']]
-            commits = self.get_commits(projects)
 
             args.update({
-                'commits': {commit['project']: commit for commit in commits}
+                'commits': self.get_last_commits(projects)
             })
 
         return args
 
-    def get_commits(self, projects):
+    def get_last_commits(self, projects):
         model = models.commits.Model(self.container.mysql)
-        return model.select(project=projects, options=["ORDER BY timestamp DESC", "LIMIT 1"])
+        last_commits = {}
+
+        for project in projects:
+            commit = model.select(project=project, options=["ORDER BY timestamp DESC", "LIMIT 1"])
+            try:
+                last_commits.update({project: next(commit)})
+            except Exception:
+                # there is no commit, but that's ok, it'll be imported at some point!
+                pass
+
+        return last_commits
