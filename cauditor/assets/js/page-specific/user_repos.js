@@ -36,7 +36,7 @@ $( document ).ready(function() {
 
                     $row.after('<tr class="link-success">' +
                         '<td class="col-xs-12 alert alert-warning text-center" colspan="5">' +
-                            '<strong>Success!</strong> Do you want to <a href="/help/import#ci">customize your configuration</a>? Or skip the busy Cauditor import queue and <a href="/help/import#bin">let your CI build push the metrics</a>?' +
+                            '<strong>Success!</strong> Check <a href="'+ data.name +'">your analysis</a>. Or do you want to <a href="/help/import#ci">customize your configuration</a>? Or skip the busy Cauditor import queue and <a href="/help/import#bin">let your CI build push the metrics</a>?' +
                         '</td>' +
                     '</tr>');
                 } else {
