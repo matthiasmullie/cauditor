@@ -231,8 +231,6 @@
                                 map[commits[i].previous] || {}
                             );
 
-                            delete commits[i];
-
                             if (++count >= batch) {
                                 return;
                             }
