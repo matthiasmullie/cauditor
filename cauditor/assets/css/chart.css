@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+a .chart .d3plus_rect {
+    cursor: pointer !important;
+}
+
 .d3plus_tooltip_title,
 .d3plus_tooltip_data_block {
     font-size: 16px !important;
