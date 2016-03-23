@@ -47,7 +47,7 @@
                 {% for chart in grouped_charts %}
                     <div class="col-xs-12 col-md-4 columns">
                         <h2>
-                            <strong>{{ chart.name }}</strong>
+                            {{ chart.name }}
                             <a href="/help/metrics#{{ chart.code }}" title="What is {{ chart.name }}?">
                                 <i class="fa fa-question-circle"></i>
                             </a>
