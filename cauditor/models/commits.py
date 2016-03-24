@@ -44,17 +44,16 @@ class Model(model.DbManager):
                 # make sure column names can't be mistaken for reserved words
                 commit_details_keys = ["`" + key + "`" for key in commit_details_keys]
 
-                try:
-                    cursor.execute(
-                        "INSERT INTO commit_details" +
-                        "(" + ", ".join(commit_details_keys) + ") " +  # (`key`, `key2`)
-                        "VALUES (" + ", ".join(["%s"] * len(commit_details_keys)) + ")" +  # (%s, %s), (%s, %s)
-                        "ON DUPLICATE KEY UPDATE " +
-                        ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in commit_details_keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
-                        commit_details_params
-                    )
-                    commit['commit_id'] = cursor.lastrowid
-                except Exception:
+                cursor.execute(
+                    "INSERT INTO commit_details " +
+                    "(" + ", ".join(commit_details_keys) + ") " +  # (`key`, `key2`)
+                    "VALUES (" + ", ".join(["%s"] * len(commit_details_keys)) + ") " +  # (%s, %s), (%s, %s)
+                    "ON DUPLICATE KEY UPDATE " +
+                    ", ".join(["%s = VALUES (%s)" % ((key,) * 2) for key in commit_details_keys]),  # "`key1` = VALUES(`key1`), `key2` = VALUES(`key2`)"
+                    commit_details_params
+                )
+                commit['commit_id'] = cursor.lastrowid
+                if commit['commit_id'] == 0:
                     # already exists, fetch existing id
                     existing = self.select(**commit_details)[0]
                     commit['commit_id'] = existing['commit_id']

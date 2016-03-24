@@ -1,5 +1,4 @@
 from cauditor import models
-import dateutil.parser
 
 
 def execute(connection, project, commit, metrics, avg, min, max):
