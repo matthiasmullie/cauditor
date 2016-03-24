@@ -41,14 +41,14 @@ var jsonUrls = {
 
     <div class="row">
         {% for project in imported_repos %}
-            <div id="{{ project.name|replace('/', '_') }}">
-                <div class="col-xs-3 columns">
+            <div id="{{ project.name|replace('/', '_') }}" class="col-xs-12 col-md-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 columns" style="height: 175px; overflow:hidden; padding: 0"> {# Fixed height so long project name can't break columns flowing next/under each other #}
                     <h3><a href="/{{ project.name }}">{{ project.name }}</a></h3>
 
                     <table class="table table-condensed">
                         <tbody>
                             <tr>
-                                <td style="width: 100px">Rank</td>
+                                <td style="width: 85px">Rank</td>
                                 <td>
                                     {% if project.name in commits %}
                                         <strong>{{ project.score|rank|int }}</strong>%
@@ -69,7 +69,7 @@ var jsonUrls = {
                     </table>
                 </div>
 
-                <div class="col-xs-3 columns">
+                <div class="col-xs-12 col-sm-6 col-md-6 columns">
                     {% if project.name in commits %}
                         <a href="/{{ project.name }}/metrics">
                             {% for chart in charts %}
@@ -84,20 +84,16 @@ var jsonUrls = {
                     {% endif %}
                 </div>
             </div>
-
-            {% if loop.cycle('odd', 'even') == 'even' %}
-                </div><div class="row">
-            {% endif %}
         {% endfor %}
 
-        <div>
-            <div class="col-xs-3 columns">
+        <div class="col-xs-12 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-6 columns" style="height: 175px; overflow:hidden; padding: 0">
                 <h3><a href="/user/repos"><i class="fa fa-plus-circle"></i> Add repo</a></h3>
 
                 <table class="table table-condensed">
                     <tbody>
                         <tr>
-                            <td style="width: 100px">Rank</td>
+                            <td style="width: 85px">Rank</td>
                             <td>&hellip;</td>
                         </tr>
                         <tr>
@@ -112,7 +108,7 @@ var jsonUrls = {
                 </table>
             </div>
 
-            <div class="col-xs-3 columns">
+            <div class="col-xs-12 col-sm-6 col-md-6 columns">
                 <a href="/user/repos">
                     <span class="chart">
                         <span class="chart" style="background-color:#ddd"></span>
