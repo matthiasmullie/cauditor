@@ -20,7 +20,7 @@ class Controller(fallback.Controller):
         # success! redirect
         self.fail = False
         self.status = "302 Found"
-        return [('Location', "%s/user" % self.container.config['site']['host'])]
+        return [('Location', "%s" % self.container.config['site']['host'])]
 
     def render(self, template="container.html"):
         if self.fail:

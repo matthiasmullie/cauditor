@@ -27,7 +27,8 @@ h2 {
     font-weight: 900;
 }
 
-body[data-template="index.html"] h2 {
+body[data-template="index.html"] h2,
+body[data-template="index_logged_in.html"] h2 {
     font-size: 24px;
 }
 
