@@ -2,6 +2,7 @@
 
 import sys
 import os
+import getopt
 
 # add path where packages are located in ElasticBeanstalk
 sys.path.append('/opt/python/run/venv/lib/python3.4/site-packages/')
@@ -15,9 +16,15 @@ from cauditor import jobs
 from cauditor import models
 from cauditor.container import Container
 
+where = {}
+opts, args = getopt.getopt(sys.argv[1:], 't:', ['type='])
+if len(opts) > 0 and opts[0][0] in ('-t', '--type'):
+    if opts[0][1] == 'unlinked':
+        where = {'github_hook': None}
+
 container = Container(os.environ)
 model = models.projects.Model(container.mysql)
-projects = model.select(github_hook=None)
+projects = model.select(**where)
 for project in projects:
     # import all missing commits
     jobs.execute(container, 'php-rest', {
