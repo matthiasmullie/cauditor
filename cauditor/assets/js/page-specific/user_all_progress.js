@@ -46,7 +46,7 @@ $.ajax({
 
                     median = metrics[metric][Math.floor(metrics[metric].length / 2)];
                     median = Math.round(median * 10000) / 10000;
-                    $('#' + metric + ' h2').append(': <span style="text-transform: none">' + median + ' median</span>');
+                    $('#' + metric + ' h2').append(': <span style="text-transform: none; font-weight: normal">' + median + ' median</span>');
                 }
             }
         });
