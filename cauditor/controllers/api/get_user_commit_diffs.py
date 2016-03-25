@@ -13,7 +13,7 @@ class Controller(fallback.Controller):
 
             return super(Controller, self).headers()
 
-        emails = self.get_emails()
+        emails = self.settings['emails'].split(',')
         commits = self.get_commits(emails)
         prev_commits = self.get_prev_commits(commits)
 
@@ -31,9 +31,6 @@ class Controller(fallback.Controller):
 
     def render(self, template="container.html"):
         return json.dumps(self.diffs)
-
-    def get_emails(self):
-        return self.settings['emails'].split(',')
 
     def get_commits(self, emails):
         model = models.commits.Model(self.container.mysql)

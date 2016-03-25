@@ -19,6 +19,8 @@
                     {% endfor %}
                 </ul>
             </li>
+
+            <li role="presentation" {% if template == 'user_feedback.html' %}class="active"{% endif %}><a href="/user/feedback"><i class="fa fa-thumbs-up"></i> Feedback</a></li>
         </ul>
     </div>
 </div>

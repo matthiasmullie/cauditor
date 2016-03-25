@@ -65,3 +65,10 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` blob DEFAULT NULL,
   PRIMARY KEY (`user`,`key`)
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `project` varchar(255) NOT NULL, -- vendor/project
+  `author` varchar(255) NOT NULL, -- colleague email
+  `question` varchar(255) NOT NULL,
+  `score` TINYINT NOT NULL
+) DEFAULT CHARSET=utf8;

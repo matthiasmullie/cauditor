@@ -17,6 +17,7 @@ routes = {
     "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
     "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
     "^/user/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
+    "^/user/feedback": 'cauditor.controllers.web.user_feedback',  # matches /user/feedback
     "^/help/metrics$": 'cauditor.controllers.web.help_metrics',  # matches /help/metrics
     "^/help/import$": 'cauditor.controllers.web.help_import',  # matches /help/import
 
@@ -25,7 +26,9 @@ routes = {
     "^/api/user/repos$": 'cauditor.controllers.api.get_repos',  # matches /api/user/repos
     "^/api/user/settings$": 'cauditor.controllers.api.put_settings',  # matches /api/user/settings
     "^/api/user/diffs$": 'cauditor.controllers.api.get_user_commit_diffs',  # matches /api/user/diffs
-    "^/api/user/link/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": 'cauditor.controllers.api.put_project',  # matches /api/link/vendor/repo
+    "^/api/user/link/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": 'cauditor.controllers.api.put_project',  # matches /api/user/link/vendor/repo
+    "^/api/user/colleagues": 'cauditor.controllers.api.get_colleagues',  # matches /api/user/colleagues
+    "^/api/user/feedback": 'cauditor.controllers.api.put_feedback',  # matches /api/user/feedback
     "^/api/v1/webhook/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)": 'cauditor.controllers.api.put_webhook',  # matches /api/v1/webhook/vendor/repo
     "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/((?P<branch>[a-z0-9_.-]+)/)?(?P<commit>[a-f0-9]{40})$": 'cauditor.controllers.api.put_metrics',  # matches /api/v1/vendor/repo/branch/commit
     "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_project_commits',  # matches /api/v1/vendor/repo/branch
