@@ -8,7 +8,7 @@ class DbManager(object):
     def __init__(self, connection):
         self.connection = connection
 
-    def select(self, options=list(""), columns=list("*"), **kwargs):
+    def select(self, options=None, columns=None, where=None, **kwargs):
         """ Arguments will refer to columns to be selected. E.g.: select(name="vendor/project")
 
         Known defects:
@@ -22,11 +22,13 @@ class DbManager(object):
 
         :param options: Additional options like ORDER BY, LIMIT, ... (SQL-injection vulnerable!)
         :param columns: Specific columns to fetch (SQL-injection vulnerable!)
-        :param kwargs: All of the WHERE-conditions
+        :param where: Complex WHERE conditions (SQL-injection vulnerable!)
+        :param kwargs: All of the WHERE conditions
         :return: iterable[dict]
         """
-        select = Select(self, columns)
-        select.where(**kwargs)
+        select = Select(self, ['*'] if columns is None else columns)
+        select.where([] if where is None else where, **kwargs)
+        options = [] if options is None else options
         select.options(*options)
         return select
 
@@ -143,15 +145,16 @@ class Select(object):
 
         return result[0]
 
-    def where(self, **kwargs):
+    def where(self, where=None, **kwargs):
         """ Set the WHERE conditions for the SELECT query
 
+        :param where: List of (complex) WHERE conditions
         :param kwargs: All of the WHERE-conditions
         :return: self
         """
         # build `WHERE `key` IN (%s) AND `key2` IN (%s, %s)` clause
         kwargs = {key: value if isinstance(value, list) else [value] for key, value in kwargs.items()}
-        where = []
+        where = [] if where is None else where
         for key, values in kwargs.items():
             # special case: WHERE `key` IS NULL
             if len(values) == 1 and values[0] is None:
