@@ -8,7 +8,7 @@ class DbManager(object):
     def __init__(self, connection):
         self.connection = connection
 
-    def select(self, options="", **kwargs):
+    def select(self, options=list(""), columns=list("*"), **kwargs):
         """ Arguments will refer to columns to be selected. E.g.: select(name="vendor/project")
 
         Known defects:
@@ -21,10 +21,11 @@ class DbManager(object):
           * a whole lot more, you know
 
         :param options: Additional options like ORDER BY, LIMIT, ... (SQL-injection vulnerable!)
+        :param columns: Specific columns to fetch (SQL-injection vulnerable!)
         :param kwargs: All of the WHERE-conditions
         :return: iterable[dict]
         """
-        select = Select(self)
+        select = Select(self, columns)
         select.where(**kwargs)
         select.options(*options)
         return select
@@ -72,10 +73,11 @@ class DbManager(object):
 class Select(object):
     cursor = None
 
-    def __init__(self, parent):
+    def __init__(self, parent, columns=list("*")):
         self.parent = parent  # keep parent around so its __del__ isn't run until this object is dead
         self.connection = parent.connection
         self.table = parent.table
+        self.__columns = columns
         self.__where = ""
         self.__params = []
         self.__options = ""
@@ -90,7 +92,7 @@ class Select(object):
         """
         self.cursor = self.connection.cursor(pymysql.cursors.DictCursor)
         self.cursor.execute(
-            "SELECT * "
+            "SELECT " + ",".join(self.__columns) + " " +
             "FROM %s " % self.table +
             self.__where + " " +
             self.__options,  # additional options (e.g. ORDER BY, LIMIT)
