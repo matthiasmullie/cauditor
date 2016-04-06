@@ -1,6 +1,6 @@
 site:
     title: cauditor
-    description: Figure out complexity hotspots in the blink of an eye.
+    description: Visualize metrics for PHP projects to understand their architecture & keep them under control.
     domain: $SITE_DOMAIN
     host: $SITE_HOST
     twitter: cauditor_org
