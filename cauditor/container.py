@@ -1,5 +1,4 @@
 import pymysql
-import io
 import re
 import os
 import yaml
@@ -29,7 +28,7 @@ class Container:
             yaml.add_constructor('tag', pathex_constructor)
 
             path = os.path.dirname(os.path.abspath(__file__)) + '/config.yaml'
-            with io.open(path, 'r', encoding='utf-8') as stream:
+            with open(path, 'r', encoding='utf-8') as stream:
                 self._config = yaml.load(stream)
 
         return self._config

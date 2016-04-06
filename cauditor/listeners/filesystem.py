@@ -11,6 +11,5 @@ def execute(config, project, commit, metrics):
         os.makedirs(os.path.dirname(path))
 
     # write file
-    f = open(path, 'w')
-    f.write(json.dumps(metrics))
-    f.close()
+    with open(path, 'w') as file:
+        file.write(json.dumps(metrics))
