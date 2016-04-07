@@ -14,6 +14,10 @@ class Controller(fallback.Controller):
         except Exception:
             self.data = {}
 
+        # all controllers extend from this one, so I'm going to special-case
+        # the 404 header
+        self.status = "404 Not Found" if self.__module__ == "cauditor.controllers.api.fallback" else "200 OK"
+
     def headers(self):
         return [('Content-Type', "application/json; charset=UTF-8")]
 
