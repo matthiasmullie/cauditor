@@ -17,17 +17,22 @@ from cauditor import models
 from cauditor.container import Container
 
 where = {}
-opts, args = getopt.getopt(sys.argv[1:], 't:', ['type='])
-if len(opts) > 0 and opts[0][0] in ('-t', '--type'):
-    if opts[0][1] == 'unlinked':
+queue = 'php-rest'
+opts, args = getopt.getopt(sys.argv[1:], 't:r:q:', ['type=', 'repo=', 'queue='])
+if len(opts) > 0:
+    if opts[0][0] in ('-t', '--type') and opts[0][1] == 'unlinked':
         where = {'github_hook': None}
+    if opts[0][0] in ('-r', '--repo'):
+        where = {'name': opts[0][1]}
+    if opts[0][0] in ('-q', '--queue'):
+        queue = opts[0][1]
 
 container = Container(os.environ)
 model = models.projects.Model(container.mysql)
 projects = model.select(**where)
 for project in projects:
     # import all missing commits
-    jobs.execute(container, 'php-rest', {
+    jobs.execute(container, queue, {
         'slug': project['name'],
         'git': project['git'],
         'all': True,
