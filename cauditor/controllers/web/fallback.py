@@ -36,7 +36,7 @@ class Controller(object):
             settings = model.select(user=self.user['id'])
             self.settings = {entry['key']: entry['value'] for entry in settings}
 
-        path = os.path.dirname(os.path.abspath(__file__)) + "/../../templates/"
+        path = os.path.dirname(os.path.abspath(__file__)) + "/../../../templates/"
         self.template_env = Environment(loader=FileSystemLoader(path))
         self.template_env.filters['datetime'] = self.datetime
 
