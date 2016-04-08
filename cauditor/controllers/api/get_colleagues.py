@@ -14,8 +14,8 @@ class Controller(fallback.Controller):
             return super(Controller, self).headers()
 
         emails = self.settings['emails'].split(',')
-        projects = self.get_projects(emails)
-        self.colleagues = self.get_colleagues(emails, projects)
+        projects = self.get_projects(emails) if emails else []
+        self.colleagues = self.get_colleagues(emails, projects) if projects else []
 
         return super(Controller, self).headers()
 
