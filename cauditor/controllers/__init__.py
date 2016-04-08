@@ -11,9 +11,9 @@ routes = {
     "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
     "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress$": 'cauditor.controllers.web.project_all_progress',  # matches /vendor/repo/progress
     "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
-    "^/login\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
-    "^/logout$": 'cauditor.controllers.web.logout',  # matches /logout
     "^/user$": 'cauditor.controllers.web.user_repos',  # matches /user
+    "^/user/login(?P<redirect>[^?]*)\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
+    "^/user/logout$": 'cauditor.controllers.web.logout',  # matches /logout
     "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
     "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
     "^/user/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
@@ -52,4 +52,4 @@ def route(uri, cookies, session, container):
     (module_name, match) = matched_controllers[0]
     module = importlib.import_module(module_name)
 
-    return module.Controller(match.groupdict(), cookies, session, container)
+    return module.Controller(uri, match.groupdict(), cookies, session, container)

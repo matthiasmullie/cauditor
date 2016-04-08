@@ -8,6 +8,7 @@ import os
 class Controller(object):
     template = "404.html"
     status = "200 OK"
+    uri = ""
     route = {}
     cookies = None
     cookie_set = None
@@ -17,7 +18,8 @@ class Controller(object):
     settings = None
     template_env = None
 
-    def __init__(self, route, cookies, session, container):
+    def __init__(self, uri, route, cookies, session, container):
+        self.uri = uri
         self.route = route
         self.cookies = cookies
         self.session_data = session
@@ -54,6 +56,7 @@ class Controller(object):
         args.update({
             'controller': self.__module__,
             'template': self.template,
+            'uri': self.uri,
             'route': self.route,
             'user': self.user,
             'settings': self.settings,

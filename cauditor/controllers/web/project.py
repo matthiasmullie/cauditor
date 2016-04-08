@@ -8,8 +8,8 @@ class Controller(fallback.Controller):
     commit = None
     fail = False
 
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         try:
             self.project = self.load_project(self.route['project'])

@@ -5,8 +5,8 @@ from cauditor import models
 class Controller(fallback.Controller):
     template = "index.html"
 
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         if self.user:
             self.template = "index_logged_in.html"

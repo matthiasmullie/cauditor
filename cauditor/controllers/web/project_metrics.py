@@ -5,8 +5,8 @@ class Controller(project.Controller):
     template = "project_metrics.html"
     chart = None
 
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         self.chart = self.load_chart(self.route['chart'])
 

@@ -6,8 +6,8 @@ class Controller(fallback.Controller):
     template = ""
     data = {}
 
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         try:
             self.data = self.get_input()

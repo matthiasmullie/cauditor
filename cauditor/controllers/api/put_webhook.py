@@ -7,8 +7,8 @@ class Controller(fallback.Controller):
     # hook is triggered for these events:
     # https://developer.github.com/v3/activity/events/types/#pushevent
     # https://developer.github.com/v3/activity/events/types/#pullrequestevent
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         # can't examine X-Github-Event header...
         # I'm going to ignore pull requests for now, by checking 'ref' (which is not present there)

@@ -8,8 +8,8 @@ class Controller(project.Controller):
     prev_commits = {}
     batch_size = 30
 
-    def __init__(self, route, cookies, session, container):
-        super(Controller, self).__init__(route, cookies, session, container)
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
 
         self.commits = self.load_commits(self.route['project'], self.batch_size)
         self.prev_commits = {commit['hash']: commit for commit in self.load_prev_commits(self.commits)}
