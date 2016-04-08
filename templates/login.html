@@ -4,7 +4,7 @@
             <div class="alert alert-danger" role="alert">
                 <i class="fa fa-exclamation-circle"></i>
                 Login failed!
-                <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="alert-link">Try again?</a>
+                <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}&redirect_uri={{ site.host }}/user/login{{ route.redirect }}" class="alert-link">Try again?</a>
             </div>
         </div>
     </div>

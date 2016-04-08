@@ -74,7 +74,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if not user %}
                         <li>
-                            <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}" class="avatar">
+                            <a href="https://github.com/login/oauth/authorize?scope={{ github.scopes }}&client_id={{ github.id }}&redirect_uri={{ site.host }}/user/login{{ uri }}" class="avatar">
                                 Sign in <img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png">
                             </a>
                         </li>
@@ -88,7 +88,7 @@
                                 <li {% if template == "user_settings.html" %}class="active"{% endif %}><a href="/user/settings">Settings</a></li>
                                 <li {% if template == "user_all_progress.html" or template == "user_progress.html" %}class="active"{% endif %}><a href="/user/progress">Progress</a></li>
                                 <li {% if template == 'user_feedback.html' %}class="active"{% endif %}><a href="/user/feedback">Feedback</a></li>
-                                <li><a href="/logout">Sign out</a></li>
+                                <li><a href="/user/logout">Sign out</a></li>
                             </ul>
                         </li>
                     {% endif %}
