@@ -1,10 +1,9 @@
 site:
-    title: cauditor
+    title: Cauditor
     description: Visualize metrics for PHP projects to understand their architecture & keep them under control.
     domain: $SITE_DOMAIN
     host: $SITE_HOST
     twitter: cauditor_org
-    assets: cauditor/assets
     ga: $GOOGLE_ANALYTICS
 
 mysql:
