@@ -34,7 +34,7 @@ def application(environ, start_response):
 
         # figure out the right controller & let it do all the pre-processing it has to
         # (e.g. validate input)
-        controller = controllers.route(uri, cookies, session, container)
+        controller = controllers.route(environ['REQUEST_METHOD'], uri, cookies, session, container)
 
         headers = controller.headers()
         body = controller.render().encode('utf-8')
