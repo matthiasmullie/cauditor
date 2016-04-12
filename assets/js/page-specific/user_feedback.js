@@ -23,8 +23,16 @@ $.ajax({
                     '<div class="row">' +
                         '<div class="col-xs-12 columns">' +
                             '<div class="alert alert-danger" role="alert">' +
-                                '<i class="fa fa-exclamation-circle"></i>' +
-                                "Thank you for wanting to help out, but we couldn't find anyone for you to rate at this point. Please check back later!" +
+                                '<p>' +
+                                    '<i class="fa fa-exclamation-circle"></i> ' +
+                                    "Thank you for wanting to help out, but we couldn't find anyone for you to rate at this point." +
+                                '</p>' +
+                                "<p>Cauditor needs some info to be able to locate people you've worked with:</p>" +
+                                '<ul>' +
+                                    '<li>Have you <a href="/user" class="alert-link">added your projects</a> already?</li>' +
+                                    '<li>Have you filled out your <a href="/user/settings" class="alert-link">git author email addresses</a>?</li>'+
+                                '</ul>' +
+                                "<p>If you've already provided these details, then your projects are probably still importing. Please check back later!</p>" +
                             '</div>' +
                         '</div>' +
                     '</div>'

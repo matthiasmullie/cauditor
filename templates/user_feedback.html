@@ -26,9 +26,10 @@
             </p>
         </div>
     </div>
-</div>
 
-<div class="container">
+    {% if not user %}
+        {% include 'utils/user_not_logged_in.html' %}
+    {% else %}
     <form>
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -60,4 +61,5 @@
             </div>
         </div>
     </form>
+{% endif %}
 </div>
