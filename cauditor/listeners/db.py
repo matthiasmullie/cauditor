@@ -6,17 +6,6 @@ def execute(connection, project, commit, metrics, avg, min, max, weighed):
     store_commit(connection, commit, metrics, avg, min, max, weighed)
 
 
-def commit_exists(connection, commit):
-    commits = models.commits.Model(connection)
-    result = commits.select(project=commit['project'], branch=commit['branch'], hash=commit['hash'])
-
-    try:
-        next(result)
-        return True
-    except Exception:
-        return False
-
-
 def get_last_commit(connection, project):
     commits = models.commits.Model(connection)
     result = commits.select(project=project['name'], branch=project['default_branch'], options=["ORDER BY timestamp DESC", "LIMIT 1"])
@@ -27,7 +16,7 @@ def store_project(connection, project, commit, avg, min, max, weighed):
     try:
         last_commit = get_last_commit(connection, project)
         # comparing time strings in isoformat seems reliable enough?
-        add_score = last_commit['timestamp'] < commit['timestamp'].isoformat()
+        add_score = last_commit['timestamp'] <= commit['timestamp'].isoformat()
     except Exception:
         add_score = True
 
