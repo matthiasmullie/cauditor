@@ -27,7 +27,9 @@ routes = {
         "^/api/user/repos$": 'cauditor.controllers.api.get_repos',  # matches /api/user/repos
         "^/api/user/diffs$": 'cauditor.controllers.api.get_user_commit_diffs',  # matches /api/user/diffs
         "^/api/user/colleagues": 'cauditor.controllers.api.get_colleagues',  # matches /api/user/colleagues
-        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_project_commits',  # matches /api/v1/vendor/repo/branch
+        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_project_branches',  # matches /api/v1/vendor/repo
+        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_branch_commits',  # matches /api/v1/vendor/repo/branch
+        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)/(?P<commit>([a-f0-9]{40}|HEAD))$": 'cauditor.controllers.api.get_commit_stats',  # matches /api/v1/vendor/repo/commit
     },
     'PUT': {
         "^/api/user/settings$": 'cauditor.controllers.api.put_settings',  # matches /api/user/settings
