@@ -47,6 +47,16 @@ CREATE TABLE IF NOT EXISTS `commit_details` (
   `worst_he` decimal(11, 2) NOT NULL,
   `worst_hi` decimal(11, 2) NOT NULL,
   `worst_mi` decimal(11, 2) NOT NULL,
+  -- project-wide weighed averages as of this commit
+  `weighed_ca` decimal(11, 2) NOT NULL,
+  `weighed_ce` decimal(11, 2) NOT NULL,
+  `weighed_i` decimal(11, 2) NOT NULL,
+  `weighed_dit` decimal(11, 2) NOT NULL,
+  `weighed_ccn` decimal(11, 2) NOT NULL,
+  `weighed_npath` decimal(65, 0) NOT NULL,
+  `weighed_he` decimal(11, 2) NOT NULL,
+  `weighed_hi` decimal(11, 2) NOT NULL,
+  `weighed_mi` decimal(11, 2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique` (`author`,`timestamp`,`hash`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

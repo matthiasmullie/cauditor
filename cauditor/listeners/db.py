@@ -1,9 +1,9 @@
 from cauditor import models
 
 
-def execute(connection, project, commit, metrics, avg, min, max):
-    store_project(connection, project, commit, avg, min, max)
-    store_commit(connection, commit, metrics, avg, min, max)
+def execute(connection, project, commit, metrics, avg, min, max, weighed):
+    store_project(connection, project, commit, avg, min, max, weighed)
+    store_commit(connection, commit, metrics, avg, min, max, weighed)
 
 
 def commit_exists(connection, commit):
@@ -23,7 +23,7 @@ def get_last_commit(connection, project):
     return next(result)
 
 
-def store_project(connection, project, commit, avg, min, max):
+def store_project(connection, project, commit, avg, min, max, weighed):
     try:
         last_commit = get_last_commit(connection, project)
         # comparing time strings in isoformat seems reliable enough?
@@ -33,17 +33,14 @@ def store_project(connection, project, commit, avg, min, max):
 
     if add_score:
         project.update({
-            # score is based on maintenance index:
-            # * half the project average
-            # * half the worst in the project
-            'score': round((min['mi'] + avg['mi']) / 2, 2) or 0 if 'mi' in avg else 0
+            'score': weighed['mi']
         })
 
     projects = models.projects.Model(connection)
     projects.store(project)
 
 
-def store_commit(connection, commit, metrics, avg, min, max):
+def store_commit(connection, commit, metrics, avg, min, max, weighed):
     commits = models.commits.Model(connection)
     commit.update({
         # metrics
@@ -73,5 +70,16 @@ def store_commit(connection, commit, metrics, avg, min, max):
         'worst_he': max['he'] or 0 if 'he' in max else 0,
         'worst_hi': max['hi'] or 0 if 'hi' in max else 0,
         'worst_mi': min['mi'] or 0 if 'mi' in min else 0,
+
+        # weighed averages
+        'weighed_ca': weighed['ca'] or 0 if 'ca' in weighed else 0,
+        'weighed_ce': weighed['ce'] or 0 if 'ce' in weighed else 0,
+        'weighed_i': weighed['i'] or 0 if 'i' in weighed else 0,
+        'weighed_dit': weighed['dit'] or 0 if 'dit' in weighed else 0,
+        'weighed_ccn': weighed['ccn'] or 0 if 'ccn' in weighed else 0,
+        'weighed_npath': weighed['npath'] or 0 if 'npath' in weighed else 0,
+        'weighed_he': weighed['he'] or 0 if 'he' in weighed else 0,
+        'weighed_hi': weighed['hi'] or 0 if 'hi' in weighed else 0,
+        'weighed_mi': weighed['mi'] or 0 if 'mi' in weighed else 0,
     })
     commits.store(commit)

@@ -1,7 +1,7 @@
 from cauditor.listeners import db, s3, filesystem
 
 
-def execute(container, project, commit, metrics, avg, min, max):
+def execute(container, project, commit, metrics, avg, min, max, weighed):
     if db.commit_exists(container.mysql, commit):
         return
 
@@ -10,4 +10,4 @@ def execute(container, project, commit, metrics, avg, min, max):
     else:
         s3.execute(container.config, project, commit, metrics)
 
-    db.execute(container.mysql, project, commit, metrics, avg, min, max)
+    db.execute(container.mysql, project, commit, metrics, avg, min, max, weighed)

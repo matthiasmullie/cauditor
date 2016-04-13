@@ -27,6 +27,7 @@ class Controller(fallback.Controller):
                 self.data['avg'],
                 self.data['min'],
                 self.data['max'],
+                self.data['weighed'],
             )
         except Exception as exception:
             self.status = "401 Unauthorized"

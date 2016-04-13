@@ -105,7 +105,8 @@ class Controller(object):
         return str(date)
 
     def get_score(self, commit):
-        return (commit['worst_mi'] + commit['avg_mi']) / 2
+        # @todo we'll only want weighed_mi, but for now it needs to fall back to old score until data is backfilled
+        return commit['weighed_mi'] or (commit['worst_mi'] + commit['avg_mi']) / 2
 
     def get_rank(self):
         scores = []
