@@ -16,10 +16,10 @@
     <meta name="author" content="https://plus.google.com/u/0/114103174273569238978">
     <link rel="author" href="https://plus.google.com/u/0/114103174273569238978" />
 
-    <meta name="description" content="{{ site.description }}" />
+    <meta name="description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
 
     <meta property="og:title" content="{{ site.title }}{% if title %}: {{ title }}{% endif %}" />
-    <meta property="og:description" content="{{ site.description }}" />
+    <meta property="og:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ site.host }}{{ uri }}" />
     <meta property="og:image" content="{{ site.host }}/assets/img/logo.png" />
@@ -30,7 +30,7 @@
     <meta name="twitter:creator" content="@matthiasmullie" />
     <meta name="twitter:domain" content="{{ site.domain }}" />
     <meta name="twitter:title" content="{{ site.title }}{% if title %}: {{ title }}{% endif %}" />
-    <meta name="twitter:description" content="{{ site.description }}" />
+    <meta name="twitter:description" content="{% if description %}{{ description }}{% else %}{{ site.description }}{% endif %}" />
     <meta name="twitter:image" content="{{ site.host }}/assets/img/logo.png" />
     <meta name="twitter:url" content="{{ site.host }}{{ uri }}" />
 

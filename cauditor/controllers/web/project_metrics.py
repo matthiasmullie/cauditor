@@ -14,7 +14,10 @@ class Controller(project.Controller):
         args = super(Controller, self).args()
         args.update({'chart': self.chart})
         if not self.fail:
-            args.update({'title': self.project['name'] + ': ' + self.chart['name']})
+            args.update({
+                'title': self.project['name'] + ': ' + self.chart['name'],
+                'description': '%s metrics for %s' % (self.chart['name'], self.project['name'])
+            })
         return args
 
     def load_chart(self, chart):

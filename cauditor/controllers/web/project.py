@@ -27,7 +27,8 @@ class Controller(fallback.Controller):
         args.update({
             'project': self.project,
             'commit': self.commit,
-            'title': self.project['name']
+            'title': self.project['name'],
+            'description': 'Software metrics for %s' % self.project['name'],
         })
         return args
 
