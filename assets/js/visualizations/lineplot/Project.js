@@ -23,7 +23,7 @@ Cauditor.Visualization.Lineplot.Project.prototype.visualization = function(metri
         },
         y: function(data, key) {
             // we'll have 2 lines, with id "avg" & "worst", where we want to show
-            // respectively "avg_..." and "worst_..." data from
+            // respectively "weighed_..." and "worst_..." data from
             var prefix = data.id;
 
             // with a value of 0, the chart fails to render
@@ -32,7 +32,7 @@ Cauditor.Visualization.Lineplot.Project.prototype.visualization = function(metri
         // values to be displayed in tooltip; don't show share % or children etc
         tooltip: {
             size: false,
-            value: ['timestamp', 'avg_'+metric, 'worst_'+metric],
+            value: ['timestamp', 'weighed_'+metric, 'worst_'+metric],
             // whatever size is required to fit the text in
             small: '100%'
         },
@@ -48,7 +48,7 @@ Cauditor.Visualization.Lineplot.Project.prototype.visualization = function(metri
  * @return {object}
  */
 Cauditor.Visualization.Lineplot.Project.prototype.filter = function(data) {
-    var result = [], avg, worst;
+    var result = [], weighed, worst;
 
     // sort on date: oldest first
     data.sort(function(a, b) {
@@ -62,10 +62,10 @@ Cauditor.Visualization.Lineplot.Project.prototype.filter = function(data) {
         // this should do, I guess...
         data[i].x = data[i].timestamp + i;
 
-        avg = Object.create(data[i]);
-        avg.id = 'avg';
-        avg.color = '#1F9B1F'; // green
-        result.push(avg);
+        weighed = Object.create(data[i]);
+        weighed.id = 'weighed';
+        weighed.color = '#1F9B1F'; // green
+        result.push(weighed);
 
         worst = Object.create(data[i]);
         worst.id = 'worst';
@@ -83,12 +83,12 @@ Cauditor.Visualization.Lineplot.Project.prototype.filter = function(data) {
  */
 Cauditor.Visualization.Lineplot.Project.prototype.format = {
     'timestamp': 'Date',
-    'avg_mi': 'Average',
-    'avg_ccn': 'Average',
-    'avg_npath': 'Average',
-    'avg_i': 'Average',
-    'avg_ca': 'Average',
-    'avg_ce': 'Average',
+    'weighed_mi': 'Average',
+    'weighed_ccn': 'Average',
+    'weighed_npath': 'Average',
+    'weighed_i': 'Average',
+    'weighed_ca': 'Average',
+    'weighed_ce': 'Average',
     'worst_mi': 'Worst',
     'worst_ccn': 'Worst',
     'worst_npath': 'Worst',

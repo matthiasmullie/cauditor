@@ -93,8 +93,8 @@ $(document).ready(function() {
 function append(commit, prev) {
     var indicator = '', classname = '', score, prev_score;
     if (prev) {
-        score = (commit.worst_mi + commit.avg_mi) / 2;
-        prev_score = (prev.worst_mi + prev.avg_mi) / 2;
+        score = commit.weighed_mi;
+        prev_score = prev.weighed_mi;
         if (score > prev_score) {
             indicator = '<i class="fa fa-caret-up green-text"></i>';
             classname = 'positive';
@@ -118,7 +118,7 @@ function append(commit, prev) {
                     commit.branch +
             '</td>' +
             '<td class="col-xs-3">' + commit.timestamp.replace('T', ' ') + '</td>' +
-            '<td class="col-xs-1">' + commit.avg_mi + '</td>' +
+            '<td class="col-xs-1">' + commit.weighed_mi + '</td>' +
             '<td class="col-xs-1">' + commit.worst_mi + '</td>' +
             '<td class="col-xs-2 text-center">' +
                 '<a href="/' + commit.project + '/' + commit.hash + '/metrics">Metrics <i class="fa fa-long-arrow-right"></i></a>' +
