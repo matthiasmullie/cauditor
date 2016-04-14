@@ -69,7 +69,7 @@ body[data-template="index_logged_in.html"] .navbar-fixed-top ul.navbar-nav > li 
 
 /* Strip of logos, charts */
 .logo-strip img {
-    padding: 25px;
+    padding: 25px 15px;
 }
 .logo-strip img:not(:hover) {
     filter: grayscale(100%);
