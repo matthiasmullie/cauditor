@@ -78,7 +78,8 @@ $(document).ready(function() {
                     $(element).closest('tr').before(
                         '<tr>' +
                             '<td colspan="8" class="col-xs-12 text-center">' +
-                                'Commit history is incomplete. Missing commits should be imported soon!' +
+                                'Commit history is incomplete. Missing commits should be imported soon! ' +
+                                'Or <a href="/help/import">bypass the import queue and submit them yourself</a>.' +
                             '</td>' +
                         '</tr>'
                     );
