@@ -14,52 +14,54 @@
         {% set vendor = '' %}
 
         <div class="row">
-            <table class="table table-striped table-hover">
-                {#
-                    We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
-                    but they seem to be in the correct order already and I don't really want vendors to be
-                    ordered alphabetically (I want username vendor first, then organizations)
-                #}
-                {% for repo in repos %}
-                    {% if vendor != repo.name.split('/')[0] %}
-                        {% if vendor != '' %}</tbody>{% endif %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    {#
+                        We could repos|sort(attribute='name') to ensure they're all in correct order (per vendor),
+                        but they seem to be in the correct order already and I don't really want vendors to be
+                        ordered alphabetically (I want username vendor first, then organizations)
+                    #}
+                    {% for repo in repos %}
+                        {% if vendor != repo.name.split('/')[0] %}
+                            {% if vendor != '' %}</tbody>{% endif %}
 
-                        {% set vendor = repo.name.split('/')[0] %}
-                        <thead>
-                            <tr>
-                                <th colspan="5">{{ vendor }}</th>
+                            {% set vendor = repo.name.split('/')[0] %}
+                            <thead>
+                                <tr>
+                                    <th colspan="5">{{ vendor }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {% endif %}
+                            <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
+                                <td class="col-xs-1 switch">
+                                    <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
+
+                                    {% if repo.name in project_names %}
+                                        <a class="btn btn-primary btn-xs" href="/{{ repo.name }}" role="button"><i class="fa fa-line-chart"></i></a>
+                                    {% endif %}
+                                </td>
+                                <td class="col-xs-6">
+                                    {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
+                                        <span class="title">{{ repo.name.split('/')[1] }}</span>
+                                    {% if repo.name in project_names %}</a>{% endif %}
+                                    {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
+                                    {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
+                                </td>
+                                <td class="col-xs-1">
+                                    <i class="fa fa-code"></i> {% if repo.language %}<span class="code-language">{{ repo.language }}</span>{% else %}&hellip;{% endif %}
+                                </td>
+                                <td class="col-xs-1 text-center">
+                                    <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
+                                </td>
+                                <td class="col-xs-1 text-center">
+                                    <i class="fa fa-star"></i> {{ repo.stargazers_count }}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                    {% endif %}
-                        <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                            <td class="col-xs-1 switch">
-                                <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
-
-                                {% if repo.name in project_names %}
-                                    <a class="btn btn-primary btn-xs" href="/{{ repo.name }}" role="button"><i class="fa fa-line-chart"></i></a>
-                                {% endif %}
-                            </td>
-                            <td class="col-xs-6">
-                                {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
-                                    <span class="title">{{ repo.name.split('/')[1] }}</span>
-                                {% if repo.name in project_names %}</a>{% endif %}
-                                {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
-                                {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
-                            </td>
-                            <td class="col-xs-1">
-                                <i class="fa fa-code"></i> {% if repo.language %}<span class="code-language">{{ repo.language }}</span>{% else %}&hellip;{% endif %}
-                            </td>
-                            <td class="col-xs-1 text-center">
-                                <i class="fa fa-code-fork"></i> {{ repo.forks_count }}
-                            </td>
-                            <td class="col-xs-1 text-center">
-                                <i class="fa fa-star"></i> {{ repo.stargazers_count }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endif %}

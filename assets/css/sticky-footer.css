@@ -16,23 +16,32 @@ html, body {
     height: 50px;
 }
 
-/*
- * On chart pages, I don't want the sticky footer to be visible.
- * I'd rather have the chart be slightly bigger and the footer be
- * just below the fold.
- */
-body[data-template="project_metrics.html"] .content,
-body[data-template="project_progress.html"] .content,
-body[data-template="user_progress.html"] .content {
-    height: 100%;
+@media (min-width: 992px) {
+    /*
+     * On chart pages, I don't want the sticky footer to be visible.
+     * I'd rather have the chart be slightly bigger and the footer be
+     * just below the fold.
+     */
+    body[data-template="project_metrics.html"] .content,
+    body[data-template="project_progress.html"] .content,
+    body[data-template="user_progress.html"] .content {
+        height: 100%;
 
-    margin-bottom: 0;
+        margin-bottom: 0;
+    }
+    body[data-template="project_metrics.html"] .chart,
+    body[data-template="project_progress.html"] .chart,
+    body[data-template="user_progress.html"] .chart {
+        /* Subtract size of secondary nav */
+        height: calc(100% - 57px);
+    }
 }
-body[data-template="project_metrics.html"] .chart,
-body[data-template="project_progress.html"] .chart,
-body[data-template="user_progress.html"] .chart {
-    /* Subtract size of secondary nav: */
-    /* 20px (margin-top) + 1px (border-top) + 70px (height) + 1px (border-bottom) + 20px (margin-bottom) */
-    /* But.. we've already preserved space for main navbar: -70px */
-    height: calc(100% - 42px);
+
+@media (max-width: 992px) {
+    body[data-template="project_metrics.html"] .chart,
+    body[data-template="project_progress.html"] .chart,
+    body[data-template="user_progress.html"] .chart {
+        /* Ensure there is at least some detail in this little chart... */
+        min-height: 500px;
+    }
 }

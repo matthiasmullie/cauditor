@@ -100,3 +100,10 @@ a .title {
     font-size: 50px;
     line-height: 30px;
 }
+
+@media (max-width: 992px) {
+    /* On smaller screens, these arrows don't point to where they're supposed to; might as well get rid of them then */
+    .arrow {
+        display: none;
+    }
+}
