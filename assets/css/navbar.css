@@ -52,15 +52,21 @@ nav a {
 
 /* Pull secondary nav in between primary nav & make it look similar */
 .secondary-nav {
-    z-index: 9999;
-    /* Content preserves 70px for main header & we want to keep 15px, so pull it up only 55px */
-    margin-top: -55px;
+    margin-top: 10px;
     margin-bottom: 50px;
 
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 0 !important;
+}
 
+/* Only overlap secondary nav on bigger screens (col-md), otherwise it's just too small to fit in there */
+@media (min-width: 992px) {
+    .secondary-nav {
+        /* Content preserves 70px for main header & we want to keep 15px, so pull it up only 55px */
+        margin-top: -55px;
+        z-index: 9999;
+    }
 }
 
 /* Justified will break off separate words & shorten the cell, but we don't want them to be split */
