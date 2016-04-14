@@ -10,6 +10,11 @@ body ul.navbar-nav > li > a:hover {
     border-color: #ddd;
 }
 
+/* Not using any of the default colored navbars (-default or -inverse), so I'll have to color toggle myself */
+.navbar-toggle .icon-bar {
+    background-color: #ddd;
+}
+
 /* Change font size */
 nav,
 nav .dropdown-menu,
@@ -73,4 +78,9 @@ nav a {
 .secondary-nav ul.dropdown-menu a {
     padding-top: 12px;
     padding-bottom: 12px;
+}
+
+/* Footer links: they're just a small inline list of icons, let's separate them a bit */
+.footer a {
+    padding: 0 5px;
 }
