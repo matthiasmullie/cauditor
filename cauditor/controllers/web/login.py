@@ -20,6 +20,11 @@ class Controller(fallback.Controller):
         # success! redirect
         self.fail = False
         self.status = "302 Found"
+
+        # when use has not yet imported any repos, redirect them to repo-import page
+        if len(self.args()['imported_repos']) == 0:
+            self.route['redirect'] = '/user'
+
         return [('Location', "%s%s" % (self.container.config['site']['host'], self.route['redirect']))]
 
     def render(self, template="container.html"):
