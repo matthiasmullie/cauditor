@@ -107,3 +107,7 @@ a .title {
         display: none;
     }
 }
+
+.rating-symbol {
+    margin: 0 8px;
+}
