@@ -30,5 +30,10 @@ class Controller(fallback.Controller):
     def get_colleagues(self, exclude, projects):
         model = models.commits.Model(self.container.mysql)
         where = "author NOT IN ('" + "','".join(exclude) + "')"
-        results = model.select(project=projects, columns=['project', 'author'], where=[where], options=["GROUP BY project, author"])
+        results = model.select(
+            project=projects,
+            columns=['project', 'author', 'COUNT(*) AS total'],
+            where=[where],
+            options=["GROUP BY project, author", "ORDER BY total DESC", "LIMIT 15"]
+        )
         return [(commit['project'], commit['author']) for commit in results]
