@@ -13,7 +13,7 @@ html, body {
 }
 
 .footer, .push {
-    height: 50px;
+    min-height: 50px;
 }
 
 @media (min-width: 992px) {
