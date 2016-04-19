@@ -11,6 +11,7 @@ class Controller(login.Controller):
             self.import_from_github(token)
             self.update_changed_repos()
         except Exception:
+            # probably unable to login - session on GH expired or so
             self.status = "401 Unauthorized"
             return headers
 

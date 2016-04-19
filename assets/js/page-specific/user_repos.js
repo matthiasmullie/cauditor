@@ -3,7 +3,11 @@ $(document).ready(function() {
     $('.switch input')
         .bootstrapSwitch({ size: 'mini' })
         .on('switchChange.bootstrapSwitch', function(e, state) {
-            var language = $(this).closest('.repo').find('.code-language').text();
+            var language = $(this).closest('.repo').find('.code-language').text(),
+                $switch = $(this),
+                $row = $switch.closest('.repo');
+
+            $row.next('.link-success, .link-failure').remove();
 
             // ask confirmation when trying to link a non-PHP project
             if (
@@ -11,7 +15,7 @@ $(document).ready(function() {
                 language !== 'PHP' &&
                 !confirm("Uh-oh! GitHub doesn't seem to think this is a PHP project. Unfortunately, that's all we can currently generate metrics for. Are you sure you want to continue analyzing PHP code in this repo?")
             ) {
-                $(this).bootstrapSwitch('state', false, true);
+                $switch.bootstrapSwitch('state', false, true);
                 return false;
             }
 
@@ -43,13 +47,20 @@ $(document).ready(function() {
                     // we just unlinked the repo
                     $title.unwrap('<a href="/'+ data.name +'"></a>');
                     $checkbox.closest('.switch').find('.btn').remove();
-
-                    $row.next('.link-success').remove();
                 }
             })
             .fail(function() {
-                // @todo better error handling; this is piss-poor!
-                alert('Failed to link project & this error handling is extremely poor! Try logging in again?');
+                var $checkbox = $(e.target),
+                    $row = $checkbox.closest('.repo');
+
+                    // toggle back on failure
+                    $switch.bootstrapSwitch('toggleState', true);
+
+                    $row.after('<tr class="link-failure">' +
+                        '<td class="col-xs-12 alert alert-danger text-center" colspan="5">' +
+                            '<strong>Failed!</strong> Please try again, or <a href="https://github.com/cauditor/issues/issues/new">submit a bug report</a> if the problem persists.' +
+                        '</td>' +
+                    '</tr>');
             });
         });
 
