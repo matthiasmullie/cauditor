@@ -34,12 +34,8 @@
                             <tbody>
                         {% endif %}
                             <tr class="repo {% if repo.private %}dimmed{% endif %}" data-repo="{{ repo.name }}">
-                                <td class="col-xs-1 switch">
+                                <td class="col-xs-1 switch text-center">
                                     <input id="import-{{ repo.id }}" data-repo="{{ repo.name }}" type="checkbox" {% if repo.name in project_names %}checked{% endif %}{% if repo.private %}disabled{% endif %}>
-
-                                    {% if repo.name in project_names %}
-                                        <a class="btn btn-primary btn-xs" href="/{{ repo.name }}" role="button"><i class="fa fa-line-chart"></i></a>
-                                    {% endif %}
                                 </td>
                                 <td class="col-xs-6">
                                     {% if repo.name in project_names %}<a href="/{{ repo.name }}">{% endif %}
@@ -47,6 +43,10 @@
                                     {% if repo.name in project_names %}</a>{% endif %}
                                     {% if repo.fork %}<i title="{{ repo.name }} is a fork" class="fa fa-code-fork"></i>{% endif %}
                                     {% if repo.private %}<i title="{{ repo.name }} is private" class="fa fa-lock"></i>{% endif %}
+
+                                    {% if repo.name in project_names %}
+                                        <a class="btn btn-primary btn-xs" href="/{{ repo.name }}" role="button"><i class="fa fa-line-chart"></i></a>
+                                    {% endif %}
                                 </td>
                                 <td class="col-xs-1">
                                     <i class="fa fa-code"></i> {% if repo.language %}<span class="code-language">{{ repo.language }}</span>{% else %}&hellip;{% endif %}

@@ -36,7 +36,8 @@ $(document).ready(function() {
                 if (state) {
                     // we just linked the repo
                     $title.wrap('<a href="/'+ data.name +'"></a>');
-                    $checkbox.closest('.switch').append('<a class="btn btn-primary btn-xs" href="/'+ data.name +'" role="button"><i class="fa fa-line-chart"></i></a>');
+
+                    $title.parent().append(' <a class="btn btn-primary btn-xs" href="/'+ data.name +'" role="button"><i class="fa fa-line-chart"></i></a>');
 
                     $row.after('<tr class="link-success">' +
                         '<td class="col-xs-12 alert alert-warning text-center" colspan="5">' +
@@ -46,7 +47,7 @@ $(document).ready(function() {
                 } else {
                     // we just unlinked the repo
                     $title.unwrap('<a href="/'+ data.name +'"></a>');
-                    $checkbox.closest('.switch').find('.btn').remove();
+                    $title.parent().find('.btn').remove();
                 }
             })
             .fail(function() {
