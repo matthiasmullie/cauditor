@@ -19,4 +19,4 @@ class Controller(fallback.Controller):
     def get_commits(self, project, branch):
         model = models.commits.Model(self.container.mysql)
         imported = model.select(project=project, branch=branch, options=["ORDER BY timestamp DESC"])
-        return [commit for commit in imported]
+        return [commit['hash'] for commit in imported]
