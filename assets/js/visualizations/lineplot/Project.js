@@ -22,17 +22,13 @@ Cauditor.Visualization.Lineplot.Project.prototype.visualization = function(metri
             label: false
         },
         y: function(data, key) {
-            // we'll have 2 lines, with id "avg" & "worst", where we want to show
-            // respectively "weighed_..." and "worst_..." data from
-            var prefix = data.id;
-
             // with a value of 0, the chart fails to render
-            return data[prefix+'_'+metric] || .00001;
+            return data[data.id] || .00001;
         },
         // values to be displayed in tooltip; don't show share % or children etc
         tooltip: {
             size: false,
-            value: ['timestamp', 'weighed_'+metric, 'worst_'+metric],
+            value: ['timestamp', 'weighed', 'worst'],
             // whatever size is required to fit the text in
             small: '100%'
         },
@@ -83,16 +79,6 @@ Cauditor.Visualization.Lineplot.Project.prototype.filter = function(data) {
  */
 Cauditor.Visualization.Lineplot.Project.prototype.format = {
     'timestamp': 'Date',
-    'weighed_mi': 'Average',
-    'weighed_ccn': 'Average',
-    'weighed_npath': 'Average',
-    'weighed_i': 'Average',
-    'weighed_ca': 'Average',
-    'weighed_ce': 'Average',
-    'worst_mi': 'Worst',
-    'worst_ccn': 'Worst',
-    'worst_npath': 'Worst',
-    'worst_i': 'Worst',
-    'worst_ca': 'Worst',
-    'worst_ce': 'Worst'
+    'weighed': 'Average',
+    'worst': 'Worst',
 };

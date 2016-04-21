@@ -5,7 +5,7 @@
 <script src="/assets/js/visualizations/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Abstract.js"></script>
 <script src="/assets/js/visualizations/lineplot/Project.js"></script>
-<script>var jsonUrl = '/api/v1/{{ project.name }}/{{ project.default_branch }}';</script>
+<script>var jsonUrl = '/api/v1/{{ project.name }}/{{ project.default_branch }}/progress/{{ chart.code }}';</script>
 <script src="/assets/js/page-specific/{{ template|replace('.html', '.js') }}"></script>
 
 {% include 'utils/project_navbar.html' %}

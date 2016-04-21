@@ -1,21 +1,29 @@
-$.ajax({
-    url: jsonUrl,
-    datatype: 'json',
-    success: function(data) {
-        $(document).ready(function() {
-            $('.chart').each(function() {
-                var code = $(this).data('chartCode'),
-                    range = $(this).data('chartRange').split(','),
+for (code in jsonUrls) {
+    $.ajax({
+        url: jsonUrls[code],
+        datatype: 'json',
+        context: code,
+        success: function(data) {
+            // all ajax requests are fired at roughly the same time & var `code`
+            // (from the loop) will be unreliable in here, because by the time
+            // the requests come back, the loop will likely have ended & `code`
+            // will contain the last value
+            // instead, code is passed as context, so it's available as `this`
+            var code = this;
+
+            $(document).ready(function() {
+                var selector = '.chart[data-chart-code="'+ code +'"]',
+                    range = $(selector).data('chartRange').split(','),
                     chart = new Cauditor(
                         new Cauditor.Visualization.Lineplot.Project(),
                         new Cauditor.Data(data)
                     );
 
-                chart.draw('.chart[data-chart-code='+code+']', [code, range, false]);
+                chart.draw(selector, [code, range, false]);
             });
-        });
-    }
-});
+        }
+    });
+}
 
 
 $(document).ready(function() {
