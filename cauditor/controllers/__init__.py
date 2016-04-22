@@ -6,7 +6,7 @@ routes = {
     'GET': {
         # web
         "": 'cauditor.controllers.web.fallback',  # matches anything; 404 is fallback for every request
-        "^/(\?.*)?$": 'cauditor.controllers.web.index',  # matches /
+        "^/$": 'cauditor.controllers.web.index',  # matches /
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.web.project_summary',  # matches /vendor/repo and /vendor/repo
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/metrics": 'cauditor.controllers.web.project_all_metrics',  # matches /vendor/repo/overview and /vendor/repo/commit/overview
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
@@ -45,6 +45,9 @@ routes = {
 def route(method, uri, cookies, session, container):
     matched_controllers = {}
     for regex, controller in routes[method].items():
+        # make sure arbitrary params are not an issue
+        regex = re.sub('(\$?)$', '([\?\&].*)?\\1', regex)
+
         # figure out if controller can answer uri
         match = re.match(regex, uri, flags=re.IGNORECASE)
 
