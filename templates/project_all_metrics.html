@@ -48,7 +48,7 @@
         {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
             <div class="row">
                 {% for chart in grouped_charts %}
-                    <div class="col-xs-12 col-md-4 columns">
+                    <div class="col-xs-12 col-md-6 columns">
                         <h2>
                             {{ chart.name }}
                             <a href="/help/metrics#{{ chart.code }}" title="What is {{ chart.name }}?">

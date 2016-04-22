@@ -1,6 +1,6 @@
 .chart {
     display: inline-block;
-    min-height: 225px;
+    min-height: 325px;
     height: 100%;
     width: calc(100% - 30px);
     margin: 0 15px;
@@ -13,6 +13,9 @@
 
 body[data-template="index_logged_in.html"] .chart {
     min-height: 150px;
+}
+body[data-template="project_summary.html"] .chart {
+    min-height: 225px;
 }
 
 a .chart .d3plus_rect {

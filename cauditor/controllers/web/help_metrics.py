@@ -8,6 +8,6 @@ class Controller(fallback.Controller):
         args = super(Controller, self).args()
         args.update({
             'title': 'Metrics information',
-            'description': 'Detailed information about how the metrics (maintainability index, cyclomatic complexity, Halstead intelligent content, instability, afferent & efferent coupling) are calculated and what they mean.',
+            'description': 'Detailed information about how the metrics (maintainability index, Halstead intelligent content, cyclomatic complexity, npath complexity, instability, depth of inheritance, afferent & efferent coupling) are calculated and what they mean.',
         })
         return args

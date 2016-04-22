@@ -43,6 +43,11 @@ charts:
         # @see http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx
         range: [70, 45, 30]
     -
+        code: "hi"
+        name: "Intelligent Content"
+        basis: "method"
+        range: [0, 30, 80]
+    -
         code: "ccn"
         name: "Cyclomatic Complexity"
         basis: "method"
@@ -50,10 +55,10 @@ charts:
         # @see http://phpmd.org/rules/codesize.html#npathcomplexity
         range: [0, 5, 11]
     -
-        code: "hi"
-        name: "Intelligent Content"
+        code: "npath"
+        name: "NPath complexity"
         basis: "method"
-        range: [0, 30, 80]
+        range: [0, 30, 200]
     -
         code: "i"
         name: "Instability"
@@ -63,6 +68,12 @@ charts:
         # going with green-ish for 70% of the index so only the really problematic
         # parts light up (it's pretty easy to score very high on this metric)
         range: [.2, .75, .8]
+    -
+        code: "dit"
+        name: "Depth of Inheritance"
+        basis: "class"
+        # using lots of other packages can signify the class has too much responsibilities
+        range: [0, 4, 6]
     -
         code: "ca"
         name: "Afferent Coupling"

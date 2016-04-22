@@ -9,15 +9,15 @@ routes = {
         "^/$": 'cauditor.controllers.web.index',  # matches /
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.web.project_summary',  # matches /vendor/repo and /vendor/repo
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/metrics": 'cauditor.controllers.web.project_all_metrics',  # matches /vendor/repo/overview and /vendor/repo/commit/overview
-        "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
+        "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)(/(?P<commit>[a-f0-9]{40}))?/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.project_metrics',  # matches /vendor/repo/chart and /vendor/repo/commit/chart
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress$": 'cauditor.controllers.web.project_all_progress',  # matches /vendor/repo/progress
-        "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
+        "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
         "^/user$": 'cauditor.controllers.web.user_repos',  # matches /user
         "^/user/login(?P<redirect>[^?]*)\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
         "^/user/logout(?P<redirect>.*)$": 'cauditor.controllers.web.logout',  # matches /logout
         "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
         "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
-        "^/user/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
+        "^/user/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
         "^/user/feedback": 'cauditor.controllers.web.user_feedback',  # matches /user/feedback
         "^/help/metrics$": 'cauditor.controllers.web.help_metrics',  # matches /help/metrics
         "^/help/import$": 'cauditor.controllers.web.help_import',  # matches /help/import
@@ -30,7 +30,7 @@ routes = {
         "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_project_branches',  # matches /api/v1/vendor/repo
         "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)$": 'cauditor.controllers.api.get_branch_commits',  # matches /api/v1/vendor/repo/branch
         "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)/(?P<commit>([a-f0-9]{40}|HEAD))$": 'cauditor.controllers.api.get_commit_stats',  # matches /api/v1/vendor/repo/commit
-        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|hi|i|ca|ce)+)$": 'cauditor.controllers.api.get_progress',  # matches /api/v1/vendor/repo/progress/chart
+        "^/api/v1/(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/(?P<branch>[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.api.get_progress',  # matches /api/v1/vendor/repo/progress/chart
     },
     'PUT': {
         "^/api/user/settings$": 'cauditor.controllers.api.put_settings',  # matches /api/user/settings

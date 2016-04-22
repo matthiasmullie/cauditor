@@ -49,41 +49,6 @@
 
         <hr class="col-xs-12 columns" />
 
-        <div id="ccn" class="col-xs-12 columns">
-            <h1>Cyclomatic complexity</h1>
-
-            <p>
-                Cyclomatic complexity is calculated by counting the <strong>amount of decision paths</strong>.
-                After an <code>if</code> statement, your code can go do 2 different things.
-                Every conditional statement increases the complexity of your program.
-                It's harder to test, likely contains more bugs & is harder to understand when you look at it again.
-            </p>
-
-            <p>
-                The cyclomatic complexity is calculated by counting the amount of these conditional statements in the
-                code: <code>?</code>, <code>&&</code>, <code>||</code>, <code>and</code>, <code>or</code>,
-                <code>xor</code>, <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>,
-                <code>case</code>, <code>while</code> & <code>catch</code>.
-            </p>
-
-            <pre>if ($user-&gt;isLoggedIn()) {
-    echo 'Welcome back, ' . $user-&gt;getName();
-} else {
-    echo 'Hi there, stranger!';
-}
-</pre>
-
-            <p>
-                In the above code example, there are 2 possible code paths: either <code>$user</code> is logged in
-                (in which case a personalized text is displayed), or isn't (and a generic message is shown).
-                It has a cyclomatic complexity of <strong>2</strong>.
-            </p>
-
-            <p>The more decision paths there are, the harder it becomes to reason about the logic &amp; test it.</p>
-        </div>
-
-        <hr class="col-xs-12 columns" />
-
         <div id="hi" class="col-xs-12 columns">
             <h1>Halstead Intelligent Content</h1>
 
@@ -140,6 +105,81 @@ echo $string;
 
         <hr class="col-xs-12 columns" />
 
+        <div id="ccn" class="col-xs-12 columns">
+            <h1>Cyclomatic complexity</h1>
+
+            <p>
+                Cyclomatic complexity is calculated by counting the <strong>amount of decision paths</strong>.
+                After an <code>if</code> statement, your code can go do 2 different things.
+                Every conditional statement increases the complexity of your program.
+                It's harder to test, likely contains more bugs & is harder to understand when you look at it again.
+            </p>
+
+            <p>
+                The cyclomatic complexity is calculated by counting the amount of these conditional statements in the
+                code: <code>?</code>, <code>&&</code>, <code>||</code>, <code>and</code>, <code>or</code>,
+                <code>xor</code>, <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>,
+                <code>case</code>, <code>while</code> & <code>catch</code>.
+            </p>
+
+            <pre>if ($user-&gt;isLoggedIn()) {
+    echo 'Welcome back, ' . $user-&gt;getName();
+} else {
+    echo 'Hi there, stranger!';
+}
+</pre>
+
+            <p>
+                In the above code example, there are 2 possible code paths: either <code>$user</code> is logged in
+                (in which case a personalized text is displayed), or isn't (and a generic message is shown).
+                It has a cyclomatic complexity of <strong>2</strong>.
+            </p>
+
+            <p>The more decision paths there are, the harder it becomes to reason about the logic &amp; test it.</p>
+        </div>
+
+        <hr class="col-xs-12 columns" />
+
+        <div id="npath" class="col-xs-12 columns">
+            <h1>NPath complexity</h1>
+
+            <p>
+                NPath complexity is very much like <a href="#ccn">cyclomatic complexity</a> in that it also calculates
+                the amount of paths. Or possible outcomes, rather.
+            </p>
+
+            <pre>if ($user-&gt;getSalutation()) {
+    echo $user-&gt;getSalutation().' ';
+}
+
+if ($user-&gt;getName()) {
+    echo $user-&gt;getName();
+} else {
+    echo 'anonymous';
+}
+</pre>
+
+            <p>
+                The above code example has a cyclomatic complexity of 3 (2 <code>if</code>'s and an <code>else</code>),
+                but because of how they're structured, there are 4 possible outcomes:
+            </p>
+
+            <ul>
+                <li>$salutation $name</li>
+                <li>$name</li>
+                <li>$salutation anonymous</li>
+                <li>anonymous</li>
+            </ul>
+
+            <p>
+                The combination of multiple decision paths can compound in multiple different outcomes. Especially when
+                nested, the amount of possible outcomes can increase exponentially. Then imagine the amount of tests it
+                takes to test every possible outcome.
+            </p>
+        </div>
+
+        <hr class="col-xs-12 columns" />
+
         <div id="i" class="col-xs-12 columns">
             <h1>Instability</h1>
 
@@ -171,6 +211,27 @@ echo $string;
 
             <p>
                 <strong>A class should depend only on classes that are more stable that itself.</strong>
+            </p>
+        </div>
+
+        <hr class="col-xs-12 columns" />
+
+        <div id="dit" class="col-xs-12 columns">
+            <h1>Depth of Inheritance</h1>
+
+            <p>
+                <strong>Inheritance is good</strong> because you reuse code for objects that are very similar in
+                functionality and structure all of them in a similar way.
+            </p>
+
+            <p>
+                There can also be too much, however. The deeper you extend a class, the more complex it becomes because
+                you have increasingly more parents you depend on. And if one of those change, so do the children.
+            </p>
+
+            <p>
+                In addition to that, every class likely adds some of their own methods. The deeper you nest, the more
+                methods you inherit from all the ancestors. And more code = a higher likelihood of errors.
             </p>
         </div>
 
