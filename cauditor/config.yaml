@@ -72,8 +72,8 @@ charts:
         code: "dit"
         name: "Depth of Inheritance"
         basis: "class"
-        # using lots of other packages can signify the class has too much responsibilities
-        range: [0, 4, 6]
+        # inheriting too deep increases complexity & instability
+        range: [0, 3, 5]
     -
         code: "ca"
         name: "Afferent Coupling"
