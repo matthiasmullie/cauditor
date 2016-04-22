@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div id="mi" class="col-xs-12 columns">
+        <div id="mi" class="col-xs-12">
             <h1>Maintainability index</h1>
 
             <p>
@@ -11,35 +11,28 @@
                 Halstead Volume (amount of operators and operands) and the amount of lines of code<br />
                 The index is scored <strong>from 0 to 100, with 100 being very maintainable</strong>.
             </p>
-
             <p>
                 A very long function can have a very low cyclomatic complexity, but still be very complex because it
                 still does a lot of things. And if one of those is flawed, it can affect everything that follows.
             </p>
-
             <p>
                 Just look at these metrics for <a href="http://www.minifier.org">Minify</a>. Even though in terms of
                 cyclomatic complexity, <code>stripWhitespace</code> (circled) scores low, it's still a pretty complex beast
                 (just <a href="https://github.com/matthiasmullie/minify/blob/c17eb048daa44b43fa98bfa405147e77a040df76/src/JS.php#L245">look at the code</a>!).
             </p>
-
             <a href="/matthiasmullie/minify/c17eb048daa44b43fa98bfa405147e77a040df76/metrics">
                 <img src="/assets/img/complexity-metrics.png" alt="Minify complexity metrics" style="width: 100%" />
             </a>
-
             <p>
                 On the other hand, a function with a huge <code>switch</code> statement could have little intelligent
                 content, but a very big cyclomatic complexity.
             </p>
-
             <p>
                 The maintainability index is a combination of the amount of lines of code and these 2 complexity metrics
                 in an attempt to predict how hard software is to maintain.
                 The exact formula seems arbitrary: it was engineered to match ratings of manual analysis of software in the 80s.
             </p>
-
             <pre>Maintainability index = max(0, (171 - 5.2 * ln(Halstead volume) - 0.23 * (cyclomatic complexity) - 16.2 * ln(lines of code)) * 100 / 171)</pre>
-
             <p>
                 A low maintainability index is a clear indicator of worrisome code. If you're going to build something
                 that touches that code, it's likely going to take longer, with a much greater likelihood of bugs. Code
@@ -47,9 +40,9 @@
             </p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="hi" class="col-xs-12 columns">
+        <div id="hi" class="col-xs-12">
             <h1>Halstead Intelligent Content</h1>
 
             <p>
@@ -58,12 +51,10 @@
                 reserved words like <code>if</code> and <code>for</code>) and operands (values, variables, function
                 names, &hellip;)
             </p>
-
             <p>
                 The exact formula to calculate this metric is quite complex because it tries to be programming language
                 independent, and some languages are much more verbose than others:
             </p>
-
             <pre>
 n1 = amount of unique operators
 n2 = amount of unique operand
@@ -76,26 +67,21 @@ L = (2 / n1) * (n2 / N2) = program level
 D = 1 / L = program difficulty
 I = V / D = intelligent content
 </pre>
-
             <p>
                 The basics are very simple: the more operators and operands, the more complex a program is.<br/>
                 The more operators or operands, the bigger the program volume. More unique operators or fewer unique
                 operands means higher difficulty. Given 2 different implementations of a same algorithm, the longer one
                 will score higher.
             </p>
-
             <pre>echo 'How are you';</pre>
-
             <pre>$array = ['how', 'are', 'you'];
 $string = implode(' ', $array);
 $string = ucfirst($string);
 echo $string;
 </pre>
-
             <p>
                 Both of the above snippets perform the exact same thing, but the second one is a bit more complex:
             </p>
-
             <ul>
               <li>you have to know more about the environment (what do <code>implode</code> &amp; <code>ucfirst</code> do)</li>
               <li>there are more steps to reason about</li>
@@ -103,9 +89,9 @@ echo $string;
             </ul>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="ccn" class="col-xs-12 columns">
+        <div id="ccn" class="col-xs-12">
             <h1>Cyclomatic complexity</h1>
 
             <p>
@@ -114,40 +100,35 @@ echo $string;
                 Every conditional statement increases the complexity of your program.
                 It's harder to test, likely contains more bugs & is harder to understand when you look at it again.
             </p>
-
             <p>
                 The cyclomatic complexity is calculated by counting the amount of these conditional statements in the
                 code: <code>?</code>, <code>&&</code>, <code>||</code>, <code>and</code>, <code>or</code>,
                 <code>xor</code>, <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>,
                 <code>case</code>, <code>while</code> & <code>catch</code>.
             </p>
-
             <pre>if ($user-&gt;isLoggedIn()) {
     echo 'Welcome back, ' . $user-&gt;getName();
 } else {
     echo 'Hi there, stranger!';
 }
 </pre>
-
             <p>
                 In the above code example, there are 2 possible code paths: either <code>$user</code> is logged in
                 (in which case a personalized text is displayed), or isn't (and a generic message is shown).
                 It has a cyclomatic complexity of <strong>2</strong>.
             </p>
-
             <p>The more decision paths there are, the harder it becomes to reason about the logic &amp; test it.</p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="npath" class="col-xs-12 columns">
+        <div id="npath" class="col-xs-12">
             <h1>NPath complexity</h1>
 
             <p>
                 NPath complexity is very much like <a href="#ccn">cyclomatic complexity</a> in that it also calculates
                 the amount of paths. Or possible outcomes, rather.
             </p>
-
             <pre>if ($user-&gt;getSalutation()) {
     echo $user-&gt;getSalutation().' ';
 }
@@ -158,19 +139,16 @@ if ($user-&gt;getName()) {
     echo 'anonymous';
 }
 </pre>
-
             <p>
                 The above code example has a cyclomatic complexity of 3 (2 <code>if</code>'s and an <code>else</code>),
                 but because of how they're structured, there are 4 possible outcomes:
             </p>
-
             <ul>
                 <li>$salutation $name</li>
                 <li>$name</li>
                 <li>$salutation anonymous</li>
                 <li>anonymous</li>
             </ul>
-
             <p>
                 The combination of multiple decision paths can compound in multiple different outcomes. Especially when
                 nested, the amount of possible outcomes can increase exponentially. Then imagine the amount of tests it
@@ -178,9 +156,9 @@ if ($user-&gt;getName()) {
             </p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="i" class="col-xs-12 columns">
+        <div id="i" class="col-xs-12">
             <h1>Instability</h1>
 
             <p>
@@ -188,57 +166,50 @@ if ($user-&gt;getName()) {
                 resilient a class is to change</strong>: 0 being very resilient & 1 very unstable. Classes using a lot
                 of other classes are less resilient to change because changes in those others may prompt changes there.
             </p>
-
             <pre>I = efferent coupling / (efferent coupling + afferent coupling)</pre>
-
             <p>
                 Classes with high efferent coupling (with lots of dependencies) but low afferent coupling (used by few
                 others) are less stable: they're likely to be impacted by changes in their dependencies, and they don't
                 have much depending on them so change is easy.
             </p>
-
             <p>
                 Stability or instability is about technical difficulty to change things, which may be at odds with the
                 need or desire to change it. High stability is good, as long as you don't need to change the
                 implementation often.
             </p>
-
             <p>
                 A class should either be as stable as possible, or as unstable as possible.
                 Those can always be refactored later, and having the instability in a few places is better than
                 spreading it out across the entire system.
             </p>
-
             <p>
                 <strong>A class should depend only on classes that are more stable that itself.</strong>
             </p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="dit" class="col-xs-12 columns">
+        <div id="dit" class="col-xs-12">
             <h1>Depth of Inheritance</h1>
 
             <p>
                 <strong>Inheritance is good</strong> because you reuse code for objects that are very similar in
                 functionality and structure all of them in a similar way.
             </p>
-
             <p>
                 There can also be too much, however. The deeper you extend a class, the more complex it becomes because
                 you have increasingly more parents you depend on. And if one of those change, so do the children, which
                 makes these classes less stable.
             </p>
-
             <p>
                 In addition to that, every class likely adds some of their own methods. The deeper you nest, the more
                 methods you inherit from all the ancestors. And more code = a higher likelihood of errors.
             </p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="ca" class="col-xs-12 columns">
+        <div id="ca" class="col-xs-12">
             <h1>Afferent Coupling</h1>
 
             <p>
@@ -247,47 +218,41 @@ if ($user-&gt;getName()) {
                 the class is and the bigger its impact on the codebase. Changes to or bugs in these areas can have a big
                 impact since they cover a lot of the codebase. These classes should be stable &amp; thoroughly tested.
             </p>
-
             <p>
                 High afferent coupling is not necessarily a bad thing and will naturally occur for certain pieces of
                 code (e.g. core functionality will usually score high).
                 It only becomes a problem if those classes change often, or if afferent coupling is unnaturally high
                 across the entire application.
             </p>
-
             <p>
                 <strong>The more classes depend on a class, the higher the chance one of them breaks when it changes.</strong>
             </p>
         </div>
 
-        <hr class="col-xs-12 columns" />
+        <hr class="col-xs-12" />
 
-        <div id="ce" class="col-xs-12 columns">
+        <div id="ce" class="col-xs-12">
             <h1>Efferent Coupling</h1>
 
             <p>
                 Efferent coupling is about how many classes this class depends on, the amount of outgoing dependencies.
             </p>
-
             <p>
                 You can expect high efferent coupling in 'god classes' - those that decide what other places to fan out
                 to (e.g. routers) - but it can also expose unfocused classes that try to do too much and should be
                 decomposed into more discrete classes with a single purpose.
             </p>
-
             <p>
                 In a sense, it's good to use other classes instead of duplicating that code, but it makes a class much
                 harder to maintain. With lots of dependencies (e.g. parent classes/interfaces or parameter/variable
                 types), a class becomes:
             </p>
-
             <ul>
               <li>Harder to read &amp; maintain (because you have to know about those other classes)</li>
               <li>Harder to reuse (because it needs all those other components)</li>
               <li>Harder to test in isolation (because you have to setup those other modules)</li>
               <li>Brittle (because changes in those dependencies may cause errors)</li>
             </ul>
-
             <p>
                 <strong>The more dependencies a class has, the more likely it is to break when any of those change.</strong>
             </p>

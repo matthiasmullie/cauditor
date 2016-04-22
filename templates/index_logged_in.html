@@ -19,14 +19,14 @@ var jsonUrls = {
 <div class="hero hero-{{ [1]|random }}">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 columns text-center">
+            <div class="col-xs-12 text-center">
                 <h1>{{ site.title }}</h1>
                 <h2 style="font-weight: normal">Because maps & colors can also make code easier to navigate!</h2>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12 columns text-center">
+            <div class="col-xs-12 text-center">
                 Welcome back, {{ user.name }}!
 
                 {% if imported_repos %}
@@ -47,36 +47,13 @@ var jsonUrls = {
     </div>
 </div>
 
-<div class="logo-strip">
-    <div class="container">
-        <div class="row" style="padding: 0;">
-            <div class="col-xs-4 col-sm-2">
-                <a href="/WordPress/WordPress"><img src="/assets/img/wordpress.png" class="img-responsive" /></a>
-            </div>
-            <div class="col-xs-4 col-sm-2">
-                <a href="/symfony/symfony"><img src="/assets/img/symfony.png" class="img-responsive" /></a>
-            </div>
-            <div class="col-xs-4 col-sm-2">
-                <a href="/wikimedia/mediawiki"><img src="/assets/img/mediawiki.png" class="img-responsive" /></a>
-            </div>
-            <div class="col-xs-4 col-sm-2">
-                <a href="/drupal/drupal"><img src="/assets/img/drupal.png" class="img-responsive" /></a>
-            </div>
-            <div class="col-xs-4 col-sm-2">
-                <a href="/laravel/laravel"><img src="/assets/img/laravel.png" class="img-responsive" /></a>
-            </div>
-            <div class="col-xs-4 col-sm-2">
-                <a href="/phpbb/phpbb"><img src="/assets/img/phpbb.png" class="img-responsive" /></a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'utils/logo_strip.html' %}
 
 <div class="container" style="margin-top: 25px;">
     <div class="row">
         {% for project in imported_repos %}
             <div id="{{ project.name|replace('/', '_') }}" class="col-xs-12 col-md-6">
-                <div class="col-xs-12 col-sm-6 col-md-6 columns" style="height: 175px; overflow:hidden; padding: 0"> {# Fixed height so long project name can't break columns flowing next/under each other #}
+                <div class="col-xs-12 col-sm-6 col-md-6" style="height: 175px; overflow:hidden; padding: 0"> {# Fixed height so long project name can't break columns flowing next/under each other #}
                     <h3><a href="/{{ project.name }}">{{ project.name }}</a></h3>
 
                     <table class="table table-condensed">
@@ -103,7 +80,7 @@ var jsonUrls = {
                     </table>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6 columns">
+                <div class="col-xs-12 col-sm-6 col-md-6">
                     {% if project.name in commits %}
                         <a href="/{{ project.name }}/metrics">
                             {% for chart in charts %}
@@ -121,7 +98,7 @@ var jsonUrls = {
         {% endfor %}
 
         <div class="col-xs-12 col-md-6">
-            <div class="col-xs-12 col-sm-6 col-md-6 columns" style="height: 175px; overflow:hidden; padding: 0">
+            <div class="col-xs-12 col-sm-6 col-md-6" style="height: 175px; overflow:hidden; padding: 0">
                 <h3><a href="/user"><i class="fa fa-plus-circle"></i> Add repo</a></h3>
 
                 <table class="table table-condensed">
@@ -142,7 +119,7 @@ var jsonUrls = {
                 </table>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-6 columns">
+            <div class="col-xs-12 col-sm-6 col-md-6">
                 <a href="/user">
                     <span class="chart">
                         <span class="chart" style="background-color:#ddd"></span>

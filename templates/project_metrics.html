@@ -15,7 +15,7 @@
 {% include 'utils/project_navbar.html' %}
 
 {% if not commit %}
-    {% include 'utils/commits_missing.html' %}
+    {% include 'utils/commits_missing_project.html' %}
 {% else %}
     <div class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></div>
 {% endif %}

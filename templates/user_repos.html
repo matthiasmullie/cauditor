@@ -1,9 +1,7 @@
 {% include 'utils/user_navbar.html' %}
 
 {% if not user %}
-    <div class="container">
-        {% include 'utils/user_not_logged_in.html' %}
-    </div>
+    {% include 'utils/user_not_logged_in.html' %}
 {% else %}
     <script src="/assets/js/vendor/bootstrap-switch.min.js"></script>
     <link rel="stylesheet" href="/assets/css/vendor/bootstrap-switch.min.css">
@@ -18,7 +16,7 @@
             {% set popular = repos|rejectattr('private')|selectattr('language', 'equalto', 'PHP')|list|sort(attribute='stargazers_count')|last %}
             {% if popular %}
                 <div class="row intro">
-                    <div class="col-xs-12 columns">
+                    <div class="col-xs-12">
                         <div class="alert alert-success" role="alert">
                             <p>
                                 Hi there, <strong>{{ user.name }}</strong>!

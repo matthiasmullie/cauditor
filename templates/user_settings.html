@@ -1,9 +1,7 @@
 {% include 'utils/user_navbar.html' %}
 
 {% if not user %}
-    <div class="container">
-        {% include 'utils/user_not_logged_in.html' %}
-    </div>
+    {% include 'utils/user_not_logged_in.html' %}
 {% else %}
     <script src="/assets/js/vendor/bootstrap-tagsinput.min.js"></script>
     <link rel="stylesheet" href="/assets/css/vendor/bootstrap-tagsinput.css">

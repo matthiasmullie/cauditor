@@ -12,11 +12,11 @@
 {% include 'utils/project_navbar.html' %}
 
 {% if not commit %}
-    {% include 'utils/commits_missing.html' %}
+    {% include 'utils/commits_missing_project.html' %}
 {% else %}
     <div class="container">
         <div class="row" style="padding: 0;">
-            <div class="col-md-12 columns">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <i class="fa fa-info-circle"></i>
@@ -48,7 +48,7 @@
         {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
             <div class="row">
                 {% for chart in grouped_charts %}
-                    <div class="col-xs-12 col-md-6 columns">
+                    <div class="col-xs-12 col-md-6">
                         <h2>
                             {{ chart.name }}
                             <a href="/help/metrics#{{ chart.code }}" title="What is {{ chart.name }}?">

@@ -1,0 +1,12 @@
+{% if user %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-exclamation-circle"></i>
+                    Couldn't find any commits for {{ user.name }}. Please <a href="/user/settings" class="alert-link">fill out your git author email addresses</a> to locate your commits.
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}

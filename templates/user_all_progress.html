@@ -1,19 +1,12 @@
 {% include 'utils/user_navbar.html' %}
 
-<div class="container">
-    {% if not user %}
-        {% include 'utils/user_not_logged_in.html' %}
+{% if not user %}
+    {% include 'utils/user_not_logged_in.html' %}
+{% else %}
+    {% if not settings.emails %}
+        {% include 'utils/commits_missing_user.html' %}
     {% else %}
-        {% if not settings.emails %}
-            <div class="row">
-                <div class="col-xs-12 columns">
-                    <div class="alert alert-danger" role="alert">
-                        <i class="fa fa-exclamation-circle"></i>
-                        Couldn't find any commits for {{ user.name }}. Please <a href="/user/settings" class="alert-link">fill out your git author email addresses</a> to locate your commits.
-                    </div>
-                </div>
-            </div>
-        {% else %}
+        <div class="container">
             <script src="/assets/js/vendor/d3.min.js"></script>
             <script src="/assets/js/vendor/d3plus.min.js"></script>
             <script src="/assets/js/Cauditor.js"></script>
@@ -25,7 +18,7 @@
 
             {# Prepare error msg for when we can't find relevant commits; then all we have to do is unhide this #}
             <div class="rows no-commits" style="display: none">
-                <div class="col-xs-12 columns">
+                <div class="col-xs-12">
                     <div class="alert alert-danger" role="alert">
                         <i class="fa fa-exclamation-circle"></i>
                         Couldn't find any commits for {{ settings.emails }}. <a href="/user" class="alert-link">Add some of your work</a> or <a href="/user/settings" class="alert-link">complete your author email addresses</a>. If projects were recently added, they may still be importing.
@@ -34,7 +27,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12 columns">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <i class="fa fa-info-circle"></i>
@@ -48,7 +41,7 @@
             {% for class, grouped_charts in charts|groupby('basis')|sort(true) %}
                 <div class="row">
                     {% for chart in grouped_charts %}
-                        <div id="{{ chart.code }}" class="col-xs-12 col-md-6 columns">
+                        <div id="{{ chart.code }}" class="col-xs-12 col-md-6">
                             <h2>
                                 {{ chart.name }}
                                 <a href="/help/metrics#{{ chart.code }}" title="What is {{ chart.name }}?">
@@ -62,6 +55,6 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-        {% endif %}
+        </div>
     {% endif %}
-</div>
+{% endif %}

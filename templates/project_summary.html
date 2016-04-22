@@ -16,7 +16,7 @@
 {% include 'utils/project_navbar.html' %}
 
 {% if not commit %}
-    {% include 'utils/commits_missing.html' %}
+    {% include 'utils/commits_missing_project.html' %}
 {% else %}
     <div class="container">
         {#
@@ -24,7 +24,7 @@
             when they reflow (on smaller screens), there's still 20px between them.
         #}
         <div class="row" style="padding-top: 0">
-            <div class="col-xs-12 col-sm-6 col-md-4 columns" style="padding-top: 20px">
+            <div class="col-xs-12 col-sm-6 col-md-4" style="padding-top: 20px">
                 {% set rank = project.score|rank %}
                 <div class="score">
                     {# Show arrow to indicate how good/bad this score is! #}
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-6 col-md-4 columns" style="padding-top: 20px">
+            <div class="col-xs-12 col-sm-6 col-md-4" style="padding-top: 20px">
                 <div class="summary_chart">
                     <p class="arrow">
                         &blacktriangleright;
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-4 columns" style="padding-top: 20px">
+            <div class="col-xs-12 col-sm-12 col-md-4" style="padding-top: 20px">
                 <a href="/{{ project.name }}/metrics" class="metrics">
                     {% for chart in charts %}
                         {% if chart.code == 'mi' %}
@@ -84,7 +84,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 columns">
+            <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>

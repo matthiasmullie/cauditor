@@ -10,21 +10,10 @@
 {% include 'utils/user_navbar.html' %}
 
 {% if not user %}
-    <div class="container">
-        {% include 'utils/user_not_logged_in.html' %}
-    </div>
+    {% include 'utils/user_not_logged_in.html' %}
 {% else %}
     {% if not settings.emails %}
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 columns">
-                    <div class="alert alert-danger" role="alert">
-                        <i class="fa fa-exclamation-circle"></i>
-                        Couldn't find any commits for {{ user.name }}. Please <a href="/user/settings" class="alert-link">fill out your git author email addresses</a> to locate your commits.
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'utils/commits_missing_user.html' %}
     {% else %}
         <span class="chart" data-chart-code="{{ chart.code }}" data-chart-basis="{{ chart.basis }}" data-chart-range="{{ chart.range|join(',') }}"></span>
     {% endif %}
