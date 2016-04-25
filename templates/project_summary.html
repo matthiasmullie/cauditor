@@ -7,7 +7,7 @@
 <script src="/assets/js/visualizations/treemap/Method.js"></script>
 <script>
     var jsonUrlMetrics = '{{ data.path|replace('{pwd}', '') }}/{{ data.filename|replace('{project}', project.name)|replace('{hash}', commit.hash) }}',
-        jsonUrlCommits = '/api/v1/{{ project.name }}/{{ project.default_branch }}',
+        jsonUrlCommits = '/api/v1/{{ project.name }}/progress/mi',
         hashes = [{% for commit in commits %}"{{ commit.hash }}"{% if not loop.last %},{% endif %}{% endfor %}],
         batch = {{ batch_size }};
 </script>

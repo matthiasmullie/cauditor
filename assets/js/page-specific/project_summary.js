@@ -94,8 +94,8 @@ $(document).ready(function() {
 function append(commit, prev) {
     var indicator = '', classname = '', score, prev_score;
     if (prev) {
-        score = commit.weighed_mi;
-        prev_score = prev.weighed_mi;
+        score = commit.weighed;
+        prev_score = prev.weighed;
         if (score > prev_score) {
             indicator = '<i class="fa fa-caret-up green-text"></i>';
             classname = 'positive';
@@ -109,18 +109,18 @@ function append(commit, prev) {
         '<tr class="' + classname + '">' +
             '<td class="col-xs-1 text-center">' + indicator + '</td>' +
             '<td class="col-xs-2">' +
-                '<i class="fa fa-code"></i>' +
+                '<i class="fa fa-code"></i> ' +
                 '<strong>' +
                     '<a href="/' + commit.project + '/' + commit.hash + '/metrics">' + commit.hash.substr(0, 7) + '</a><br />' +
                 '</strong>' +
             '</td>' +
             '<td class="col-xs-2">' +
-                '<i class="fa fa-code-fork"></i>' +
+                '<i class="fa fa-code-fork"></i> ' +
                     commit.branch +
             '</td>' +
             '<td class="col-xs-3">' + commit.timestamp.replace('T', ' ') + '</td>' +
-            '<td class="col-xs-1">' + commit.weighed_mi + '</td>' +
-            '<td class="col-xs-1">' + commit.worst_mi + '</td>' +
+            '<td class="col-xs-1">' + commit.weighed + '</td>' +
+            '<td class="col-xs-1">' + commit.worst + '</td>' +
             '<td class="col-xs-2 text-center">' +
                 '<a href="/' + commit.project + '/' + commit.hash + '/metrics">Metrics <i class="fa fa-long-arrow-right"></i></a>' +
             '</td>' +
