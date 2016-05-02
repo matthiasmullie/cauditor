@@ -49,18 +49,18 @@ class Controller(fallback.Controller):
             project = None
 
         if action == "link" and (project is None or project['github_id'] is None):
-            hook = self.create_hook(repo)
+            hook_id = self.create_hook(repo)
 
             project = {
                 'name': repo.full_name,
                 'git': repo.clone_url,
                 'default_branch': repo.default_branch,
                 'github_id': repo.id,
-                'github_hook': hook.id,
+                'github_hook': hook_id,
             }
             model.store(project)
         elif action == "unlink" and project is not None:  # unlink
-            if project['github_id'] is not None:
+            if project['github_hook'] is not None:
                 self.delete_hook(repo, project)
 
             results.delete()
@@ -74,11 +74,15 @@ class Controller(fallback.Controller):
         return github.get_repo(name)
 
     def create_hook(self, repo):
-        # https://developer.github.com/v3/repos/hooks/#create-a-hook
-        return repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
-            'url': "%s/api/v1/webhook/%s" % (self.container.config['site']['host'], repo.full_name),
-            'content_type': "json",
-        })
+        try:
+            # https://developer.github.com/v3/repos/hooks/#create-a-hook
+            hook = repo.create_hook(name="web", active=True, events=["push", "pull_request"], config={
+                'url': "%s/api/v1/webhook/%s" % (self.container.config['site']['host'], repo.full_name),
+                'content_type': "json",
+            })
+            return hook.id
+        except Exception:
+            return None
 
     def delete_hook(self, repo, project):
         hook = repo.get_hook(project['github_hook'])
