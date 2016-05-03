@@ -18,7 +18,21 @@ class Controller(fallback.Controller):
             self.status = "404 Not Found"
 
     def render(self, template="container.html"):
-        return json.dumps(self.commit)
+        return json.dumps({
+            'hash': self.commit['hash'],
+            'previous': self.commit['previous'],
+            'timestamp': self.commit['timestamp'],
+            'author': self.commit['author'],
+            'metrics': {
+                'loc': self.commit['loc'],
+                'nof': self.commit['nof'],
+                'nom': self.commit['nom'],
+                'noc': self.commit['noc'],
+                'weighed': {metric['code']: self.commit['weighed_'+metric['code']] for metric in self.args()['charts']},
+                'average': {metric['code']: self.commit['avg_'+metric['code']] for metric in self.args()['charts']},
+                'worst': {metric['code']: self.commit['worst_'+metric['code']] for metric in self.args()['charts']},
+            }
+        })
 
     def get_latest_commit(self, project, branch):
         model = models.commits.Model(self.container.mysql)
