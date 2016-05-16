@@ -19,6 +19,7 @@ class Controller(fallback.Controller):
 
         commits = [commit for commit in commits if commit['previous'] is None or commit['previous'] in prev_commits]
 
+        self.diffs = []
         for commit in commits:
             # filter out commits we couldn't find previous commit for
             if commit['previous'] is None or commit['previous'] not in prev_commits:
