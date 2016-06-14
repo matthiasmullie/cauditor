@@ -7,7 +7,13 @@ import json
 
 
 class Controller(fallback.Controller):
-    exception = ""
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
+
+        # init here, because we'll only want to validate (and use) the incoming data after
+        # we're sure this is the controller we're router to (which may not be this one
+        # after all, eventually!)
+        self.exception = ""
 
     def headers(self):
         try:

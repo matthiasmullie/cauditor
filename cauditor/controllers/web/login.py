@@ -6,7 +6,16 @@ import json
 
 class Controller(fallback.Controller):
     template = "login.html"
-    fail = True
+
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
+
+        # we can't validate the token here yet: multiple controllers can be initialized,
+        # but only 1 will be executed (though there likely won't ever be any ambiguity
+        # in the URIs that would cause this one to match another controller...)
+        # we'll validate the token in headers(), and will need to reuse the result in
+        # render(), so we'll keep track of the status in this variable!
+        self.fail = False
 
     def headers(self):
         try:
@@ -15,10 +24,10 @@ class Controller(fallback.Controller):
             self.session('github_token', token)
             self.store_email(self.session('user'))
         except Exception:
+            self.fail = True
             return super(Controller, self).headers()
 
         # success! redirect
-        self.fail = False
         self.status = "302 Found"
 
         # when use has not yet imported any repos, redirect them to repo-import page

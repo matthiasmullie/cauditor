@@ -4,7 +4,6 @@ import json
 
 class Controller(fallback.Controller):
     template = ""
-    data = {}
 
     def __init__(self, uri, route, cookies, session, container):
         super(Controller, self).__init__(uri, route, cookies, session, container)

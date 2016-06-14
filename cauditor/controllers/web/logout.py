@@ -2,8 +2,6 @@ from cauditor.controllers.web import fallback
 
 
 class Controller(fallback.Controller):
-    template = ""
-
     def __init__(self, uri, route, cookies, session, container):
         super(Controller, self).__init__(uri, route, cookies, session, container)
 

@@ -7,16 +7,6 @@ import os
 
 class Controller(object):
     template = "404.html"
-    status = "200 OK"
-    uri = ""
-    route = {}
-    cookies = None
-    cookie_set = None
-    session_data = None
-    container = None
-    user = None
-    settings = None
-    template_env = None
 
     def __init__(self, uri, route, cookies, session, container):
         self.uri = uri

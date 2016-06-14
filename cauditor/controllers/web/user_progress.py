@@ -3,7 +3,6 @@ from cauditor.controllers.web import user
 
 class Controller(user.Controller):
     template = "user_progress.html"
-    chart = None
 
     def __init__(self, uri, route, cookies, session, container):
         super(Controller, self).__init__(uri, route, cookies, session, container)

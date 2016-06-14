@@ -3,7 +3,6 @@ from cauditor.controllers.web import project
 
 class Controller(project.Controller):
     template = "project_metrics.html"
-    chart = None
 
     def __init__(self, uri, route, cookies, session, container):
         super(Controller, self).__init__(uri, route, cookies, session, container)
@@ -13,7 +12,7 @@ class Controller(project.Controller):
     def args(self):
         args = super(Controller, self).args()
         args.update({'chart': self.chart})
-        if not self.fail:
+        if self.commit is not None:
             args.update({
                 'title': self.project['name'] + ': ' + self.chart['name'],
                 'description': '%s metrics for %s' % (self.chart['name'], self.project['name'])

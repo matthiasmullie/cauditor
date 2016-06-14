@@ -2,8 +2,6 @@ from cauditor.controllers.web import fallback
 
 
 class Controller(fallback.Controller):
-    template = ""
-
     def args(self):
         args = super(Controller, self).args()
 

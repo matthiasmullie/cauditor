@@ -4,7 +4,13 @@ import json
 
 
 class Controller(fallback.Controller):
-    diffs = []
+    def __init__(self, uri, route, cookies, session, container):
+        super(Controller, self).__init__(uri, route, cookies, session, container)
+
+        # init here, because we'll only want to validate (and use) the incoming data after
+        # we're sure this is the controller we're router to (which may not be this one
+        # after all, eventually!)
+        self.diffs = []
 
     def headers(self):
         if 'id' not in self.user:
@@ -19,7 +25,6 @@ class Controller(fallback.Controller):
 
         commits = [commit for commit in commits if commit['previous'] is None or commit['previous'] in prev_commits]
 
-        self.diffs = []
         for commit in commits:
             # filter out commits we couldn't find previous commit for
             if commit['previous'] is None or commit['previous'] not in prev_commits:

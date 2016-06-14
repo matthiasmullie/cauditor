@@ -4,8 +4,6 @@ from cauditor import models
 
 class Controller(project.Controller):
     template = "project_summary.html"
-    commits = {}
-    prev_commits = {}
     batch_size = 30
 
     def __init__(self, uri, route, cookies, session, container):
