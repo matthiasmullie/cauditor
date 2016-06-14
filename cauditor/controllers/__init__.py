@@ -19,8 +19,7 @@ routes = {
         "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
         "^/user/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart
         "^/user/feedback": 'cauditor.controllers.web.user_feedback',  # matches /user/feedback
-        "^/help/metrics$": 'cauditor.controllers.web.help_metrics',  # matches /help/metrics
-        "^/help/import$": 'cauditor.controllers.web.help_import',  # matches /help/import
+        "^/help/(?P<template>[a-z_\/]+)$": 'cauditor.controllers.web.help',  # matches /help/help_template
 
         # api
         "^/api": 'cauditor.controllers.api.fallback',  # matches /api*; 404 fallback for every request in /api

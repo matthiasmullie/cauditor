@@ -79,7 +79,7 @@ $(document).ready(function() {
                         '<tr>' +
                             '<td colspan="8" class="col-xs-12 text-center">' +
                                 'Commit history is incomplete. Missing commits should be imported soon! ' +
-                                'Or <a href="/help/import">bypass the import queue and submit them yourself</a>.' +
+                                'Or <a href="/help/import/manual_submission">bypass the import queue and submit them yourself</a>.' +
                             '</td>' +
                         '</tr>'
                     );

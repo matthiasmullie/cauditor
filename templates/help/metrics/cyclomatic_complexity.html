@@ -1,0 +1,26 @@
+<h1>Cyclomatic complexity</h1>
+
+<p>
+    Cyclomatic complexity is calculated by counting the <strong>amount of decision paths</strong>.
+    After an <code>if</code> statement, your code can go do 2 different things.
+    Every conditional statement increases the complexity of your program.
+    It's harder to test, likely contains more bugs & is harder to understand when you look at it again.
+</p>
+<p>
+    The cyclomatic complexity is calculated by counting the amount of these conditional statements in the
+    code: <code>?</code>, <code>&&</code>, <code>||</code>, <code>and</code>, <code>or</code>,
+    <code>xor</code>, <code>if</code>, <code>elseif</code>, <code>for</code>, <code>foreach</code>,
+    <code>case</code>, <code>while</code> & <code>catch</code>.
+</p>
+<pre>if ($user-&gt;isLoggedIn()) {
+    echo 'Welcome back, ' . $user-&gt;getName();
+} else {
+    echo 'Hi there, stranger!';
+}
+</pre>
+<p>
+    In the above code example, there are 2 possible code paths: either <code>$user</code> is logged in
+    (in which case a personalized text is displayed), or isn't (and a generic message is shown).
+    It has a cyclomatic complexity of <strong>2</strong>.
+</p>
+<p>The more decision paths there are, the harder it becomes to reason about the logic &amp; test it.</p>

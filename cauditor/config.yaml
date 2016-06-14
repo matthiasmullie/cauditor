@@ -36,6 +36,7 @@ github:
 charts:
     -
         code: "mi"
+        slug: "maintainability_index"
         name: "Maintainability Index"
         basis: "method"
         # 100-20 is considered ok; 20-10 suspicious; 10-0 bad
@@ -44,11 +45,13 @@ charts:
         range: [70, 45, 30]
     -
         code: "hi"
+        slug: "intelligent_content"
         name: "Intelligent Content"
         basis: "method"
         range: [0, 30, 80]
     -
         code: "ccn"
+        slug: "cyclomatic_complexity"
         name: "Cyclomatic Complexity"
         basis: "method"
         # 1-4 green-ish; 5-7 yellow-ish; 8-10: orange-ish; 10+: red
@@ -56,11 +59,13 @@ charts:
         range: [0, 5, 11]
     -
         code: "npath"
-        name: "NPath complexity"
+        slug: "npath_complexity"
+        name: "NPath Complexity"
         basis: "method"
         range: [0, 30, 200]
     -
         code: "i"
+        slug: "instability"
         name: "Instability"
         basis: "class"
         # range from 0 to 1, with 0 indicating a package very resilient to change in
@@ -70,12 +75,14 @@ charts:
         range: [.2, .75, .8]
     -
         code: "dit"
+        slug: "depth_of_inheritance"
         name: "Depth of Inheritance"
         basis: "class"
         # inheriting too deep increases complexity & instability
         range: [0, 3, 5]
     -
         code: "ca"
+        slug: "afferent_coupling"
         name: "Afferent Coupling"
         basis: "class"
         # being used by lots of other packages can signify the class isn't independent enough
@@ -83,6 +90,7 @@ charts:
         range: [0, 5, 10]
     -
         code: "ce"
+        slug: "efferent_coupling"
         name: "Efferent Coupling"
         basis: "class"
         # using lots of other packages can signify the class has too much responsibilities

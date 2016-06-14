@@ -1,0 +1,44 @@
+<h1>Halstead Intelligent Content</h1>
+
+<p>
+    Halstead intelligent content represents the algorithm complexity in a mostly language-agnostic way by
+    counting the amount of operators (<code>+</code>, <code>=</code>, <code>&&</code>, &hellip; and all
+    reserved words like <code>if</code> and <code>for</code>) and operands (values, variables, function
+    names, &hellip;)
+</p>
+<p>
+    The exact formula to calculate this metric is quite complex because it tries to be programming language
+    independent, and some languages are much more verbose than others:
+</p>
+<pre>
+n1 = amount of unique operators
+n2 = amount of unique operand
+N1 = total amount of operators
+N2 = total amount of operands
+
+N = N1 + N2 = program length
+V = N * log2(n1 + n2) = program volume
+L = (2 / n1) * (n2 / N2) = program level
+D = 1 / L = program difficulty
+I = V / D = intelligent content
+</pre>
+<p>
+    The basics are very simple: the more operators and operands, the more complex a program is.<br/>
+    The more operators or operands, the bigger the program volume. More unique operators or fewer unique
+    operands means higher difficulty. Given 2 different implementations of a same algorithm, the longer one
+    will score higher.
+</p>
+<pre>echo 'How are you';</pre>
+<pre>$array = ['how', 'are', 'you'];
+$string = implode(' ', $array);
+$string = ucfirst($string);
+echo $string;
+</pre>
+<p>
+    Both of the above snippets perform the exact same thing, but the second one is a bit more complex:
+</p>
+<ul>
+  <li>you have to know more about the environment (what do <code>implode</code> &amp; <code>ucfirst</code> do)</li>
+  <li>there are more steps to reason about</li>
+  <li>there are more places where something could go wrong (e.g. <code>implode</code> argument order could change)</li>
+</ul>

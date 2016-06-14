@@ -1,0 +1,17 @@
+<h1>Afferent Coupling</h1>
+
+<p>
+    Afferent coupling measures the responsibility of a class by counting the incoming dependencies,
+    or <strong>how often a class is used in other classes</strong>. The higher the value, the more important
+    the class is and the bigger its impact on the codebase. Changes to or bugs in these areas can have a big
+    impact since they cover a lot of the codebase. These classes should be stable &amp; thoroughly tested.
+</p>
+<p>
+    High afferent coupling is not necessarily a bad thing and will naturally occur for certain pieces of
+    code (e.g. core functionality will usually score high).
+    It only becomes a problem if those classes change often, or if afferent coupling is unnaturally high
+    across the entire application.
+</p>
+<p>
+    <strong>The more classes depend on a class, the higher the chance one of them breaks when it changes.</strong>
+</p>

@@ -1,0 +1,31 @@
+<h1>NPath complexity</h1>
+
+<p>
+    NPath complexity is very much like <a href="/help/metrics/cyclomatic_complexity">cyclomatic complexity</a> in that it also calculates
+    the amount of paths. Or possible outcomes, rather.
+</p>
+<pre>if ($user-&gt;getSalutation()) {
+    echo $user-&gt;getSalutation().' ';
+}
+
+if ($user-&gt;getName()) {
+    echo $user-&gt;getName();
+} else {
+    echo 'anonymous';
+}
+</pre>
+<p>
+    The above code example has a cyclomatic complexity of 3 (2 <code>if</code>'s and an <code>else</code>),
+    but because of how they're structured, there are 4 possible outcomes:
+</p>
+<ul>
+    <li>$salutation $name</li>
+    <li>$name</li>
+    <li>$salutation anonymous</li>
+    <li>anonymous</li>
+</ul>
+<p>
+    The combination of multiple decision paths can compound in multiple different outcomes. Especially when
+    nested, the amount of possible outcomes can increase exponentially. Then imagine the amount of tests it
+    takes to test every possible outcome.
+</p>

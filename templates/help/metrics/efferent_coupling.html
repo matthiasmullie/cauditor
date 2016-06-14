@@ -1,0 +1,24 @@
+<h1>Efferent Coupling</h1>
+
+<p>
+    Efferent coupling is about how many classes this class depends on, the amount of outgoing dependencies.
+</p>
+<p>
+    You can expect high efferent coupling in 'god classes' - those that decide what other places to fan out
+    to (e.g. routers) - but it can also expose unfocused classes that try to do too much and should be
+    decomposed into more discrete classes with a single purpose.
+</p>
+<p>
+    In a sense, it's good to use other classes instead of duplicating that code, but it makes a class much
+    harder to maintain. With lots of dependencies (e.g. parent classes/interfaces or parameter/variable
+    types), a class becomes:
+</p>
+<ul>
+  <li>Harder to read &amp; maintain (because you have to know about those other classes)</li>
+  <li>Harder to reuse (because it needs all those other components)</li>
+  <li>Harder to test in isolation (because you have to setup those other modules)</li>
+  <li>Brittle (because changes in those dependencies may cause errors)</li>
+</ul>
+<p>
+    <strong>The more dependencies a class has, the more likely it is to break when any of those change.</strong>
+</p>

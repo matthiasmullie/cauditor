@@ -1,0 +1,35 @@
+<h1>Maintainability index</h1>
+
+<p>
+    The maintainability index tries to indicate how hard a program is to maintain by combining a few
+    complexity-relates methods: cyclomatic complexity (which calculates the amount of decision paths),
+    Halstead Volume (amount of operators and operands) and the amount of lines of code<br />
+    The index is scored <strong>from 0 to 100, with 100 being very maintainable</strong>.
+</p>
+<p>
+    A very long function can have a very low cyclomatic complexity, but still be very complex because it
+    still does a lot of things. And if one of those is flawed, it can affect everything that follows.
+</p>
+<p>
+    Just look at these metrics for <a href="http://www.minifier.org">Minify</a>. Even though in terms of
+    cyclomatic complexity, <code>stripWhitespace</code> (circled) scores low, it's still a pretty complex beast
+    (just <a href="https://github.com/matthiasmullie/minify/blob/c17eb048daa44b43fa98bfa405147e77a040df76/src/JS.php#L245">look at the code</a>!).
+</p>
+<a href="/matthiasmullie/minify/c17eb048daa44b43fa98bfa405147e77a040df76/metrics">
+    <img src="/assets/img/complexity-metrics.png" alt="Minify complexity metrics" style="width: 100%" />
+</a>
+<p>
+    On the other hand, a function with a huge <code>switch</code> statement could have little intelligent
+    content, but a very big cyclomatic complexity.
+</p>
+<p>
+    The maintainability index is a combination of the amount of lines of code and these 2 complexity metrics
+    in an attempt to predict how hard software is to maintain.
+    The exact formula seems arbitrary: it was engineered to match ratings of manual analysis of software in the 80s.
+</p>
+<pre>Maintainability index = max(0, (171 - 5.2 * ln(Halstead volume) - 0.23 * (cyclomatic complexity) - 16.2 * ln(lines of code)) * 100 / 171)</pre>
+<p>
+    A low maintainability index is a clear indicator of worrisome code. If you're going to build something
+    that touches that code, it's likely going to take longer, with a much greater likelihood of bugs. Code
+    with a high maintainability index is in dire need of refactoring.
+</p>

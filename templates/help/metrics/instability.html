@@ -1,0 +1,26 @@
+<h1>Instability</h1>
+
+<p>
+    The instability is based on the efferent and afferent coupling of the class and indicates <strong>how
+    resilient a class is to change</strong>: 0 being very resilient & 1 very unstable. Classes using a lot
+    of other classes are less resilient to change because changes in those others may prompt changes there.
+</p>
+<pre>I = efferent coupling / (efferent coupling + afferent coupling)</pre>
+<p>
+    Classes with high efferent coupling (with lots of dependencies) but low afferent coupling (used by few
+    others) are less stable: they're likely to be impacted by changes in their dependencies, and they don't
+    have much depending on them so change is easy.
+</p>
+<p>
+    Stability or instability is about technical difficulty to change things, which may be at odds with the
+    need or desire to change it. High stability is good, as long as you don't need to change the
+    implementation often.
+</p>
+<p>
+    A class should either be as stable as possible, or as unstable as possible.
+    Those can always be refactored later, and having the instability in a few places is better than
+    spreading it out across the entire system.
+</p>
+<p>
+    <strong>A class should depend only on classes that are more stable that itself.</strong>
+</p>

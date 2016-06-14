@@ -1,0 +1,28 @@
+{% include 'utils/project_navbar.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            {% include help_template %}
+        </div>
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1" style="background: #fff; border: 1px solid #ddd">
+            <h2>Metrics</h2>
+
+            <ul>
+                {% for chart in charts %}
+                    <li {% if template == 'help/container.html' and route['metric'] == chart.slug %}class="active"{% endif %}>
+                        <a href="/help/metrics/{{ chart.slug }}">{{ chart.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h2>Import</h2>
+
+            <ul>
+                <li><a href="/help/import/custom_config">Custom config</a></li>
+                <li><a href="/help/import/manual_submission">Manual (or CI) submission</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

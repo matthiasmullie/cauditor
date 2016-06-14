@@ -35,7 +35,7 @@ $(document).ready(function() {
                         var $checkbox = $(this),
                             $row = $checkbox.closest('.repo'),
                             $title = $row.find('.title'),
-                            text = '<strong>Success!</strong> Check <a href="'+ data.name +'">your analysis</a>. Or do you want to <a href="/help/import#ci">customize your config</a>? Or skip the busy Cauditor import queue and <a href="/help/import#bin">let your CI build push the metrics</a>?';
+                            text = '<strong>Success!</strong> Check <a href="'+ data.name +'">your analysis</a>. Or do you want to <a href="/help/import/custom_config">customize your config</a>? Or skip the busy Cauditor import queue and <a href="/help/import/manual_submission">let your CI build push the metrics</a>?';
 
                         if (state) {
                             // we just linked the repo
