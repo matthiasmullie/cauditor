@@ -30,4 +30,11 @@ $(document).ready(function() {
                 event.cancel;
             });
         });
+
+    $('#delete-button').click(function(event) {
+        var confirmed = confirm('Are you sure you want to remove your account?')
+        if (!confirmed) {
+            event.preventDefault();
+        }
+    });
 });

@@ -1,6 +1,6 @@
 from cauditor.controllers.web import fallback
 from cauditor import models
-from urllib import parse, request
+import requests
 import json
 
 
@@ -96,11 +96,8 @@ class Controller(fallback.Controller):
             'Accept': "application/json"
         }
 
-        data = parse.urlencode(values).encode("utf-8")
-        req = request.Request(url, data, headers)
-        response = request.urlopen(req)
-        result = response.read().decode("utf=8")
-        result = json.loads(result)
+        response = requests.get(url, data=values, headers=headers)
+        result = json.loads(response.text)
 
         token = result['access_token']
         scopes = result['scope'].split(",")

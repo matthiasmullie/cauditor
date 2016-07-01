@@ -2,7 +2,7 @@
     <div class="secondary-nav col-xs-12 col-md-8 col-md-offset-1">
         <ul class="nav nav-pills nav-justified">
             <li role="presentation" {% if template == 'user_repos.html' %}class="active"{% endif %}><a href="/user"><i class="fa fa-code-fork"></i> Repositories</a></li>
-            <li role="presentation" {% if template == 'user_settings.html' %}class="active"{% endif %}><a href="/user/settings"><i class="fa fa-cogs"></i> Details</a></li>
+            <li role="presentation" {% if template == 'user_settings.html' %}class="active"{% endif %}><a href="/user/settings"><i class="fa fa-cogs"></i> Settings</a></li>
 
             <li role="presentation" class="dropdown {% if template == 'user_all_progress.html' or template == 'user_progress.html' %}active{% endif %}">
                 {% if chart and template == 'user_progress.html' %}

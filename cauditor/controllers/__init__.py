@@ -13,8 +13,9 @@ routes = {
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress$": 'cauditor.controllers.web.project_all_progress',  # matches /vendor/repo/progress
         "^/(?!api|user|help)(?P<project>[a-z0-9_.-]+/[a-z0-9_.-]+)/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.project_progress',  # matches /vendor/repo/progress/chart
         "^/user$": 'cauditor.controllers.web.user_repos',  # matches /user
-        "^/user/login(?P<redirect>[^?]*)\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /login?code=xyz
-        "^/user/logout(?P<redirect>.*)$": 'cauditor.controllers.web.logout',  # matches /logout
+        "^/user/delete$": 'cauditor.controllers.web.user_delete',  # matches /user/delete
+        "^/user/login(?P<redirect>[^?]*)\?code=(?P<code>[a-f0-9]+)$": 'cauditor.controllers.web.login',  # matches /user/login?code=xyz
+        "^/user/logout(?P<redirect>.*)$": 'cauditor.controllers.web.logout',  # matches /user/logout
         "^/user/settings$": 'cauditor.controllers.web.user_settings',  # matches /user/settings
         "^/user/progress$": 'cauditor.controllers.web.user_all_progress',  # matches /user/progress
         "^/user/progress/(?P<chart>(mi|ccn|npath|hi|i|ca|ce|dit)+)$": 'cauditor.controllers.web.user_progress',  # matches /user/progress/chart

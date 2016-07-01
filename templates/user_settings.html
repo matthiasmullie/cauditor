@@ -26,5 +26,32 @@
                 </form>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="emails" class="col-sm-2">Delete account</label>
+                        <div class="col-sm-10">
+                            <a id="delete-button" class="btn btn-danger" role="button" href="/user/delete">Delete my account</a>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <small>
+                                Note that you don't have a traditional user account at Cauditor, you're only authenticating with your GitHub account.
+                                Deleting your account will:
+                                <ul>
+                                    <li>Remove your known email addresses</li>
+                                    <li>Remove your projects' metrics from Cauditor.org</li>
+                                    <li>Remove webhooks for all your repositories (they will no longer be updated)</li>
+                                    <li>Revoke the GitHub access token</li>
+                                    <li>Log you out</li>
+                                </ul>
+                                While the access token to GitHub is revoked and Cauditor can no longer access any of your information, you may also want to <a href="https://github.com/settings/connections/applications/ce2fc2503602b214384a">revoke all access</a> entirely.
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endif %}
